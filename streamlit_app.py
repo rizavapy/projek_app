@@ -20,9 +20,9 @@ if menu == "Beranda":
 
     slide_index = st.slider("Pilih Slide", 1, 3, 1)
     slide_paths = {
-        1: ("gambar/slide1.jpg", "Ilustrasi Ketidakpastian"),
-        2: ("gambar/slide2.jpg", "Diagram Statistik"),
-        3: ("gambar/slide3.jpg", "Contoh Pengukuran")
+        1: ("https://www.sentrakalibrasiindustri.com/wp-content/uploads/2022/12/ketidakpastian-dalam-pengukuran-tunggal.jpg", "Ilustrasi Ketidakpastian"),
+        2: ("https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "Diagram Statistik"),
+        3: ("https://guruonlinee.com/wp-content/uploads/2022/08/ketidakpastian-pengukuran-fisika-1-e1660916689220.jpg", "Contoh Pengukuran")
     }
 
     img_path, caption = slide_paths[slide_index]
