@@ -21,9 +21,6 @@ if menu == "Beranda":
     "Grafik Simpangan": "gambar/grafik.png",
     "Contoh Alat Ukur": "gambar/alat.png"
 }
-selected = st.selectbox("Pilih Gambar Penjelas", list(images.keys()))
-st.image(images[selected], caption=selected, use_column_width=True)
-
     st.markdown("""
     Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
 
