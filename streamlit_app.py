@@ -56,7 +56,7 @@ if menu == "Beranda":
     Nilai ketidakpastian membantu kita mengetahui seberapa akurat hasil pengukuran kita.
 
     Gunakan menu di sebelah kiri untuk mulai belajar atau menghitung!
-    """)
+    )
 
 # === DASAR TEORI ===
 
