@@ -22,7 +22,7 @@ if menu == "Beranda":
     slides = [
         {"path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "caption": "Nilai Ketidakpastian"},
         {"path": "https://1.bp.blogspot.com/-Tb1wYeCR7yM/WYNuEPz-DDI/AAAAAAAAVSc/fvi7otqPr2kfr2Tr_9kR6UO0pAuPQLU_gCLcBGAs/s1600/Peralatan%2BGelas.jpg", "caption": "Galat Alat"},
-        {"path": "https://tse1.mm.bing.net/th/id/OIP.Ovo8aqIR1sV7ZEURKJuhJAHaEK?pid=Api&P=0&h=180", "caption": "Pengulangan"}
+        {"path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg", "caption": "Pengulangan"}
     ]
 
     # Simpan indeks saat ini di session_state
