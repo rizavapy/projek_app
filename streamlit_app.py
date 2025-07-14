@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 
-st.set_page_config(page_title="UncertaintyCalc", layout="wide")
+st.set_page_config(page_title="Chemcalc", layout="wide")
 
 # Sidebar Navigation
 menu = st.sidebar.radio("Navigasi", [
