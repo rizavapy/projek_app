@@ -61,15 +61,19 @@ if menu == "Beranda":
 
     #isi
     st.markdown("""
- <h6 style='font-weight: normal;'>Halo teman-teman semua! disini kami akan membantu kalian memahami dan menghitung nilai ketidakpastian</h3>
-
-- 🧪 Memahami konsep dasar ketidakpastian pengukuran
-- 📊 Menghitung ketidakpastian Tipe A dan Tipe B
-- 📝 Mempelajari contoh soal dan pembahasan
+ Halo teman-teman semua! disini kami akan membantu kalian memahami dan menghitung nilai ketidakpastian.
+Di website ini akan ada beberapa opsi yang bisa kalian buka, yaitu:
+    1. Beranda
+    2. Dasar Teori
+    3. Kalkulator Ketidakpastian
+    4. Cara Perhitungan Manual
+    5. Faktor Kesalahan
+    6. Contoh Soal dan Pembahasan
 
 Ayo mulai belajar sekarang!
-""", unsafe_allow_html=True))
+""")
     
     # Footer ringan
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;'>POLITEKNIK AKA BOGOR - 2025</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>by: Kelompok 3</p>", unsafe_allow_html=True)
