@@ -61,7 +61,7 @@ if menu == "Beranda":
 
     #isi
     st.markdown("""
-UncertaintyCalc hadir untuk membantu kamu dalam:
+ <h6 style='font-weight: normal;'>Halo teman-teman semua! disini kami akan membantu kalian memahami dan menghitung nilai ketidakpastian</h3>
 
 - 🧪 Memahami konsep dasar ketidakpastian pengukuran
 - 📊 Menghitung ketidakpastian Tipe A dan Tipe B
