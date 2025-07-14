@@ -14,8 +14,6 @@ menu = st.sidebar.radio("Navigasi", [
 ])
 
 # === BERANDA ===
-if menu == "Beranda":
-    # Slide gambar
     if menu == "Beranda":
     st.title("🎉 Selamat Datang di UncertaintyCalc!")
     st.write("Slide edukasi pengukuran:")
