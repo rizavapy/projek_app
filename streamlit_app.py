@@ -20,9 +20,9 @@ if menu == "Beranda":
 
     # List gambar
     slides = [
-        {"path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "caption": "Ilustrasi Ketidakpastian"},
-        {"path": "gambar/slide2.jpg", "caption": "Diagram Statistik"},
-        {"path": "gambar/slide3.jpg", "caption": "Contoh Pengukuran"}
+        {"path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "caption": "Nilai Ketidakpastian"},
+        {"path": "https://1.bp.blogspot.com/-Tb1wYeCR7yM/WYNuEPz-DDI/AAAAAAAAVSc/fvi7otqPr2kfr2Tr_9kR6UO0pAuPQLU_gCLcBGAs/s1600/Peralatan%2BGelas.jpg", "caption": "Galat Alat"},
+        {"path": "https://tse1.mm.bing.net/th/id/OIP.Ovo8aqIR1sV7ZEURKJuhJAHaEK?pid=Api&P=0&h=180", "caption": "Pengulangan"}
     ]
 
     # Simpan indeks saat ini di session_state
