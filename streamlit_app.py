@@ -45,12 +45,6 @@ if menu == "Beranda":
 
     # Indikator slide
     st.markdown(f"<p style='text-align:center;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
-
-    **Apa Itu Nilai Ketidakpastian?**  
-    Dalam setiap pengukuran, selalu ada kemungkinan kesalahan atau deviasi dari nilai sebenarnya.  
-    Nilai ketidakpastian membantu kita mengetahui seberapa akurat hasil pengukuran kita.
-
-    Gunakan menu di sebelah kiri untuk mulai belajar atau menghitung!
     """)
 
 # === DASAR TEORI ===
