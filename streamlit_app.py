@@ -1,4 +1,4 @@
-import streamlit as st
+iimport streamlit as st
 import numpy as np
 
 st.set_page_config(page_title="Chemcalc", layout="wide")
@@ -47,23 +47,3 @@ if menu == "Beranda":
 
     # Indikator slide
     st.markdown(f"<p style='text-align:center;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
-
-    st.markdown("""
-    Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
-
-    **Apa Itu Nilai Ketidakpastian?**  
-    Dalam setiap pengukuran, selalu ada kemungkinan kesalahan atau deviasi dari nilai sebenarnya.  
-    Nilai ketidakpastian membantu kita mengetahui seberapa akurat hasil pengukuran kita.
-
-    Gunakan menu di sebelah kiri untuk mulai belajar atau menghitung!
-    )
-
-# === DASAR TEORI ===
-
-# === KALKULATOR TIPE A & B ===
-
-# === PERHITUNGAN MANUAL ===
-
-
-# === FAKTOR KESALAHAN ===
-
