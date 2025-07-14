@@ -15,9 +15,36 @@ menu = st.sidebar.radio("Navigasi", [
 
 # === BERANDA ===
 if menu == "Beranda":
-    st.title("🎉 Selamat Datang di UncertaintyCalc!")
-    st.markdown("""
-    Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
+    st.markdown("<h1 style='text-align: center;'>🎉 Selamat Datang di UncertaintyCalc!</h1>", unsafe_allow_html=True)
+    st.write("Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.")
+
+    # List gambar
+    slides = [
+        {"path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "caption": "Nilai Ketidakpastian"},
+        {"path": "https://www.kucari.com/wp-content/uploads/2018/09/Alat-Lab.jpg", "caption": "Galat Alat"},
+        {"path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg", "caption": "Pengulangan"}
+    ]
+
+    # Simpan indeks saat ini di session_state
+    if "slide_index" not in st.session_state:
+        st.session_state.slide_index = 0
+
+    col1, col2, col3 = st.columns([1, 6, 1])
+
+    with col1:
+        if st.button("⬅️ Sebelumnya") and st.session_state.slide_index > 0:
+            st.session_state.slide_index -= 1
+
+    with col3:
+        if st.button("➡️ Selanjutnya") and st.session_state.slide_index < len(slides) - 1:
+            st.session_state.slide_index += 1
+
+    # Tampilkan gambar berdasarkan index
+    current = slides[st.session_state.slide_index]
+    st.image(current["path"], caption=current["caption"], use_column_width=True)
+
+    # Indikator slide
+    st.markdown(f"<p style='text-align:center;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
 
     📏 **Apa Itu Nilai Ketidakpastian?**  
     Dalam setiap pengukuran, selalu ada kemungkinan kesalahan atau deviasi dari nilai sebenarnya.  
