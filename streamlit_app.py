@@ -51,7 +51,7 @@ if menu == "Beranda":
     st.markdown("""
     Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
 
-    📏 **Apa Itu Nilai Ketidakpastian?**  
+    **Apa Itu Nilai Ketidakpastian?**  
     Dalam setiap pengukuran, selalu ada kemungkinan kesalahan atau deviasi dari nilai sebenarnya.  
     Nilai ketidakpastian membantu kita mengetahui seberapa akurat hasil pengukuran kita.
 
