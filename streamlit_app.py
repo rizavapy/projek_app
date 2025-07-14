@@ -19,7 +19,7 @@ if menu == "Beranda":
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
         <h1 style='color: #1f77b4;'>Selamat Datang di <span style='color:#FF4B4B;'>PhyCalc</span>!</h1>
-        <h3 style='font-weight: normal;'>Situs interaktif untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis 📏⚙️</h3>
+        <h3 style='font-weight: normal;'>Situs untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis</h3>
     </div>
     """, unsafe_allow_html=True)
 
@@ -27,15 +27,15 @@ if menu == "Beranda":
     slides = [
         {
             "path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg",
-            "caption": "🔍 Nilai Ketidakpastian - Ketelitian adalah segalanya."
+            "caption": "Nilai Ketidakpastian - Ketelitian adalah segalanya."
         },
         {
             "path": "https://www.kucari.com/wp-content/uploads/2018/09/Alat-Lab.jpg",
-            "caption": "🧪 Galat Alat - Alat ukur yang tepat menghasilkan data yang bisa dipercaya."
+            "caption": "Galat Alat - Alat ukur yang tepat menghasilkan data yang bisa dipercaya."
         },
         {
             "path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg",
-            "caption": "🔁 Pengulangan - Semakin banyak data, semakin baik ketepatannya."
+            "caption": "Pengulangan - Semakin banyak data, semakin baik ketepatannya."
         }
     ]
 
