@@ -41,7 +41,7 @@ if menu == "Beranda":
 
     # Tampilkan gambar berdasarkan index
     current = slides[st.session_state.slide_index]
-    st.image(current["path"], caption=current["caption"], use_column_width=True)
+    st.image(current["path"], caption=current["caption"], use_container_width=True)
 
     # Indikator slide
     st.markdown(f"<p style='text-align:center;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
