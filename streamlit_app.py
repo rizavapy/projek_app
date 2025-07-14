@@ -15,19 +15,36 @@ menu = st.sidebar.radio("Navigasi", [
 
 # === BERANDA ===
 if menu == "Beranda":
-    st.title("🎉 Selamat Datang di UncertaintyCalc!")
-    st.write("Slide edukasi pengukuran:")
+    st.markdown("<h1 style='text-align: center;'>🎉 Selamat Datang di UncertaintyCalc!</h1>", unsafe_allow_html=True)
+    st.write("Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.")
 
-    slide_index = st.slider("Pilih Slide", 1, 3, 1)
-    slide_paths = {
-        1: ("https://www.sentrakalibrasiindustri.com/wp-content/uploads/2022/12/ketidakpastian-dalam-pengukuran-tunggal.jpg", "Ilustrasi Ketidakpastian"),
-        2: ("https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "Diagram Statistik"),
-        3: ("https://guruonlinee.com/wp-content/uploads/2022/08/ketidakpastian-pengukuran-fisika-1-e1660916689220.jpg", "Contoh Pengukuran")
-    }
+    # List gambar
+    slides = [
+        {"path": "gambar/slide1.jpg", "caption": "Ilustrasi Ketidakpastian"},
+        {"path": "gambar/slide2.jpg", "caption": "Diagram Statistik"},
+        {"path": "gambar/slide3.jpg", "caption": "Contoh Pengukuran"}
+    ]
 
-    img_path, caption = slide_paths[slide_index]
-    st.image(img_path, caption=caption, use_container_width=True)
+    # Simpan indeks saat ini di session_state
+    if "slide_index" not in st.session_state:
+        st.session_state.slide_index = 0
 
+    col1, col2, col3 = st.columns([1, 6, 1])
+
+    with col1:
+        if st.button("⬅️ Sebelumnya") and st.session_state.slide_index > 0:
+            st.session_state.slide_index -= 1
+
+    with col3:
+        if st.button("➡️ Selanjutnya") and st.session_state.slide_index < len(slides) - 1:
+            st.session_state.slide_index += 1
+
+    # Tampilkan gambar berdasarkan index
+    current = slides[st.session_state.slide_index]
+    st.image(current["path"], caption=current["caption"], use_column_width=True)
+
+    # Indikator slide
+    st.markdown(f"<p style='text-align:center;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
 
     st.markdown("""
     Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
