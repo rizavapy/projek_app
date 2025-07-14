@@ -15,11 +15,13 @@ menu = st.sidebar.radio("Navigasi", [
 
 # === BERANDA ===
 if menu == "Beranda":
-    st.title("Selamat Datang di ChemCalc!")
-    images = {
-    "Nilai Ketidakpastian": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg",
-    "Grafik Simpangan": "gambar/grafik.png",
-    "Contoh Alat Ukur": "gambar/alat.png"
+    st.image("gambar/banner_uncertainty.jpg", use_column_width=True)
+    st.markdown("""
+    <div style="text-align:center">
+        <h1> Selamat Datang di <span style='color:#1f77b4;'>ChemCalcl</span></h1>
+        <p>Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.</p>
+    </div>
+    """, unsafe_allow_html=True)
 }
     st.markdown("""
     Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
