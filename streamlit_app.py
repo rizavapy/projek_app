@@ -61,4 +61,4 @@ if menu == "Beranda":
 
     # Footer ringan
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center;'>✨ Belajar menjadi mudah bersama <b>UncertaintyCalc</b>. Yuk mulai dari menu sebelah kiri!</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:left;'>POLITEKNIK AKA BOGOR - 2025</p>", unsafe_allow_html=True)
