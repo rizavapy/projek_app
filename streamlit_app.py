@@ -107,7 +107,7 @@ elif menu == "Cara Perhitungan Manual":
     **Langkah-langkah Tipe A:**
     1. Catat data pengukuran berulang.
     2. Hitung rata-rata dan simpangan baku.
-    3. Ketidakpastian Tipe A = simpangan baku / √jumlah data.
+    3. Ketidakpastian Tipe A = simpangan baku / jumlah data.
 
     **Langkah-langkah Tipe B:**
     1. Ambil nilai resolusi alat atau estimasi lainnya.
