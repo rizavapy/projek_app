@@ -1,4 +1,4 @@
-""", unsafe_allow_html=True)import streamlit as st
+import streamlit as st
 import numpy as np
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
@@ -19,7 +19,7 @@ if menu == "Beranda":
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
         <h1 style='color: #1f77b4;'>Selamat Datang di <span style='color:#FF4B4B;'>PhyCalc</span>!</h1>
-        <h5 style='font-weight: normal;'>Situs untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis</h3>
+        <h5 style='font-weight: normal;'>Situs untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis 📏🧪</h5>
     </div>
     """, unsafe_allow_html=True)
 
@@ -27,15 +27,15 @@ if menu == "Beranda":
     slides = [
         {
             "path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg",
-            "caption": "Nilai Ketidakpastian - Ketelitian adalah segalanya."
+            "caption": "🔍 Nilai Ketidakpastian - Ketelitian adalah segalanya."
         },
         {
             "path": "https://www.kucari.com/wp-content/uploads/2018/09/Alat-Lab.jpg",
-            "caption": "Galat Alat - Alat ukur yang tepat menghasilkan data yang bisa dipercaya."
+            "caption": "🧪 Galat Alat - Alat ukur yang tepat menghasilkan data yang bisa dipercaya."
         },
         {
             "path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg",
-            "caption": "Pengulangan - Semakin banyak data, semakin baik ketepatannya."
+            "caption": "🔁 Pengulangan - Semakin banyak data, semakin baik ketepatannya."
         }
     ]
 
@@ -59,30 +59,36 @@ if menu == "Beranda":
 
     st.markdown(f"<p style='text-align:center; color:gray;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
 
-    #isi
+    # Deskripsi Isi Halaman
     st.markdown("""
- Halo teman-teman semua! disini kami akan membantu kalian memahami dan menghitung nilai ketidakpastian.
-Di website ini akan ada beberapa opsi yang bisa kalian buka, yaitu:
-    1. Beranda
-    2. Dasar Teori
-    3. Kalkulator Ketidakpastian
-    4. Cara Perhitungan Manual
-    5. Faktor Kesalahan
-    6. Contoh Soal dan Pembahasan
+    <hr>
+    <div style='font-size:16px; text-align:justify'>
+        <p>Halo teman-teman semua! 👋</p>
+        <p>Di sini kami akan membantu kalian memahami dan menghitung nilai ketidakpastian secara mudah dan menyenangkan.</p>
+        <p>Kalian bisa menjelajahi berbagai fitur melalui menu di sebelah kiri:</p>
+        <ul>
+            <li>📌 Beranda</li>
+            <li>📚 Dasar Teori</li>
+            <li>📊 Kalkulator Ketidakpastian</li>
+            <li>📝 Cara Perhitungan Manual</li>
+            <li>⚠️ Faktor Kesalahan</li>
+            <li>🧠 Contoh Soal dan Pembahasan</li>
+        </ul>
+        <p>Yuk mulai belajar sekarang! 💪</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-Ayo mulai belajar sekarang!
-""")
-
-    st.header("Pembuat")
+    # Daftar Kelompok
+    st.markdown("### 👨‍🔬 Pembuat Aplikasi - Kelompok 3")
     st.markdown("""
-Kelompok 3
-    Anggota:
-            1. 
-            2. 
-            3. 
-            4. 
-            5.
+    **Anggota:**
+    1. Nama 1  
+    2. Nama 2  
+    3. Nama 3  
+    4. Nama 4  
+    5. Nama 5
+    """)
 
-    # Footer ringan
+    # Footer
     st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center;'>POLITEKNIK AKA BOGOR - 2025</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>© 2025 POLITEKNIK AKA BOGOR - All rights reserved.</p>", unsafe_allow_html=True)
