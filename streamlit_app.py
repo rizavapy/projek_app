@@ -15,7 +15,9 @@ menu = st.sidebar.radio("Navigasi", [
 
 # === BERANDA ===
 if menu == "Beranda":
-    st.markdown("<h1 style='text-align: center;'>🎉 Selamat Datang di UncertaintyCalc!</h1>", unsafe_allow_html=True)
+   st.markdown("""
+    <div style="text-align:center">
+        <h1>🎉 Selamat Datang di <span style='color:#1f77b4;'>UncertaintyCalc</span></h1>
     st.write("Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.")
 
     # List gambar
