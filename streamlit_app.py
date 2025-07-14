@@ -16,14 +16,20 @@ menu = st.sidebar.radio("Navigasi", [
 # === BERANDA ===
 if menu == "Beranda":
     # Slide gambar
-     st.markdown("### 📷 Ilustrasi Ketidakpastian")
-    #beranda
-    st.markdown("""
-    <div style="text-align:center">
-        <h1> Selamat Datang di <span style='color:#1f77b4;'>ChemCalcl!!</span></h1>
-        <p>Situs web untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran.</p>
-    </div>
-    """, unsafe_allow_html=True)
+    if menu == "Beranda":
+    st.title("🎉 Selamat Datang di UncertaintyCalc!")
+    st.write("Slide edukasi pengukuran:")
+
+    slide_index = st.slider("Pilih Slide", 1, 3, 1)
+    slide_paths = {
+        1: ("gambar/slide1.jpg", "Ilustrasi Ketidakpastian"),
+        2: ("gambar/slide2.jpg", "Diagram Statistik"),
+        3: ("gambar/slide3.jpg", "Contoh Pengukuran")
+    }
+
+    img_path, caption = slide_paths[slide_index]
+    st.image(img_path, caption=caption, use_column_width=True)
+
 
     st.markdown("""
     Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
