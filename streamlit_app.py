@@ -59,6 +59,17 @@ if menu == "Beranda":
 
     st.markdown(f"<p style='text-align:center; color:gray;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
 
+    #isi
+    st.markdown("""
+UncertaintyCalc hadir untuk membantu kamu dalam:
+
+- 🧪 Memahami konsep dasar ketidakpastian pengukuran
+- 📊 Menghitung ketidakpastian Tipe A dan Tipe B
+- 📝 Mempelajari contoh soal dan pembahasan
+
+Ayo mulai belajar sekarang!
+""")
+    
     # Footer ringan
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;'>POLITEKNIK AKA BOGOR - 2025</p>", unsafe_allow_html=True)
