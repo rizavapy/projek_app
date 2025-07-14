@@ -59,21 +59,6 @@ if menu == "Beranda":
     """)
 
 # === DASAR TEORI ===
-elif menu == "Dasar Teori":
-    st.title("📚 Dasar Teori Ketidakpastian Pengukuran")
-    st.markdown("""
-    **Jenis Ketidakpastian:**
-    - **Tipe A (Statistik):** Berdasarkan hasil pengukuran berulang.
-    - **Tipe B (Non-Statistik):** Berdasarkan perkiraan, kalibrasi alat, atau pengalaman.
-
-    **Tujuan:**
-    - Mengetahui keandalan hasil pengukuran.
-    - Menentukan batas toleransi dari alat atau proses pengukuran.
-
-    **Simbol yang Sering Digunakan:**
-    - 𝑥̄: Rata-rata
-    - 𝑠: Simpangan baku
-    - 𝑢: Ketidakpastian
 
 # === KALKULATOR TIPE A & B ===
 
