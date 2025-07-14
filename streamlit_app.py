@@ -1,151 +1,122 @@
 import streamlit as st
-import pandas as pd
-import math
-from pathlib import Path
+import numpy as np
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
+st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+# Sidebar Navigation
+menu = st.sidebar.radio("Navigasi", [
+    "Beranda",
+    "Dasar Teori",
+    "Kalkulator Ketidakpastian",
+    "Cara Perhitungan Manual",
+    "Faktor Kesalahan",
+    "Contoh Soal dan Pembahasan"
+])
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+# === BERANDA ===
+if menu == "Beranda":
+    st.title("🎉 Selamat Datang di UncertaintyCalc!")
+    st.markdown("""
+    Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+    📏 **Apa Itu Nilai Ketidakpastian?**  
+    Dalam setiap pengukuran, selalu ada kemungkinan kesalahan atau deviasi dari nilai sebenarnya.  
+    Nilai ketidakpastian membantu kita mengetahui seberapa akurat hasil pengukuran kita.
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+    Gunakan menu di sebelah kiri untuk mulai belajar atau menghitung!
+    """)
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+# === DASAR TEORI ===
+elif menu == "Dasar Teori":
+    st.title("📚 Dasar Teori Ketidakpastian Pengukuran")
+    st.markdown("""
+    **Jenis Ketidakpastian:**
+    - **Tipe A (Statistik):** Berdasarkan hasil pengukuran berulang.
+    - **Tipe B (Non-Statistik):** Berdasarkan perkiraan, kalibrasi alat, atau pengalaman.
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+    **Tujuan:**
+    - Mengetahui keandalan hasil pengukuran.
+    - Menentukan batas toleransi dari alat atau proses pengukuran.
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+    **Simbol yang Sering Digunakan:**
+    - 𝑥̄: Rata-rata
+    - 𝑠: Simpangan baku
+    - 𝑢: Ketidakpastian
+    """)
 
-    return gdp_df
+# === KALKULATOR TIPE A & B ===
+elif menu == "Kalkulator Ketidakpastian":
+    st.title("📊 Kalkulator Ketidakpastian (Tipe A & Tipe B)")
 
-gdp_df = get_gdp_data()
+    st.header("Tipe A - Berdasarkan Data Pengukuran")
+    data_input = st.text_area("Masukkan data pengukuran (pisahkan dengan koma)", "10.1, 10.3, 10.2, 10.4, 10.2")
 
-# -----------------------------------------------------------------------------
-# Draw the actual page
+    if st.button("Hitung Tipe A"):
+        try:
+            data = np.array([float(x.strip()) for x in data_input.split(",")])
+            rata2 = np.mean(data)
+            std_dev = np.std(data, ddof=1)
+            ua = std_dev / np.sqrt(len(data))
+            st.success(f"Rata-rata: {rata2:.4f}")
+            st.success(f"Simpangan Baku: {std_dev:.4f}")
+            st.success(f"Ketidakpastian Tipe A: {ua:.4f}")
+        except:
+            st.error("Format input tidak valid. Pastikan hanya angka dipisahkan koma.")
 
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
+    st.header("Tipe B - Berdasarkan Estimasi")
+    resolusi = st.number_input("Masukkan nilai resolusi alat ukur", value=0.01)
+    ub = resolusi / np.sqrt(3)
+    st.info(f"Ketidakpastian Tipe B: {ub:.4f}")
 
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
+# === PERHITUNGAN MANUAL ===
+elif menu == "Cara Perhitungan Manual":
+    st.title("📝 Cara Perhitungan Manual Ketidakpastian")
+    st.markdown("""
+    **Langkah-langkah Tipe A:**
+    1. Catat data pengukuran berulang.
+    2. Hitung rata-rata dan simpangan baku.
+    3. Ketidakpastian Tipe A = simpangan baku / √jumlah data.
 
-# Add some spacing
-''
-''
+    **Langkah-langkah Tipe B:**
+    1. Ambil nilai resolusi alat atau estimasi lainnya.
+    2. Ketidakpastian Tipe B = resolusi / √3
 
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
+    **Gabungan:**
+    \[
+    u_c = \sqrt{u_A^2 + u_B^2}
+    \]
+    """)
 
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
+# === FAKTOR KESALAHAN ===
+elif menu == "Faktor Kesalahan":
+    st.title("⚠️ Faktor yang Mempengaruhi Ketidakpastian")
+    st.markdown("""
+    Beberapa faktor yang bisa mempengaruhi besar kecilnya ketidakpastian:
+    
+    - **Suhu dan Kelembaban:** Perubahan suhu dapat menyebabkan ekspansi/perubahan pada alat ukur.
+    - **Resolusi Alat Ukur:** Semakin kecil resolusi, semakin tinggi ketelitian.
+    - **Kesalahan Sistematik:** Misalnya alat yang tidak dikalibrasi.
+    - **Kesalahan Manusia:** Cara membaca skala, posisi mata, dll.
+    """)
 
-countries = gdp_df['Country Code'].unique()
+# === CONTOH SOAL ===
+elif menu == "Contoh Soal dan Pembahasan":
+    st.title("🧠 Contoh Soal dan Pembahasan")
+    st.markdown("""
+    **Soal:**
+    Seorang siswa melakukan pengukuran panjang sebanyak 5 kali dengan hasil:  
+    10.1 cm, 10.3 cm, 10.2 cm, 10.4 cm, dan 10.2 cm.  
+    Tentukan ketidakpastian Tipe A, jika resolusi alat ukur adalah 0.01 cm.
 
-if not len(countries):
-    st.warning("Select at least one country")
+    **Penyelesaian:**
+    - Rata-rata = (10.1 + 10.3 + 10.2 + 10.4 + 10.2) / 5 = 10.24
+    - Simpangan baku (s) ≈ 0.114
+    - Ketidakpastian Tipe A = s / √n = 0.114 / √5 ≈ 0.051
+    - Ketidakpastian Tipe B = 0.01 / √3 ≈ 0.0058
+    - Ketidakpastian gabungan:
+      \[
+      u_c = \sqrt{0.051^2 + 0.0058^2} ≈ 0.0513
+      \]
 
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
-
-
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+    ✅ **Jadi, ketidakpastian gabungan adalah ±0.0513 cm**
+    """)
