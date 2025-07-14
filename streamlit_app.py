@@ -22,7 +22,7 @@ if menu == "Beranda":
         <p>Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.</p>
     </div>
     """, unsafe_allow_html=True)
-}
+
     st.markdown("""
     Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.
 
