@@ -4,7 +4,7 @@ import numpy as np
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
 # Sidebar Navigation
-menu = st.sidebar.radio("Navigasi", [
+menu = st.sidebar.radio("📂 Navigasi", [
     "Beranda",
     "Dasar Teori",
     "Kalkulator Ketidakpastian",
@@ -15,129 +15,50 @@ menu = st.sidebar.radio("Navigasi", [
 
 # === BERANDA ===
 if menu == "Beranda":
-    st.markdown("<h1 style='text-align: center;'>🎉 Selamat Datang di UncertaintyCalc!</h1>", unsafe_allow_html=True)
-    st.write("Situs web interaktif untuk memahami dan menghitung nilai ketidakpastian dalam pengukuran ilmiah dan teknis.")
+    # Header & Deskripsi Menarik
+    st.markdown("""
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1 style='color: #1f77b4;'>🎉 Selamat Datang di <span style='color:#FF4B4B;'>UncertaintyCalc</span>!</h1>
+        <h3 style='font-weight: normal;'>Situs interaktif untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis 📏⚙️</h3>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # List gambar
+    # Slide Gambar
     slides = [
-        {"path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "caption": "Nilai Ketidakpastian"},
-        {"path": "https://www.kucari.com/wp-content/uploads/2018/09/Alat-Lab.jpg", "caption": "Galat Alat"},
-        {"path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg", "caption": "Pengulangan"}
+        {
+            "path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg",
+            "caption": "🔍 Nilai Ketidakpastian - Ketelitian adalah segalanya."
+        },
+        {
+            "path": "https://www.kucari.com/wp-content/uploads/2018/09/Alat-Lab.jpg",
+            "caption": "🧪 Galat Alat - Alat ukur yang tepat menghasilkan data yang bisa dipercaya."
+        },
+        {
+            "path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg",
+            "caption": "🔁 Pengulangan - Semakin banyak data, semakin baik ketepatannya."
+        }
     ]
 
-    # Simpan indeks saat ini di session_state
     if "slide_index" not in st.session_state:
         st.session_state.slide_index = 0
 
     col1, col2, col3 = st.columns([1, 6, 1])
 
     with col1:
-        if st.button("⬅️ Sebelumnya") and st.session_state.slide_index > 0:
-            st.session_state.slide_index -= 1
+        st.button("⬅️ Sebelumnya", 
+                  on_click=lambda: st.session_state.update(slide_index=st.session_state.slide_index - 1),
+                  disabled=st.session_state.slide_index == 0)
 
     with col3:
-        if st.button("➡️ Selanjutnya") and st.session_state.slide_index < len(slides) - 1:
-            st.session_state.slide_index += 1
+        st.button("➡️ Selanjutnya", 
+                  on_click=lambda: st.session_state.update(slide_index=st.session_state.slide_index + 1),
+                  disabled=st.session_state.slide_index == len(slides) - 1)
 
-    # Tampilkan gambar berdasarkan index
     current = slides[st.session_state.slide_index]
     st.image(current["path"], caption=current["caption"], use_column_width=True)
 
-    # Indikator slide
-    st.markdown(f"<p style='text-align:center;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
-    """)
+    st.markdown(f"<p style='text-align:center; color:gray;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
 
-# === DASAR TEORI ===
-elif menu == "Dasar Teori":
-    st.title("📚 Dasar Teori Ketidakpastian Pengukuran")
-    st.markdown("""
-    **Jenis Ketidakpastian:**
-    - **Tipe A (Statistik):** Berdasarkan hasil pengukuran berulang.
-    - **Tipe B (Non-Statistik):** Berdasarkan perkiraan, kalibrasi alat, atau pengalaman.
-
-    **Tujuan:**
-    - Mengetahui keandalan hasil pengukuran.
-    - Menentukan batas toleransi dari alat atau proses pengukuran.
-
-    **Simbol yang Sering Digunakan:**
-    - 𝑥̄: Rata-rata
-    - 𝑠: Simpangan baku
-    - 𝑢: Ketidakpastian
-    """)
-
-# === KALKULATOR TIPE A & B ===
-elif menu == "Kalkulator Ketidakpastian":
-    st.title("📊 Kalkulator Ketidakpastian (Tipe A & Tipe B)")
-
-    st.header("Tipe A - Berdasarkan Data Pengukuran")
-    data_input = st.text_area("Masukkan data pengukuran (pisahkan dengan koma)", "10.1, 10.3, 10.2, 10.4, 10.2")
-
-    if st.button("Hitung Tipe A"):
-        try:
-            data = np.array([float(x.strip()) for x in data_input.split(",")])
-            rata2 = np.mean(data)
-            std_dev = np.std(data, ddof=1)
-            ua = std_dev / np.sqrt(len(data))
-            st.success(f"Rata-rata: {rata2:.4f}")
-            st.success(f"Simpangan Baku: {std_dev:.4f}")
-            st.success(f"Ketidakpastian Tipe A: {ua:.4f}")
-        except:
-            st.error("Format input tidak valid. Pastikan hanya angka dipisahkan koma.")
-
-    st.header("Tipe B - Berdasarkan Estimasi")
-    resolusi = st.number_input("Masukkan nilai resolusi alat ukur", value=0.01)
-    ub = resolusi / np.sqrt(3)
-    st.info(f"Ketidakpastian Tipe B: {ub:.4f}")
-
-# === PERHITUNGAN MANUAL ===
-elif menu == "Cara Perhitungan Manual":
-    st.title("📝 Cara Perhitungan Manual Ketidakpastian")
-    st.markdown("""
-    **Langkah-langkah Tipe A:**
-    1. Catat data pengukuran berulang.
-    2. Hitung rata-rata dan simpangan baku.
-    3. Ketidakpastian Tipe A = simpangan baku / √jumlah data.
-
-    **Langkah-langkah Tipe B:**
-    1. Ambil nilai resolusi alat atau estimasi lainnya.
-    2. Ketidakpastian Tipe B = resolusi / √3
-
-    **Gabungan:**
-    \[
-    u_c = \sqrt{u_A^2 + u_B^2}
-    \]
-    """)
-
-# === FAKTOR KESALAHAN ===
-elif menu == "Faktor Kesalahan":
-    st.title("⚠️ Faktor yang Mempengaruhi Ketidakpastian")
-    st.markdown("""
-    Beberapa faktor yang bisa mempengaruhi besar kecilnya ketidakpastian:
-    
-    - **Suhu dan Kelembaban:** Perubahan suhu dapat menyebabkan ekspansi/perubahan pada alat ukur.
-    - **Resolusi Alat Ukur:** Semakin kecil resolusi, semakin tinggi ketelitian.
-    - **Kesalahan Sistematik:** Misalnya alat yang tidak dikalibrasi.
-    - **Kesalahan Manusia:** Cara membaca skala, posisi mata, dll.
-    """)
-
-# === CONTOH SOAL ===
-elif menu == "Contoh Soal dan Pembahasan":
-    st.title("🧠 Contoh Soal dan Pembahasan")
-    st.markdown("""
-    **Soal:**
-    Seorang siswa melakukan pengukuran panjang sebanyak 5 kali dengan hasil:  
-    10.1 cm, 10.3 cm, 10.2 cm, 10.4 cm, dan 10.2 cm.  
-    Tentukan ketidakpastian Tipe A, jika resolusi alat ukur adalah 0.01 cm.
-
-    **Penyelesaian:**
-    - Rata-rata = (10.1 + 10.3 + 10.2 + 10.4 + 10.2) / 5 = 10.24
-    - Simpangan baku (s) ≈ 0.114
-    - Ketidakpastian Tipe A = s / √n = 0.114 / √5 ≈ 0.051
-    - Ketidakpastian Tipe B = 0.01 / √3 ≈ 0.0058
-    - Ketidakpastian gabungan:
-      \[
-      u_c = \sqrt{0.051^2 + 0.0058^2} ≈ 0.0513
-      \]
-
-    ✅ **Jadi, ketidakpastian gabungan adalah ±0.0513 cm**
-    """)
+    # Footer ringan
+    st.markdown("<hr>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>✨ Belajar menjadi mudah bersama <b>UncertaintyCalc</b>. Yuk mulai dari menu sebelah kiri!</p>", unsafe_allow_html=True)
