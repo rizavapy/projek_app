@@ -18,7 +18,7 @@ if menu == "Beranda":
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #1f77b4;'>🎉 Selamat Datang di <span style='color:#FF4B4B;'>UncertaintyCalc</span>!</h1>
+        <h1 style='color: #1f77b4;'>Selamat Datang di <span style='color:#FF4B4B;'>PhyCalc</span>!</h1>
         <h3 style='font-weight: normal;'>Situs interaktif untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis 📏⚙️</h3>
     </div>
     """, unsafe_allow_html=True)
@@ -55,7 +55,7 @@ if menu == "Beranda":
                   disabled=st.session_state.slide_index == len(slides) - 1)
 
     current = slides[st.session_state.slide_index]
-    st.image(current["path"], caption=current["caption"], use_column_width=True)
+    st.image(current["path"], caption=current["caption"], use_container_width=True)
 
     st.markdown(f"<p style='text-align:center; color:gray;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
 
