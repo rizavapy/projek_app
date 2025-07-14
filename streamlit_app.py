@@ -17,15 +17,6 @@ menu = st.sidebar.radio("Navigasi", [
 if menu == "Beranda":
     # Slide gambar
      st.markdown("### 📷 Ilustrasi Ketidakpastian")
-    slides = {
-        "Ilustrasi Ketidakpastian 1": "https://news.kalibrasi.com/wp-content/uploads/2023/04/ketidakpastian-kalibrasi.jpg",
-        "Diagram Statistik": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg",
-        "Contoh Pengukuran": "https://www.sentrakalibrasiindustri.com/wp-content/uploads/2022/12/ketidakpastian-dalam-pengukuran-tunggal.jpg"
-    }
-
-    selected_slide = st.selectbox("Pilih Gambar Ilustrasi", list(slides.keys()))
-    st.image(slides[selected_slide], caption=selected_slide, use_column_width=True)
-
     #beranda
     st.markdown("""
     <div style="text-align:center">
