@@ -1,4 +1,4 @@
-import streamlit as st
+""", unsafe_allow_html=True)import streamlit as st
 import numpy as np
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
@@ -68,7 +68,7 @@ if menu == "Beranda":
 - 📝 Mempelajari contoh soal dan pembahasan
 
 Ayo mulai belajar sekarang!
-""")
+""", unsafe_allow_html=True))
     
     # Footer ringan
     st.markdown("<hr>", unsafe_allow_html=True)
