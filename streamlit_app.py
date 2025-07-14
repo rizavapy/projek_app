@@ -77,78 +77,9 @@ elif menu == "Dasar Teori":
     """)
 
 # === KALKULATOR TIPE A & B ===
-elif menu == "Kalkulator Ketidakpastian":
-    st.title("📊 Kalkulator Ketidakpastian (Tipe A & Tipe B)")
-
-    st.header("Tipe A - Berdasarkan Data Pengukuran")
-    data_input = st.text_area("Masukkan data pengukuran (pisahkan dengan koma)", "10.1, 10.3, 10.2, 10.4, 10.2")
-
-    if st.button("Hitung Tipe A"):
-        try:
-            data = np.array([float(x.strip()) for x in data_input.split(",")])
-            rata2 = np.mean(data)
-            std_dev = np.std(data, ddof=1)
-            ua = std_dev / np.sqrt(len(data))
-            st.success(f"Rata-rata: {rata2:.4f}")
-            st.success(f"Simpangan Baku: {std_dev:.4f}")
-            st.success(f"Ketidakpastian Tipe A: {ua:.4f}")
-        except:
-            st.error("Format input tidak valid. Pastikan hanya angka dipisahkan koma.")
-
-    st.header("Tipe B - Berdasarkan Estimasi")
-    resolusi = st.number_input("Masukkan nilai resolusi alat ukur", value=0.01)
-    ub = resolusi / np.sqrt(3)
-    st.info(f"Ketidakpastian Tipe B: {ub:.4f}")
 
 # === PERHITUNGAN MANUAL ===
-elif menu == "Cara Perhitungan Manual":
-    st.title("📝 Cara Perhitungan Manual Ketidakpastian")
-    st.markdown("""
-    **Langkah-langkah Tipe A:**
-    1. Catat data pengukuran berulang.
-    2. Hitung rata-rata dan simpangan baku.
-    3. Ketidakpastian Tipe A = simpangan baku / jumlah data.
 
-    **Langkah-langkah Tipe B:**
-    1. Ambil nilai resolusi alat atau estimasi lainnya.
-    2. Ketidakpastian Tipe B = resolusi / √3
-
-    **Gabungan:**
-    \[
-    u_c = \sqrt{u_A^2 + u_B^2}
-    \]
-    """)
 
 # === FAKTOR KESALAHAN ===
-elif menu == "Faktor Kesalahan":
-    st.title("⚠️ Faktor yang Mempengaruhi Ketidakpastian")
-    st.markdown("""
-    Beberapa faktor yang bisa mempengaruhi besar kecilnya ketidakpastian:
-    
-    - **Suhu dan Kelembaban:** Perubahan suhu dapat menyebabkan ekspansi/perubahan pada alat ukur.
-    - **Resolusi Alat Ukur:** Semakin kecil resolusi, semakin tinggi ketelitian.
-    - **Kesalahan Sistematik:** Misalnya alat yang tidak dikalibrasi.
-    - **Kesalahan Manusia:** Cara membaca skala, posisi mata, dll.
-    """)
 
-# === CONTOH SOAL ===
-elif menu == "Contoh Soal dan Pembahasan":
-    st.title("🧠 Contoh Soal dan Pembahasan")
-    st.markdown("""
-    **Soal:**
-    Seorang siswa melakukan pengukuran panjang sebanyak 5 kali dengan hasil:  
-    10.1 cm, 10.3 cm, 10.2 cm, 10.4 cm, dan 10.2 cm.  
-    Tentukan ketidakpastian Tipe A, jika resolusi alat ukur adalah 0.01 cm.
-
-    **Penyelesaian:**
-    - Rata-rata = (10.1 + 10.3 + 10.2 + 10.4 + 10.2) / 5 = 10.24
-    - Simpangan baku (s) ≈ 0.114
-    - Ketidakpastian Tipe A = s / √n = 0.114 / √5 ≈ 0.051
-    - Ketidakpastian Tipe B = 0.01 / √3 ≈ 0.0058
-    - Ketidakpastian gabungan:
-      \[
-      u_c = \sqrt{0.051^2 + 0.0058^2} ≈ 0.0513
-      \]
-
-    ✅ **Jadi, ketidakpastian gabungan adalah ±0.0513 cm**
-    """)
