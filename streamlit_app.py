@@ -72,8 +72,17 @@ Di website ini akan ada beberapa opsi yang bisa kalian buka, yaitu:
 
 Ayo mulai belajar sekarang!
 """)
-    
+
+    st.header("Pembuat")
+    st.markdown("""
+Kelompok 3
+    Anggota:
+            1. 
+            2. 
+            3. 
+            4. 
+            5.
+
     # Footer ringan
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;'>POLITEKNIK AKA BOGOR - 2025</p>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center;'>by: Kelompok 3</p>", unsafe_allow_html=True)
