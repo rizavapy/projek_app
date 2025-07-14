@@ -15,7 +15,7 @@ menu = st.sidebar.radio("Navigasi", [
 
 # === BERANDA ===
 if menu == "Beranda":
-    st.image("gambar/banner_uncertainty.jpg", use_column_width=True)
+    st.image("https://news.kalibrasi.com/wp-content/uploads/2023/04/ketidakpastian-kalibrasi.jpg", use_column_width=True)
     st.markdown("""
     <div style="text-align:center">
         <h1> Selamat Datang di <span style='color:#1f77b4;'>ChemCalcl</span></h1>
