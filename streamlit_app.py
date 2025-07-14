@@ -20,7 +20,7 @@ if menu == "Beranda":
 
     # List gambar
     slides = [
-        {"path": "gambar/slide1.jpg", "caption": "Ilustrasi Ketidakpastian"},
+        {"path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg", "caption": "Ilustrasi Ketidakpastian"},
         {"path": "gambar/slide2.jpg", "caption": "Diagram Statistik"},
         {"path": "gambar/slide3.jpg", "caption": "Contoh Pengukuran"}
     ]
