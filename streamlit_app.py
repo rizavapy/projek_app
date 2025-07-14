@@ -74,7 +74,6 @@ elif menu == "Dasar Teori":
     - 𝑥̄: Rata-rata
     - 𝑠: Simpangan baku
     - 𝑢: Ketidakpastian
-    """)
 
 # === KALKULATOR TIPE A & B ===
 
