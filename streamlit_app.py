@@ -26,7 +26,7 @@ if menu == "Beranda":
     }
 
     img_path, caption = slide_paths[slide_index]
-    st.image(img_path, caption=caption, use_column_width=True)
+    st.image(img_path, caption=caption, use_container_width=True)
 
 
     st.markdown("""
