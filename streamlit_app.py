@@ -342,10 +342,12 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
-
-# Membuka gambar dari file
-image = Image.open('/mnt/data/77b3e4c0-6332-471e-856f-f8b67e3e2219.png')
-
-# Menampilkan gambar di Streamlit
-st.image(image, caption='Tabel Hasil Pengukuran Nilai X dan Y', use_column_width=True)
+    st.set_page_config(page_title="Gambar Tabel", layout="wide")
+    
+    # Judul halaman
+    st.title("📊 Tabel Hasil Pengukuran Nilai X dan Y")
+    
+    # Load dan tampilkan gambar
+    image = Image.open("/mnt/data/77b3e4c0-6332-471e-856f-f8b67e3e2219.png")
+    st.image(image, caption="Tabel Hasil Pengukuran Nilai X dan Y", use_column_width=True)
 
