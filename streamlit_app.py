@@ -171,7 +171,7 @@ elif menu == "Cara Perhitungan Manual":
     
     #Isi cara secara manual
     st.markdown("""
-    <h3 style='font-weight: normal;'>Menggunakan <i>Rumus </i> Secara Mandiri</h3>
+    <h3 style='font-weight: normal;'>>Menggunakan <i>Rumus </i> Secara Mandiri</h3>
     </div>
      """, unsafe_allow_html=True)
     
