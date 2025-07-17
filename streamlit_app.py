@@ -295,47 +295,47 @@ st.markdown("<h3 style='color:#4B8BBE;'>Faktor Penyebab Galat dalam Pengukuran</
 
 # Paragraf pendahuluan
 elif menu == "Faktor Kesalahan"
-st.markdown("""
-<p style='text-align: justify; font-size: 16px;'>
-Dalam kegiatan pengukuran, khususnya dalam eksperimen fisika atau pengamatan ilmiah, hasil pengukuran seringkali tidak sepenuhnya akurat. Perbedaan antara hasil pengukuran dan nilai sebenarnya disebut dengan <b>galat</b> atau <b>kesalahan pengukuran</b>. Galat ini tidak selalu disebabkan oleh ketidaktelitian pengamat, namun juga bisa muncul akibat berbagai faktor yang berkaitan dengan alat ukur, metode yang digunakan, maupun kondisi lingkungan saat pengukuran dilakukan. Memahami penyebab galat sangat penting agar kita dapat meningkatkan ketelitian, mengurangi kesalahan, dan memperoleh hasil yang lebih akurat dalam setiap proses pengukuran.
-</p>
-""", unsafe_allow_html=True)
-
-# Daftar faktor penyebab galat
-st.markdown("""
-<ul style='font-size: 16px;'>
-  <li><b>Kesalahan Kalibrasi Alat</b><br>
-  Alat ukur tidak dikalibrasi dengan standar yang benar. <br>
-  Contoh: neraca yang tidak disetel ke nol sebelum digunakan.</li><br>
-
-  <li><b>Kesalahan Titik Nol (Zero Error)</b><br>
-  Alat ukur menunjukkan angka selain nol saat belum digunakan. <br>
-  Menyebabkan semua hasil pengukuran menjadi bias.</li><br>
-
-  <li><b>Kualitas dan Kondisi Alat Ukur</b><br>
-  Alat aus, rusak, atau sudah tidak presisi lagi. <br>
-  Termasuk adanya goresan pada skala atau jarum yang tidak akurat.</li><br>
-
-  <li><b>Kesalahan Pembacaan Skala (Paralaks)</b><br>
-  Sudut pandang tidak tegak lurus terhadap skala alat. <br>
-  Mengakibatkan hasil pembacaan tampak lebih atau kurang dari nilai sebenarnya.</li><br>
-
-  <li><b>Lingkungan Sekitar</b><br>
-  Suhu, kelembaban, dan tekanan dapat mempengaruhi hasil pengukuran. <br>
-  Contoh: pita pengukur logam bisa memuai saat suhu tinggi.</li><br>
-
-  <li><b>Pengaruh Gaya Luar</b><br>
-  Getaran, tekanan jari, atau gangguan fisik lainnya saat alat digunakan.</li><br>
-
-  <li><b>Kesalahan Pengamat (Human Error)</b><br>
-  Kesalahan mencatat, salah baca, terburu-buru, atau kurang teliti. <br>
-  Termasuk kebiasaan menggampangkan pengukuran tanpa kontrol ulang.</li><br>
-
-  <li><b>Metode Pengukuran yang Tidak Sesuai</b><br>
-  Teknik atau prosedur pengukuran tidak dilakukan dengan benar. <br>
-  Contoh: pengukuran panjang benda bengkok dengan penggaris lurus.</li><br>
-
-  <li><b>Pemakaian Alat yang Tidak Sesuai Jenis Pengukuran</b><br>
-  Menggunakan alat yang tidak cocok untuk objek atau skala pengukuran tertentu.</li>
-</ul>
-""", unsafe_allow_html=True)
+    st.markdown("""
+    <p style='text-align: justify; font-size: 16px;'>
+    Dalam kegiatan pengukuran, khususnya dalam eksperimen fisika atau pengamatan ilmiah, hasil pengukuran seringkali tidak sepenuhnya akurat. Perbedaan antara hasil pengukuran dan nilai sebenarnya disebut dengan <b>galat</b> atau <b>kesalahan pengukuran</b>. Galat ini tidak selalu disebabkan oleh ketidaktelitian pengamat, namun juga bisa muncul akibat berbagai faktor yang berkaitan dengan alat ukur, metode yang digunakan, maupun kondisi lingkungan saat pengukuran dilakukan. Memahami penyebab galat sangat penting agar kita dapat meningkatkan ketelitian, mengurangi kesalahan, dan memperoleh hasil yang lebih akurat dalam setiap proses pengukuran.
+    </p>
+    """, unsafe_allow_html=True)
+    
+    # Daftar faktor penyebab galat
+    st.markdown("""
+    <ul style='font-size: 16px;'>
+      <li><b>Kesalahan Kalibrasi Alat</b><br>
+      Alat ukur tidak dikalibrasi dengan standar yang benar. <br>
+      Contoh: neraca yang tidak disetel ke nol sebelum digunakan.</li><br>
+    
+      <li><b>Kesalahan Titik Nol (Zero Error)</b><br>
+      Alat ukur menunjukkan angka selain nol saat belum digunakan. <br>
+      Menyebabkan semua hasil pengukuran menjadi bias.</li><br>
+    
+      <li><b>Kualitas dan Kondisi Alat Ukur</b><br>
+      Alat aus, rusak, atau sudah tidak presisi lagi. <br>
+      Termasuk adanya goresan pada skala atau jarum yang tidak akurat.</li><br>
+    
+      <li><b>Kesalahan Pembacaan Skala (Paralaks)</b><br>
+      Sudut pandang tidak tegak lurus terhadap skala alat. <br>
+      Mengakibatkan hasil pembacaan tampak lebih atau kurang dari nilai sebenarnya.</li><br>
+    
+      <li><b>Lingkungan Sekitar</b><br>
+      Suhu, kelembaban, dan tekanan dapat mempengaruhi hasil pengukuran. <br>
+      Contoh: pita pengukur logam bisa memuai saat suhu tinggi.</li><br>
+    
+      <li><b>Pengaruh Gaya Luar</b><br>
+      Getaran, tekanan jari, atau gangguan fisik lainnya saat alat digunakan.</li><br>
+    
+      <li><b>Kesalahan Pengamat (Human Error)</b><br>
+      Kesalahan mencatat, salah baca, terburu-buru, atau kurang teliti. <br>
+      Termasuk kebiasaan menggampangkan pengukuran tanpa kontrol ulang.</li><br>
+    
+      <li><b>Metode Pengukuran yang Tidak Sesuai</b><br>
+      Teknik atau prosedur pengukuran tidak dilakukan dengan benar. <br>
+      Contoh: pengukuran panjang benda bengkok dengan penggaris lurus.</li><br>
+    
+      <li><b>Pemakaian Alat yang Tidak Sesuai Jenis Pengukuran</b><br>
+      Menggunakan alat yang tidak cocok untuk objek atau skala pengukuran tertentu.</li>
+    </ul>
+    """, unsafe_allow_html=True)
