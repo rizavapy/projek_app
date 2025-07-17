@@ -169,3 +169,73 @@ elif menu == "Cara Perhitungan Manual":
     </div>
     """, unsafe_allow_html=True)
 
+    #Isi cara secara manual
+     st.markdown("""
+    ### 1️⃣ Langkah Pertama: Hitung Rata-Rata Pengukuran
+    Rata-rata dari data diukur menggunakan rumus:
+    
+    $$
+    \\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i
+    $$
+
+    Di mana:
+    - \\( x_i \\) adalah setiap nilai pengukuran
+    - \\( n \\) adalah jumlah data
+
+    ---
+
+    ### 2️⃣ Langkah Kedua: Hitung Simpangan Baku (Standard Deviation)
+    Untuk mengetahui sebaran data dari rata-ratanya:
+    
+    $$
+    s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n-1}}
+    $$
+
+    ---
+
+    ### 3️⃣ Langkah Ketiga: Ketidakpastian Tipe A (uₐ)
+    Berdasarkan variasi statistik dari data:
+    
+    $$
+    u_a = \\frac{s}{\\sqrt{n}}
+    $$
+
+    ---
+
+    ### 4️⃣ Langkah Keempat: Ketidakpastian Tipe B (uᵦ)
+    Berdasarkan resolusi alat ukur (misal resolusi = 0.01 mm):
+
+    $$
+    u_b = \\frac{\\text{resolusi}}{\\sqrt{3}}
+    $$
+
+    ---
+
+    ### 5️⃣ Langkah Kelima: Ketidakpastian Gabungan (u꜀)
+    Gabungan dari tipe A dan B (akar jumlah kuadrat):
+
+    $$
+    u_c = \\sqrt{u_a^2 + u_b^2}
+    $$
+
+    ---
+
+    ### 6️⃣ Langkah Terakhir: Laporan Hasil
+    Hasil pengukuran dilaporkan dalam format:
+
+    $$
+    x = \\bar{x} \\pm u_c
+    $$
+
+    Dan persentase ketidakpastian:
+
+    $$
+    \\% \\text{ketidakpastian} = \\frac{u_c}{\\bar{x}} \\times 100\\%
+    $$
+
+    ---
+    """, unsafe_allow_html=True)
+
+    st.success("🎉 Sekarang kamu bisa memahami dan menghitung ketidakpastian secara manual dengan langkah-langkah di atas!")
+
+
