@@ -295,8 +295,8 @@ elif menu == "Faktor Kesalahan":
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #4682b4;'>Perhitungan cara <span style='color:#ff8c00;'>Manual 📝</span>!</h1>
-        <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
+        <h1 style='color: #4682b4;'>Faktor <span style='color:#ff8c00;'>Kesalahan</span>!</h1>
+        <h5 style='font-weight: normal;'>Beberapa <i>Faktor dan Kemungkinan </i>Jika Akurasi Rendah!</h5>
     </div>
     """, unsafe_allow_html=True)
 # Paragraf pendahuluan
