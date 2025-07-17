@@ -195,3 +195,71 @@ with st.expander("6. Tulis Hasil Pengukuran"):
     st.latex(r"\text{Persentase} = \frac{u_c}{\bar{x}} \times 100\%")
 
     st.success("🎉 Semua langkah sudah dijelaskan. Silakan buka satu per satu untuk belajar mandiri ya!")
+
+  #Isi cara secara kalkulator scientific
+    st.markdown("""
+    <h3 style='font-weight: normal;'>Menggunakan <i>kalkulator scientific </i> Secara Mandiri 📝</h3>
+    </div>
+     """, unsafe_allow_html=True)
+    
+# --- STEP 1: Input Data dan Hitung Rata-Rata ---
+with st.expander("1️⃣ Hitung Rata-Rata dan Simpangan Baku"):
+    data_input = st.text_area("📥 Masukkan data pengukuran (dipisah koma)", "10.1, 10.3, 10.2, 10.4, 10.2")
+    if st.button("🔢 Hitung Rata-Rata & Simpangan Baku"):
+        try:
+            data = np.array([float(i.strip()) for i in data_input.split(",") if i.strip() != ""])
+            n = len(data)
+            if n < 2:
+                st.error("❌ Minimal 2 data diperlukan.")
+            else:
+                rata2 = np.mean(data)
+                std_dev = np.std(data, ddof=1)
+                st.latex(r"\bar{x} = \frac{1}{n} \sum x_i = %.4f" % rata2)
+                st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}} = %.4f" % std_dev)
+                st.success(f"✔️ Rata-rata: {rata2:.4f} | Simpangan baku: {std_dev:.4f}")
+        except:
+            st.error("❌ Format data tidak valid.")
+
+    # --- STEP 2: Ketidakpastian Tipe A ---
+with st.expander("2️⃣ Hitung Ketidakpastian Tipe A (uₐ)"):
+    std_input = st.number_input("📥 Masukkan simpangan baku (s)", value=0.1, step=0.001)
+    n_input = st.number_input("🧮 Masukkan jumlah data (n)", value=5, step=1)
+    if st.button("📊 Hitung uₐ"):
+        try:
+            ua = std_input / np.sqrt(n_input)
+            st.latex(r"u_a = \frac{s}{\sqrt{n}} = \frac{%.4f}{\sqrt{%d}} = %.4f" % (std_input, n_input, ua))
+            st.success(f"Ketidakpastian Tipe A (uₐ): {ua:.4f}")
+        except:
+            st.error("❌ Masukkan nilai valid.")
+
+    # --- STEP 3: Ketidakpastian Tipe B ---
+with st.expander("3️⃣ Hitung Ketidakpastian Tipe B (uᵦ)"):
+    resolusi = st.number_input("📏 Masukkan resolusi alat ukur", value=0.01, step=0.001)
+    if st.button("📐 Hitung uᵦ"):
+        ub = resolusi / np.sqrt(3)
+        st.latex(r"u_b = \frac{%.4f}{\sqrt{3}} = %.4f" % (resolusi, ub))
+        st.success(f"Ketidakpastian Tipe B (uᵦ): {ub:.4f}")
+
+    # --- STEP 4: Ketidakpastian Gabungan ---
+with st.expander("4️⃣ Hitung Ketidakpastian Gabungan (u꜀)"):
+    ua_input = st.number_input("🟦 Masukkan uₐ", value=0.01, step=0.001)
+    ub_input = st.number_input("🟩 Masukkan uᵦ", value=0.005, step=0.001)
+    if st.button("🧮 Hitung u꜀"):
+        uc = np.sqrt(ua_input**2 + ub_input**2)
+        st.latex(r"u_c = \sqrt{u_a^2 + u_b^2} = %.4f" % uc)
+        st.success(f"Ketidakpastian Gabungan (u꜀): {uc:.4f}")
+
+    # --- STEP 5: Tampilkan Hasil Akhir ---
+with st.expander("5️⃣ Hasil Akhir Pengukuran"):
+    rata_input = st.number_input("📌 Masukkan nilai rata-rata pengukuran (x̄)", value=10.2, step=0.001)
+    uc_input = st.number_input("📎 Masukkan u꜀", value=0.012, step=0.001)
+    if st.button("✅ Tampilkan Hasil Akhir"):
+        persen = (uc_input / rata_input) * 100
+        st.markdown(f"### 📏 Hasil: **{rata_input:.4f} ± {uc_input:.4f}**")
+        st.markdown(f"📊 Persentase ketidakpastian: **{persen:.2f}%**")
+        if persen < 1:
+            st.success("🎯 Akurasi tinggi (ketidakpastian < 1%)")
+        elif persen < 5:
+            st.info("✔️ Akurasi sedang (1%-5%)")
+        else:
+            st.warning("⚠️ Akurasi rendah (>5%)")
