@@ -99,8 +99,13 @@ if menu == "Beranda":
 
 # ===== KALKULATOR KETIDAKPASTIAN =====
 elif menu == "Kalkulator Ketidakpastian":
-    st.title("📊 Kalkulator Ketidakpastian Tipe A dan Tipe B")
-
+    # Header & Deskripsi Menarik
+    st.markdown("""
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1 style='color: #ff8f00;'>Kalkulator <span style='color:#000000;'>Ketidakpastian 📊 </span>!</h1>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown("""
     Masukkan data pengukuranmu, dan kalkulator ini akan secara otomatis menghitung:
     
@@ -158,7 +163,7 @@ elif menu == "Cara Perhitungan Manual":
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #ff8f00;'>Perhitungan cara <span style='color:#000000;'>Manual 🖩</span>!</h1>
+        <h1 style='color: #ff8f00;'>Perhitungan cara <span style='color:#000000;'>Manual 📝</span>!</h1>
         <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
     </div>
     """, unsafe_allow_html=True)
