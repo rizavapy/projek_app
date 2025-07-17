@@ -162,35 +162,35 @@ elif menu == "Kalkulator Ketidakpastian":
             st.error("❌ Format input tidak valid. Pastikan hanya angka dan dipisahkan koma.")
 
 # ======== REGRESI LINIER & GRAFIK =========
-x = np.arange(1, n + 1)  # urutan pengukuran sebagai sumbu-x
-y = data
+            x = np.arange(1, n + 1)  # urutan pengukuran sebagai sumbu-x
+            y = data
 
 # Perhitungan regresi linier
-slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
-regresi = intercept + slope * x  # nilai prediksi
+            slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+            regresi = intercept + slope * x  # nilai prediksi
 
 # Tampilkan grafik
-fig, ax = plt.subplots()
-ax.plot(x, y, 'o', label='Data Pengukuran', color='skyblue')
-ax.plot(x, regresi, 'r-', label=f'Regresi: y = {slope:.4f}x + {intercept:.4f}')
-ax.set_xlabel("Pengukuran ke-")
-ax.set_ylabel("Nilai")
-ax.set_title("📉 Grafik Data Pengukuran & Regresi")
-ax.legend()
-ax.grid(True)
-
-st.pyplot(fig)
+            fig, ax = plt.subplots()
+            ax.plot(x, y, 'o', label='Data Pengukuran', color='skyblue')
+            ax.plot(x, regresi, 'r-', label=f'Regresi: y = {slope:.4f}x + {intercept:.4f}')
+            ax.set_xlabel("Pengukuran ke-")
+            ax.set_ylabel("Nilai")
+            ax.set_title("📉 Grafik Data Pengukuran & Regresi")
+            ax.legend()
+            ax.grid(True)
+    
+            st.pyplot(fig)
 
 # Tampilkan nilai regresi
-st.markdown("---")
-st.subheader("📊 Statistik Regresi:")
-st.write(f"**Slope (kemiringan):** {slope:.5f}")
-st.write(f"**Intercept:** {intercept:.5f}")
-st.write(f"**Koefisien Korelasi (r):** {r_value:.5f}")
-st.write(f"**R² (R kuadrat):** {r_value**2:.5f}")
+            st.markdown("---")
+            st.subheader("📊 Statistik Regresi:")
+            st.write(f"**Slope (kemiringan):** {slope:.5f}")
+            st.write(f"**Intercept:** {intercept:.5f}")
+            st.write(f"**Koefisien Korelasi (r):** {r_value:.5f}")
+            st.write(f"**R² (R kuadrat):** {r_value**2:.5f}")
 
 
-    # ===== CARA PERHITUNGAN MANUAL =====
+# ===== CARA PERHITUNGAN MANUAL =====
 elif menu == "Cara Perhitungan Manual":
     # Header & Deskripsi Menarik
     st.markdown("""
