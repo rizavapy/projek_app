@@ -154,5 +154,5 @@ elif menu == "Kalkulator Ketidakpastian":
             st.error("❌ Format input tidak valid. Pastikan hanya angka dan dipisahkan koma.")
 
     # ===== CARA PERHITUNGAN MANUAL =====
-elif menu == "Cara Perhitungan Manual"
+elif menu == "Cara Perhitungan Manual":
     st. title("Cara Hitung dengan Rumus dan Kalkulator scientific unch 👉🏻👈🏻🥺")
