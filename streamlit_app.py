@@ -271,50 +271,50 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
     # Tombol MODE dan STAT
-    if st.button("🟢 MODE → STAT"):
-        st.info("📊 Mode Statistik Aktif — siap menerima data!")
+if st.button("🟢 MODE → STAT"):
+    st.info("📊 Mode Statistik Aktif — siap menerima data!")
 
     # Input nilai
-    st.markdown("### ➕ Masukkan Nilai Pengukuran (dipisahkan koma):")
-    data_input = st.text_input("📥 Contoh: 10.2, 10.3, 10.1, 10.4")
+st.markdown("### ➕ Masukkan Nilai Pengukuran (dipisahkan koma):")
+data_input = st.text_input("📥 Contoh: 10.2, 10.3, 10.1, 10.4")
 
     # Konversi data
-    try:
-        data = np.array([float(i.strip()) for i in data_input.split(",") if i.strip() != ""])
-        n = len(data)
-        if n < 2:
-            raise ValueError
-        rata2 = np.mean(data)
-        std_dev = np.std(data, ddof=1)
-    except:
-        data = []
-        n = 0
-        rata2 = 0
-        std_dev = 0
+try:
+    data = np.array([float(i.strip()) for i in data_input.split(",") if i.strip() != ""])
+    n = len(data)
+    if n < 2:
+        raise ValueError
+    rata2 = np.mean(data)
+    std_dev = np.std(data, ddof=1)
+except:
+    data = []
+    n = 0
+    rata2 = 0
+    std_dev = 0
 
     # Tombol seperti kalkulator
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("📏 LEN"):
-            if n:
-                st.success(f"LEN (jumlah data): {n}")
-            else:
-                st.error("❌ Masukkan data valid dulu.")
-    with col2:
-        if st.button("📌 MEAN"):
-            if n:
-                st.success(f"MEAN (x̄): {rata2:.4f}")
-                st.latex(r"\bar{x} = \frac{1}{n} \sum x_i = %.4f" % rata2)
-            else:
-                st.error("❌ Belum ada data.")
-    with col3:
-        if st.button("📊 S.D"):
-            if n:
-                st.success(f"S.D (simpangan baku): {std_dev:.4f}")
-                st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}} = %.4f" % std_dev)
-            else:
-                st.error("❌ Belum ada data.")
+col1, col2, col3 = st.columns(3)
+with col1:
+    if st.button("📏 LEN"):
+        if n:
+            st.success(f"LEN (jumlah data): {n}")
+        else:
+            st.error("❌ Masukkan data valid dulu.")
+with col2:
+    if st.button("📌 MEAN"):
+        if n:
+            st.success(f"MEAN (x̄): {rata2:.4f}")
+            st.latex(r"\bar{x} = \frac{1}{n} \sum x_i = %.4f" % rata2)
+        else:
+            st.error("❌ Belum ada data.")
+with col3:
+    if st.button("📊 S.D"):
+        if n:
+            st.success(f"S.D (simpangan baku): {std_dev:.4f}")
+            st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}} = %.4f" % std_dev)
+        else:
+            st.error("❌ Belum ada data.")
 
     # Tambahkan tombol RESET
-    if st.button("🔄 RESET"):
-        st.experimental_rerun()
+if st.button("🔄 RESET"):
+    st.experimental_rerun()
