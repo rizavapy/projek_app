@@ -83,11 +83,11 @@ if menu == "Beranda":
     st.markdown("### 👨‍🔬 Pembuat Aplikasi - Kelompok 3")
     st.markdown("""
     **Anggota:**
-    1. Aditya Dwika Iannanda - 2460308
-    2. Dhe Adila Zahra Tubarila - 2460354
-    3. Laila Najwa - 2460405
-    4. Naura Amalia Shaliha - 2460461
-    5. Rizava Apriza - 2460503
+    1. Aditya Dwika Iannanda         - 2460308
+    2. Dhe Adila Zahra Tubarila      - 2460354
+    3. Laila Najwa                   - 2460405
+    4. Naura Amalia Shaliha          - 2460461
+    5. Rizava Apriza                 - 2460503
     """)
 
     # Footer
