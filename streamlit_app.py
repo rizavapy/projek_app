@@ -104,7 +104,7 @@ elif menu == "Dasar Teori":
         <h5 style='font-weight: normal;'>Sebelum menggunakan <i> Phycalc </i> kamu perlu memahami konsep mengenai perhitungan, terutama tentang galat </h5>
     </div>
     """, unsafe_allow_html=True)
-   st.markdown("""
+  st.markdown("""
 <p>Proses pembelajaran fisika tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika. Penelitian ini bertujuan untuk menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika, mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan, mengetahui besaran yang paling mudah dan paling sulit ditaksir, serta mengetahui acuan yang digunakan siswa dalam menaksir ukuran. <strong>(HARTANTI & HARTANTI, 2024)</strong></p>
 
 <p><em>Galat</em> (atau kesalahan) pengukuran adalah perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</p>
@@ -121,6 +121,7 @@ elif menu == "Dasar Teori":
 
 <p><strong>Distribusi Galat:</strong> Pengukuran berulang dapat menghasilkan distribusi galat yang dapat dianalisis secara statistik untuk mendapatkan informasi tentang keakuratan dan presisi pengukuran.</p>
 """, unsafe_allow_html=True)
+
 
 
 # ===== KALKULATOR KETIDAKPASTIAN =====
