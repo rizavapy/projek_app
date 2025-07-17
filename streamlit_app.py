@@ -170,23 +170,23 @@ elif menu == "Cara Perhitungan Manual":
     """, unsafe_allow_html=True)
     
     #Isi cara secara manual
-   with st.expander("1️⃣ Hitung Rata-Rata Pengukuran"):
-        st.latex(r"\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i")
+with st.expander("1️⃣ Hitung Rata-Rata Pengukuran"):
+    st.latex(r"\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i")
 
-    with st.expander("2️⃣ Hitung Simpangan Baku"):
-        st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}}")
+with st.expander("2️⃣ Hitung Simpangan Baku"):
+    st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}}")
 
-    with st.expander("3️⃣ Hitung Ketidakpastian Tipe A (uₐ)"):
-        st.latex(r"u_a = \frac{s}{\sqrt{n}}")
+with st.expander("3️⃣ Hitung Ketidakpastian Tipe A (uₐ)"):
+    st.latex(r"u_a = \frac{s}{\sqrt{n}}")
 
-    with st.expander("4️⃣ Hitung Ketidakpastian Tipe B (uᵦ)"):
-        st.latex(r"u_b = \frac{\text{resolusi}}{\sqrt{3}}")
+with st.expander("4️⃣ Hitung Ketidakpastian Tipe B (uᵦ)"):
+    st.latex(r"u_b = \frac{\text{resolusi}}{\sqrt{3}}")
 
-    with st.expander("5️⃣ Hitung Ketidakpastian Gabungan (u꜀)"):
-        st.latex(r"u_c = \sqrt{u_a^2 + u_b^2}")
+with st.expander("5️⃣ Hitung Ketidakpastian Gabungan (u꜀)"):
+    st.latex(r"u_c = \sqrt{u_a^2 + u_b^2}")
 
-    with st.expander("6️⃣ Tulis Hasil Pengukuran"):
-        st.latex(r"x = \bar{x} \pm u_c")
-        st.latex(r"\text{Persentase} = \frac{u_c}{\bar{x}} \times 100\%")
+with st.expander("6️⃣ Tulis Hasil Pengukuran"):
+    st.latex(r"x = \bar{x} \pm u_c")
+    st.latex(r"\text{Persentase} = \frac{u_c}{\bar{x}} \times 100\%")
 
     st.success("🎉 Semua langkah sudah dijelaskan. Silakan buka satu per satu untuk belajar mandiri ya!")
