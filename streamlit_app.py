@@ -105,37 +105,23 @@ elif menu == "Dasar Teori":
     </div>
     """, unsafe_allow_html=True)
    st.markdown("""
-    **Proses pembelajaran fisika** tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika.
+<p>Proses pembelajaran fisika tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika. Penelitian ini bertujuan untuk menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika, mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan, mengetahui besaran yang paling mudah dan paling sulit ditaksir, serta mengetahui acuan yang digunakan siswa dalam menaksir ukuran. <strong>(HARTANTI & HARTANTI, 2024)</strong></p>
 
-    Penelitian ini bertujuan untuk:
-    - Menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika
-    - Mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan
-    - Mengetahui besaran yang paling mudah dan paling sulit ditaksir
-    - Mengetahui acuan yang digunakan siswa dalam menaksir ukuran  
-    *(HARTANTI & HARTANTI, 2024)*
+<p><em>Galat</em> (atau kesalahan) pengukuran adalah perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</p>
 
-    ---
+<p><strong>Galat Sistematis:</strong> Galat yang cenderung tetap dan dapat diprediksi, disebabkan oleh kesalahan pada alat ukur atau metode pengukuran. Contohnya, kesalahan kalibrasi atau titik nol pada alat ukur.</p>
 
-    **Galat (atau kesalahan) pengukuran** adalah perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.
+<p><strong>Galat Acak:</strong> Galat yang tidak dapat diprediksi dan bervariasi secara acak, disebabkan oleh faktor-faktor yang tidak terkontrol seperti fluktuasi lingkungan atau kesalahan pengamat.</p>
 
-    **Galat Sistematis**:  
-    Galat yang cenderung tetap dan dapat diprediksi, disebabkan oleh kesalahan pada alat ukur atau metode pengukuran. Contohnya: kesalahan kalibrasi atau titik nol pada alat ukur.
+<p><strong>Galat Umum (Kekeliruan):</strong> Galat yang disebabkan oleh kesalahan manusia, seperti kesalahan membaca skala atau kesalahan dalam mencatat hasil.</p>
 
-    **Galat Acak**:  
-    Galat yang tidak dapat diprediksi dan bervariasi secara acak, disebabkan oleh faktor-faktor yang tidak terkontrol seperti fluktuasi lingkungan atau kesalahan pengamat.
+<p><strong>Galat Absolut:</strong> Selisih antara nilai terukur dengan nilai sebenarnya.</p>
 
-    **Galat Umum (Kekeliruan)**:  
-    Galat yang disebabkan oleh kesalahan manusia, seperti kesalahan membaca skala atau mencatat hasil.
+<p><strong>Galat Relatif:</strong> Galat absolut dibagi dengan nilai sebenarnya, sering dinyatakan dalam persen.</p>
 
-    **Galat Absolut**:  
-    Selisih antara nilai terukur dengan nilai sebenarnya.
+<p><strong>Distribusi Galat:</strong> Pengukuran berulang dapat menghasilkan distribusi galat yang dapat dianalisis secara statistik untuk mendapatkan informasi tentang keakuratan dan presisi pengukuran.</p>
+""", unsafe_allow_html=True)
 
-    **Galat Relatif**:  
-    Galat absolut dibagi dengan nilai sebenarnya, sering dinyatakan dalam persen.
-
-    **Distribusi Galat**:  
-    Pengukuran berulang dapat menghasilkan distribusi galat yang dapat dianalisis secara statistik untuk mendapatkan informasi tentang keakuratan dan presisi pengukuran.
-    """)
 
 # ===== KALKULATOR KETIDAKPASTIAN =====
 elif menu == "Kalkulator Ketidakpastian":
