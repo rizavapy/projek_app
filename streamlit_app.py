@@ -101,7 +101,7 @@ elif menu == "Dasar Teori":
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
         <h1 style='color: #1f77b4;'>Konsep <span style='color:#add8e6;'>Perhitungan </span>!</h1>
-        <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
+        <h5 style='font-weight: normal;'>Sebelum menggunakan <i> Phycalc </i> kamu perlu memahami konsep mengenai perhitungan, terutama tentang galat </h5>
     </div>
     """, unsafe_allow_html=True)
 
