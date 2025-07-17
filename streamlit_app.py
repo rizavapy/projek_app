@@ -292,8 +292,13 @@ elif menu == "Cara Perhitungan Manual":
                 st.warning("⚠️ Akurasi rendah (>5%)")
 # ===  FAKTOR KESALAHAN PENGUKURAN   === #
 elif menu == "Faktor Kesalahan":  
-    st.markdown("<h3 style='color:#126180;'>Faktor Penyebab Galat dalam Pengukuran</h3>", unsafe_allow_html=True)
-
+    # Header & Deskripsi Menarik
+    st.markdown("""
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1 style='color: #4682b4;'>Perhitungan cara <span style='color:#ff8c00;'>Manual 📝</span>!</h1>
+        <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
+    </div>
+    """, unsafe_allow_html=True)
 # Paragraf pendahuluan
     st.markdown("""
     <p style='text-align: justify; font-size: 16px;'>
