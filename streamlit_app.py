@@ -265,12 +265,9 @@ with st.expander("5️⃣ Hasil Akhir Pengukuran"):
             st.warning("⚠️ Akurasi rendah (>5%)")
 
 # ===== menggunakan kalkulator scientific =====
-elif menu == "Kalkulator Scientific":
-    st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #00897b;'>🔢 Simulasi Kalkulator Scientific</h1>
-        <p style='font-size: 18px;'>Seperti kalkulator fisik: Mode → Stat → Masukkan data → LEN / MEAN / S.D</p>
-    </div>
+st.markdown("""
+<h3 style='font-weight: normal;'>Langkah-langkah menggunakan <i>kalkulator scientific </i> 📝</h3>
+</div>
     """, unsafe_allow_html=True)
 
     # Tombol MODE dan STAT
