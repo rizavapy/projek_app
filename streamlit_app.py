@@ -18,7 +18,7 @@ if menu == "Beranda":
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #1f77b4;'>Selamat Datang di <span style='color:#FF4B4B;'>PhyCalc</span>!</h1>
+        <h1 style='color: #1f77b4;'>Selamat Datang di <span style='color:#32cd32;'>PhyCalc</span>!</h1>
         <h5 style='font-weight: normal;'>Situs untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis 📏🧪</h5>
     </div>
     """, unsafe_allow_html=True)
