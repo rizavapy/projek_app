@@ -342,7 +342,6 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
-from PIL import Image
 
 # Membuka gambar dari file
 image = Image.open('/mnt/data/77b3e4c0-6332-471e-856f-f8b67e3e2219.png')
