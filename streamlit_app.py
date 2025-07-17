@@ -339,3 +339,14 @@ elif menu == "Faktor Kesalahan":
       Menggunakan alat yang tidak cocok untuk objek atau skala pengukuran tertentu.</li>
     </ul>
     """, unsafe_allow_html=True)
+
+# ===   Contoh Soal dan Pembahasan   === #
+elif menu == "Contoh Soal dan Pembahasan":
+from PIL import Image
+
+# Membuka gambar dari file
+image = Image.open('/mnt/data/77b3e4c0-6332-471e-856f-f8b67e3e2219.png')
+
+# Menampilkan gambar di Streamlit
+st.image(image, caption='Tabel Hasil Pengukuran Nilai X dan Y', use_column_width=True)
+
