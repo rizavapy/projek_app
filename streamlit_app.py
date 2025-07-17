@@ -170,7 +170,7 @@ elif menu == "Cara Perhitungan Manual":
     """, unsafe_allow_html=True)
     
     #Isi cara secara manual
-    elif menu == "Cara Perhitungan Manual":
+elif menu == "Cara Perhitungan Manual":
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
         <h1 style='color: #2196f3;'>📚 Cara Perhitungan Manual</h1>
