@@ -96,7 +96,14 @@ if menu == "Beranda":
     st.markdown("<p style='text-align:center;'>© 2025 POLITEKNIK AKA BOGOR - All rights reserved.</p>", unsafe_allow_html=True)
 
 # ===== DASAR TEORI =====
-
+elif menu == "Dasar Teori":
+    # Header & Deskripsi Menarik
+    st.markdown("""
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1 style='color: #1f77b4;'>Konsep <span style='color:#add8e6;'>Perhitungan </span>!</h1>
+        <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ===== KALKULATOR KETIDAKPASTIAN =====
 elif menu == "Kalkulator Ketidakpastian":
