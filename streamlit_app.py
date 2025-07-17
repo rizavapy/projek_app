@@ -170,72 +170,71 @@ elif menu == "Cara Perhitungan Manual":
     """, unsafe_allow_html=True)
     
     #Isi cara secara manual
+    elif menu == "Cara Perhitungan Manual":
     st.markdown("""
-    ### 1️⃣ Langkah Pertama: Hitung Rata-Rata Pengukuran
-    Rata-rata dari data diukur menggunakan rumus:
-    
-    $$
-    \\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i
-    $$
-
-    Di mana:
-    - \\( x_i \\) adalah setiap nilai pengukuran
-    - \\( n \\) adalah jumlah data
-
-    ---
-
-    ### 2️⃣ Langkah Kedua: Hitung Simpangan Baku (Standard Deviation)
-    Untuk mengetahui sebaran data dari rata-ratanya:
-    
-    $$
-    s = \\sqrt{\\frac{\\sum (x_i - \\bar{x})^2}{n-1}}
-    $$
-
-    ---
-
-    ### 3️⃣ Langkah Ketiga: Ketidakpastian Tipe A (uₐ)
-    Berdasarkan variasi statistik dari data:
-    
-    $$
-    u_a = \\frac{s}{\\sqrt{n}}
-    $$
-
-    ---
-
-    ### 4️⃣ Langkah Keempat: Ketidakpastian Tipe B (uᵦ)
-    Berdasarkan resolusi alat ukur (misal resolusi = 0.01 mm):
-
-    $$
-    u_b = \\frac{\\text{resolusi}}{\\sqrt{3}}
-    $$
-
-    ---
-
-    ### 5️⃣ Langkah Kelima: Ketidakpastian Gabungan (u꜀)
-    Gabungan dari tipe A dan B (akar jumlah kuadrat):
-
-    $$
-    u_c = \\sqrt{u_a^2 + u_b^2}
-    $$
-
-    ---
-
-    ### 6️⃣ Langkah Terakhir: Laporan Hasil
-    Hasil pengukuran dilaporkan dalam format:
-
-    $$
-    x = \\bar{x} \\pm u_c
-    $$
-
-    Dan persentase ketidakpastian:
-
-    $$
-    \\% \\text{ketidakpastian} = \\frac{u_c}{\\bar{x}} \\times 100\\%
-    $$
-
-    ---
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1 style='color: #2196f3;'>📚 Cara Perhitungan Manual</h1>
+        <p style='font-size: 18px;'>Klik langkah di bawah ini untuk melihat penjelasan dan rumusnya:</p>
+    </div>
     """, unsafe_allow_html=True)
 
-    st.success("🎉 Sekarang kamu bisa memahami dan menghitung ketidakpastian secara manual dengan langkah-langkah di atas!")
+    with st.expander("1️⃣ Hitung Rata-Rata Pengukuran"):
+        st.markdown(r"""
+        Rata-rata dari data diukur menggunakan rumus:
+        $$
+        \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+        $$
+        Di mana:
+        - \( x_i \): nilai pengukuran ke-i  
+        - \( n \): jumlah total data
+        """)
 
+    with st.expander("2️⃣ Hitung Simpangan Baku (Standard Deviation)"):
+        st.markdown(r"""
+        Rumus simpangan baku sampel:
+        $$
+        s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}}
+        $$
+        Ini menggambarkan seberapa menyebar data dari rata-rata.
+        """)
 
+    with st.expander("3️⃣ Hitung Ketidakpastian Tipe A (uₐ)"):
+        st.markdown(r"""
+        Ketidakpastian Tipe A dihitung dari simpangan baku:
+        $$
+        u_a = \frac{s}{\sqrt{n}}
+        $$
+        Semakin banyak data, semakin kecil nilai \( u_a \).
+        """)
+
+    with st.expander("4️⃣ Hitung Ketidakpastian Tipe B (uᵦ)"):
+        st.markdown(r"""
+        Berdasarkan resolusi alat ukur:
+        $$
+        u_b = \frac{\text{resolusi}}{\sqrt{3}}
+        $$
+        Karena distribusinya dianggap uniform.
+        """)
+
+    with st.expander("5️⃣ Hitung Ketidakpastian Gabungan (u꜀)"):
+        st.markdown(r"""
+        Gabungan dari Tipe A dan Tipe B:
+        $$
+        u_c = \sqrt{u_a^2 + u_b^2}
+        $$
+        Ini digunakan sebagai ketidakpastian total.
+        """)
+
+    with st.expander("6️⃣ Tulis Hasil Pengukuran"):
+        st.markdown(r"""
+        Format pelaporan akhir:
+        $$
+        x = \bar{x} \pm u_c
+        $$
+        Dan persentase ketidakpastian:
+        $$
+        \% \text{ketidakpastian} = \frac{u_c}{\bar{x}} \times 100\%
+        $$
+        """)
+
+    st.success("🎉 Semua langkah sudah dijelaskan. Silakan buka satu per satu untuk belajar mandiri ya!")
