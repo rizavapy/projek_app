@@ -168,9 +168,9 @@ elif menu == "Cara Perhitungan Manual":
         <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
     </div>
     """, unsafe_allow_html=True)
-
+    
     #Isi cara secara manual
-     st.markdown("""
+    st.markdown("""
     ### 1️⃣ Langkah Pertama: Hitung Rata-Rata Pengukuran
     Rata-rata dari data diukur menggunakan rumus:
     
