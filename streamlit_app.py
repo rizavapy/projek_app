@@ -102,9 +102,8 @@ elif menu == "Dasar Teori":
     <div style='text-align: center; padding: 20px 0;'>
         <h1 style='color: #1f77b4;'>Konsep <span style='color:#add8e6;'>Perhitungan </span>!</h1>
         <h5 style='font-weight: normal;'>Sebelum menggunakan <i> Phycalc </i> kamu perlu memahami konsep mengenai perhitungan, terutama tentang galat </h5>
-    </div>
-    """, unsafe_allow_html=True)
-  st.markdown("""
+    </div> 
+    
 <p>Proses pembelajaran fisika tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika. Penelitian ini bertujuan untuk menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika, mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan, mengetahui besaran yang paling mudah dan paling sulit ditaksir, serta mengetahui acuan yang digunakan siswa dalam menaksir ukuran. <strong>(HARTANTI & HARTANTI, 2024)</strong></p>
 
 <p><em>Galat</em> (atau kesalahan) pengukuran adalah perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</p>
