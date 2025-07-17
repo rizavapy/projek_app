@@ -173,6 +173,7 @@ elif menu == "Cara Perhitungan Manual":
     st.markdown("""
     <h3 style='font-weight: normal;'>Menggunakan <i>Rumus </i> Secara Mandiri</h3>
     </div>
+     """, unsafe_allow_html=True)
     
 with st.expander("1. Hitung Rata-Rata Pengukuran"):
     st.latex(r"\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i")
