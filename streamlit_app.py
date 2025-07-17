@@ -100,6 +100,7 @@ if menu == "Beranda":
 
 # ===== KALKULATOR KETIDAKPASTIAN =====
 elif menu == "Kalkulator Ketidakpastian":
+    
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
@@ -161,6 +162,7 @@ elif menu == "Kalkulator Ketidakpastian":
 
 # ===== CARA PERHITUNGAN MANUAL =====
 elif menu == "Cara Perhitungan Manual":
+    
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
