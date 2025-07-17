@@ -170,14 +170,6 @@ elif menu == "Cara Perhitungan Manual":
     """, unsafe_allow_html=True)
     
     #Isi cara secara manual
-elif menu == "Cara Perhitungan Manual":
-    st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #2196f3;'>📚 Cara Perhitungan Manual</h1>
-        <p style='font-size: 18px;'>Klik langkah di bawah ini untuk melihat penjelasan dan rumusnya:</p>
-    </div>
-    """, unsafe_allow_html=True)
-
     with st.expander("1️⃣ Hitung Rata-Rata Pengukuran"):
         st.markdown(r"""
         Rata-rata dari data diukur menggunakan rumus:
