@@ -198,7 +198,7 @@ with st.expander("6. Tulis Hasil Pengukuran"):
 
   #Isi cara secara kalkulator scientific
 st.markdown("""
-<h3 style='font-weight: normal;'>Menggunakan <i>kalkulator scientific </i> Secara Mandiri 📝</h3>
+<h3 style='font-weight: normal;'>Melihat cara kerja <i>kalkulator scientific </i> 📝</h3>
 </div>
     """, unsafe_allow_html=True)
     
@@ -263,3 +263,61 @@ with st.expander("5️⃣ Hasil Akhir Pengukuran"):
             st.info("✔️ Akurasi sedang (1%-5%)")
         else:
             st.warning("⚠️ Akurasi rendah (>5%)")
+
+# ===== menggunakan kalkulator scientific =====
+elif menu == "Kalkulator Scientific":
+    st.markdown("""
+    <div style='text-align: center; padding: 20px 0;'>
+        <h1 style='color: #00897b;'>🔢 Simulasi Kalkulator Scientific</h1>
+        <p style='font-size: 18px;'>Seperti kalkulator fisik: Mode → Stat → Masukkan data → LEN / MEAN / S.D</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Tombol MODE dan STAT
+    if st.button("🟢 MODE → STAT"):
+        st.info("📊 Mode Statistik Aktif — siap menerima data!")
+
+    # Input nilai
+    st.markdown("### ➕ Masukkan Nilai Pengukuran (dipisahkan koma):")
+    data_input = st.text_input("📥 Contoh: 10.2, 10.3, 10.1, 10.4")
+
+    # Konversi data
+    try:
+        data = np.array([float(i.strip()) for i in data_input.split(",") if i.strip() != ""])
+        n = len(data)
+        if n < 2:
+            raise ValueError
+        rata2 = np.mean(data)
+        std_dev = np.std(data, ddof=1)
+    except:
+        data = []
+        n = 0
+        rata2 = 0
+        std_dev = 0
+
+    # Tombol seperti kalkulator
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        if st.button("📏 LEN"):
+            if n:
+                st.success(f"LEN (jumlah data): {n}")
+            else:
+                st.error("❌ Masukkan data valid dulu.")
+    with col2:
+        if st.button("📌 MEAN"):
+            if n:
+                st.success(f"MEAN (x̄): {rata2:.4f}")
+                st.latex(r"\bar{x} = \frac{1}{n} \sum x_i = %.4f" % rata2)
+            else:
+                st.error("❌ Belum ada data.")
+    with col3:
+        if st.button("📊 S.D"):
+            if n:
+                st.success(f"S.D (simpangan baku): {std_dev:.4f}")
+                st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}} = %.4f" % std_dev)
+            else:
+                st.error("❌ Belum ada data.")
+
+    # Tambahkan tombol RESET
+    if st.button("🔄 RESET"):
+        st.experimental_rerun()
