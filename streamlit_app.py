@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-
+import streamlit as st
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
@@ -341,15 +341,4 @@ elif menu == "Faktor Kesalahan":
     """, unsafe_allow_html=True)
 
 # ===   Contoh Soal dan Pembahasan   === #
-elif menu == "Contoh Soal dan Pembahasan":
-
-    from PIL import Image
-    
-    # Judul halaman
-    st.title("📊 Tabel Hasil Pengukuran Nilai X dan Y")
-    
-    # Membuka dan menampilkan gambar
-    image = Image.open("77b3e4c0-6332-471e-856f-f8b67e3e2219.png")
-    st.image(image, caption="Tabel Hasil Pengukuran", use_column_width=True)
-
 
