@@ -197,10 +197,10 @@ with st.expander("6. Tulis Hasil Pengukuran"):
     st.success("🎉 Semua langkah sudah dijelaskan. Silakan buka satu per satu untuk belajar mandiri ya!")
 
   #Isi cara secara kalkulator scientific
-    st.markdown("""
-    <h3 style='font-weight: normal;'>Menggunakan <i>kalkulator scientific </i> Secara Mandiri 📝</h3>
-    </div>
-     """, unsafe_allow_html=True)
+st.markdown("""
+<h3 style='font-weight: normal;'>Menggunakan <i>kalkulator scientific </i> Secara Mandiri 📝</h3>
+</div>
+    """, unsafe_allow_html=True)
     
 # --- STEP 1: Input Data dan Hitung Rata-Rata ---
 with st.expander("1️⃣ Hitung Rata-Rata dan Simpangan Baku"):
