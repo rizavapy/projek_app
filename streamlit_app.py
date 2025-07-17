@@ -247,7 +247,7 @@ elif menu == "Cara Perhitungan Manual":
         ua_input = st.number_input("🟦 Masukkan uₐ", value=0.01, step=0.001)
         ub_input = st.number_input("🟩 Masukkan uᵦ", value=0.005, step=0.001)
         if st.button("🧮 Hitung u꜀"):
-        uc = np.sqrt(ua_input**2 + ub_input**2)
+            uc = np.sqrt(ua_input**2 + ub_input**2)
             st.latex(r"u_c = \sqrt{u_a^2 + u_b^2} = %.4f" % uc)
             st.success(f"Ketidakpastian Gabungan (u꜀): {uc:.4f}")
 
