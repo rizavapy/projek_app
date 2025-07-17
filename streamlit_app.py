@@ -158,7 +158,7 @@ elif menu == "Cara Perhitungan Manual":
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #1f77b4;'>Perhitungan cara <span style='color:#FF4B4B;'>Manual unch 👉🏻👈🏻🥺</span>!</h1>
+        <h1 style='color: #1f77b4;'>Perhitungan cara <span style='color:#add8e6;'>Manual unch 👉🏻👈🏻🥺</span>!</h1>
         <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
     </div>
     """, unsafe_allow_html=True)
