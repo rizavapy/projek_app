@@ -342,6 +342,7 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
+    from PIL import Image
     st.set_page_config(page_title="Gambar Tabel", layout="wide")
     
     # Judul halaman
