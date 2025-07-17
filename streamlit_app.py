@@ -78,20 +78,23 @@ if menu == "Beranda":
     </div>
     """, unsafe_allow_html=True)
 
+    
     # Daftar Kelompok
     st.markdown("### 👨‍🔬 Pembuat Aplikasi - Kelompok 3")
     st.markdown("""
     **Anggota:**
-    1. Nama 1  
-    2. Nama 2  
-    3. Nama 3  
-    4. Nama 4  
-    5. Nama 5
+    1. Aditya Dwika Iannanda - 2460308
+    2. Dhe Adila Zahra Tubarila - 2460354
+    3. Laila Najwa - 2460405
+    4. Naura Amalia Shaliha - 2460461
+    5. Rizava Apriza - 2460503
     """)
 
     # Footer
     st.markdown("<hr>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;'>© 2025 POLITEKNIK AKA BOGOR - All rights reserved.</p>", unsafe_allow_html=True)
+
+# ===== DASAR TEORI =====
 
 
 # ===== KALKULATOR =====
