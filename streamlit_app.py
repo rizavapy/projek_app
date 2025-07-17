@@ -291,7 +291,7 @@ elif menu == "Cara Perhitungan Manual":
             else:
                 st.warning("⚠️ Akurasi rendah (>5%)")
 # ===  FAKTOR KESALAHAN PENGUKURAN   === #
-elif menu == "Faktor Kesalahan"    
+elif menu == "Faktor Kesalahan":  
     st.markdown("<h3 style='color:#4B8BBE;'>Faktor Penyebab Galat dalam Pengukuran</h3>", unsafe_allow_html=True)
 
 # Paragraf pendahuluan
