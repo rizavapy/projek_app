@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background: url('https://png.pngtree.com/thumb_back/fh260/background/20230715/pngtree-d-render-of-chemistry-lab-experiment-with-various-colored-liquid-in-image_3852490.jpg');
+        background: url('https://static4.depositphotos.com/1001944/359/i/450/depositphotos_3592100-stock-photo-chemical-laboratory-equipment-over-black.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
