@@ -5,41 +5,36 @@ import pandas as pd
 # ====== CUSTOM BACKGROUND & SIDEBAR ======
 st.markdown("""
     <style>
+    /* Background halaman utama */
     .stApp {
-        background-image: url("https://excelparatodos.com/wp-content/uploads/2023/07/estado-de-costos-de-produccion-y-ventas-img.jpg");
+        background: url('https://i.ibb.co/Fsd9mJv/bg-laboratorium.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
     }
 
-    /* Membuat konten utama semi transparan agar teks tetap jelas */
-    .main > div {
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 2rem;
-        border-radius: 1rem;
-    }
-
-    /* Warna sidebar biru */
+    /* Warna background sidebar */
     section[data-testid="stSidebar"] {
         background-color: #1f77b4 !important;
     }
 
-    /* Warna teks di sidebar */
-    .css-1d391kg, .css-1v3fvcr, .css-qbe2hs {
+    /* Warna teks sidebar agar kontras */
+    section[data-testid="stSidebar"] .css-1v3fvcr, 
+    section[data-testid="stSidebar"] .css-1d391kg,
+    section[data-testid="stSidebar"] .st-emotion-cache-1avcm0n,
+    section[data-testid="stSidebar"] .st-emotion-cache-1n76uvr {
         color: white !important;
     }
 
-    /* Untuk Streamlit versi terbaru */
-    .st-emotion-cache-6qob1r, .st-emotion-cache-1n76uvr {
-        color: white !important;
-    }
-
-    /* Judul sidebar (jika pakai st.sidebar.title) */
-    .st-emotion-cache-1avcm0n {
-        color: white !important;
+    /* Konten utama transparan */
+    .st-emotion-cache-1kyxreq, .st-emotion-cache-10trblm {
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 20px;
+        border-radius: 10px;
     }
     </style>
 """, unsafe_allow_html=True)
+
     # Sidebar Navigation
 menu = st.sidebar.radio("📂 Navigasi", [
     "Beranda",
