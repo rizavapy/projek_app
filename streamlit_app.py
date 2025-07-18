@@ -2,6 +2,24 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
+# ===== BACKGROUND =====
+st.markdown("""
+    <style>
+    .stApp {
+        background-image: url("https://excelparatodos.com/wp-content/uploads/2023/07/estado-de-costos-de-produccion-y-ventas-img.jpg");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    .main > div {
+        background-color: rgba(255,255,255,0.85);
+        padding: 2rem;
+        border-radius: 1rem;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
 # Sidebar Navigation
