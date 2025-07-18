@@ -1,23 +1,7 @@
 import streamlit as st
 import numpy as np
 import streamlit as st
-import streamlit as st
 
-st.markdown("""
-    <style>
-    .stApp {
-        background-image: url("https://excelparatodos.com/wp-content/uploads/2023/07/estado-de-costos-de-produccion-y-ventas-img.jpg");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-    }
-    .main > div {
-        background-color: rgba(255,255,255,0.85);
-        padding: 2rem;
-        border-radius: 1rem;
-    }
-    </style>
-""", unsafe_allow_html=True)
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
 # Sidebar Navigation
@@ -366,4 +350,23 @@ elif menu == "Faktor Kesalahan":
     """, unsafe_allow_html=True)
 
 # ===   Contoh Soal dan Pembahasan   === #
+elif menu == "Contoh Soal dan Pembahasan":
+import tkinter as tk
+from PIL import Image, ImageTk
+
+# Membuat window utama
+root = tk.Tk()
+root.title("Tabel Percobaan")
+
+# Membuka gambar tabel
+gambar = Image.open("39f8ff3a-dc54-439f-b0b1-26dabf6c16f6.png")  # Pastikan nama dan path sesuai
+gambar = gambar.resize((400, 300))  # Sesuaikan ukuran jika perlu
+img_tabel = ImageTk.PhotoImage(gambar)
+
+# Membuat label untuk menampilkan gambar
+label_gambar = tk.Label(root, image=img_tabel)
+label_gambar.pack()
+
+# Jalankan aplikasi
+root.mainloop()
 
