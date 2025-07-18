@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
-import streamlit as st
+import tkinter as tk
+from PIL import Image, ImageTk
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
@@ -351,22 +352,19 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
+    # Membuat window utama
+    root = tk.Tk()
+    root.title("Tabel Percobaan")
 
-from PIL import Image, ImageTk
+    # Membuka gambar tabel
+    gambar = Image.open("0a8f6ef0-aed5-47d8-a495-355082ea8ebc.png")  # Pastikan file di folder yang sama
+    gambar = gambar.resize((400, 300))  # Sesuaikan ukuran jika perlu
+    img_tabel = ImageTk.PhotoImage(gambar)
 
-# Membuat window utama
-root = tk.Tk()
-root.title("Tabel Percobaan")
+    # Menyimpan referensi gambar agar tidak terhapus dari memori
+    label_gambar = tk.Label(root, image=img_tabel)
+    label_gambar.image = img_tabel  # INI WAJIB supaya gambar tidak hilang saat ditampilkan
+    label_gambar.pack()
 
-# Membuka gambar tabel
-gambar = Image.open("39f8ff3a-dc54-439f-b0b1-26dabf6c16f6.png")  # Pastikan nama dan path sesuai
-gambar = gambar.resize((400, 300))  # Sesuaikan ukuran jika perlu
-img_tabel = ImageTk.PhotoImage(gambar)
-
-# Membuat label untuk menampilkan gambar
-label_gambar = tk.Label(root, image=img_tabel)
-label_gambar.pack()
-
-# Jalankan aplikasi
-root.mainloop()
-
+    # Jalankan aplikasi
+    root.mainloop()
