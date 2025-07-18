@@ -1,7 +1,5 @@
 import streamlit as st
 import numpy as np
-import tkinter as tk
-from PIL import Image, ImageTk
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
