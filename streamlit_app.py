@@ -358,9 +358,7 @@ elif menu == "Contoh Soal dan Pembahasan":
     data = {
         "Ulangan": ["1.", "2.", "3.", "4.", "5.", "Rerata"],
         "Nilai X (cm)": [11.3, 11.7, 11.3, 11.5, 11.3, 11.42],
-        "Δ X (cm)": [0.1, 0.3, 0.1, 0.1, 0.1, 0.1],
         "Nilai Y (cm)": [5.3, 5.5, 5.3, 5.3, 5.7, 5.4],
-        "Δ Y (cm)": [0.1, 0.1, 0.1, 0.1, 0.3, 0.1]
     }
 
     df = pd.DataFrame(data)
