@@ -1,4 +1,4 @@
-import streamlit as st
+eimport streamlit as st
 import numpy as np
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
@@ -350,6 +350,8 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
+from tkinter import *
+from tkinter import ttk
     # Membuat window baru
     root = Tk()
     root.title("Contoh Soal dan Pembahasan")
