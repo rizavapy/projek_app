@@ -308,7 +308,7 @@ elif menu == "Faktor Kesalahan":
     """, unsafe_allow_html=True)
     
     # Daftar faktor penyebab galat
-      st.markdown("""
+    st.markdown("""
       <ul style='font-size: 16px;'>
       with st.expander("Kesalahan Kalibrasi Alat"):
       st.latex("Alat ukur tidak dikalibrasi dengan standar yang benar.
