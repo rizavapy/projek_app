@@ -349,6 +349,7 @@ elif menu == "Faktor Kesalahan":
     """, unsafe_allow_html=True)
 
 # ===   Contoh Soal dan Pembahasan   === #
+from PIL import Image, ImageTk
 elif menu == "Contoh Soal dan Pembahasan":
     # Membuat window utama
     root = tk.Tk()
