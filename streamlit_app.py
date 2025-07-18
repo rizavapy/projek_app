@@ -350,6 +350,10 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
+    # Membuat window baru
+    root = Tk()
+    root.title("Contoh Soal dan Pembahasan")
+
     # Data tabel dari soal
     data = [
         ["1.", 11.3, 0.1, 5.3, 0.1],
@@ -359,26 +363,20 @@ elif menu == "Contoh Soal dan Pembahasan":
         ["5.", 11.3, 0.1, 5.7, 0.3],
         ["Rerata", 11.42, 0.1, 5.4, 0.1]
     ]
-    
-    # Membuat window utama
-    root = tk.Tk()
-    root.title("Tabel Percobaan Soal 1")
-    
+
     # Membuat Treeview (tabel)
     columns = ("Ulangan", "Nilai X (cm)", "Δ X (cm)", "Nilai Y (cm)", "Δ Y (cm)")
     tree = ttk.Treeview(root, columns=columns, show="headings")
-    
+
     # Membuat header tabel
     for col in columns:
         tree.heading(col, text=col)
         tree.column(col, width=100, anchor="center")
-    
+
     # Memasukkan data ke tabel
     for row in data:
-        tree.insert("", tk.END, values=row)
-    
+        tree.insert("", END, values=row)
+
     tree.pack(padx=10, pady=10)
-    
-    # Jalankan aplikasi
+
     root.mainloop()
-    
