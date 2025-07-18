@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
-# ===== BACKGROUND =====
+# ====== CUSTOM BACKGROUND & SIDEBAR ======
 st.markdown("""
     <style>
     .stApp {
@@ -11,17 +11,35 @@ st.markdown("""
         background-position: center;
         background-attachment: fixed;
     }
+
+    /* Membuat konten utama semi transparan agar teks tetap jelas */
     .main > div {
-        background-color: rgba(255,255,255,0.85);
+        background-color: rgba(255, 255, 255, 0.85);
         padding: 2rem;
         border-radius: 1rem;
     }
+
+    /* Warna sidebar biru */
+    section[data-testid="stSidebar"] {
+        background-color: #1f77b4 !important;
+    }
+
+    /* Warna teks di sidebar */
+    .css-1d391kg, .css-1v3fvcr, .css-qbe2hs {
+        color: white !important;
+    }
+
+    /* Untuk Streamlit versi terbaru */
+    .st-emotion-cache-6qob1r, .st-emotion-cache-1n76uvr {
+        color: white !important;
+    }
+
+    /* Judul sidebar (jika pakai st.sidebar.title) */
+    .st-emotion-cache-1avcm0n {
+        color: white !important;
+    }
     </style>
 """, unsafe_allow_html=True)
-
-
-st.set_page_config(page_title="UncertaintyCalc", layout="wide")
-
     # Sidebar Navigation
 menu = st.sidebar.radio("📂 Navigasi", [
     "Beranda",
