@@ -352,23 +352,45 @@ elif menu == "Faktor Kesalahan":
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
     st.header("🧠 Contoh Soal dan Pembahasan")
-    st.subheader("📋 Tabel Data Pengukuran")
 
-    # Data tabel dari soal
-    data = {
+    # ======= Tabel Pertama =======
+    st.subheader("📋 Tabel Data Percobaan 1")
+
+    data1 = {
         "Ulangan": ["1.", "2.", "3.", "4.", "5.", "Rerata"],
         "Nilai X (cm)": [11.3, 11.7, 11.3, 11.5, 11.3, 11.42],
         "Nilai Y (cm)": [5.3, 5.5, 5.3, 5.3, 5.7, 5.4],
     }
 
-    df = pd.DataFrame(data)
-
-    # Tampilkan tabel di streamlit
-    st.table(df)
+    df1 = pd.DataFrame(data1)
+    st.table(df1)
 
     st.markdown("""
-    **Keterangan:**
+    **Keterangan Tabel 1:**
     
-    - Tabel di atas adalah hasil pengukuran berulang terhadap dua variabel (X dan Y).
-    - Nilai rerata sudah dihitung pada baris terakhir.
+    - Data percobaan berulang terhadap dua variabel (X dan Y) dengan Δ ketidakpastian.
+    - Nilai rata-rata sudah dihitung pada baris "Rerata".
     """)
+
+    st.markdown("---")
+
+    # ======= Tabel Kedua =======
+    st.subheader("📋 Tabel Data Percobaan 2")
+
+    data2 = {
+        "Ulangan": ["1.", "2.", "3.", "4.", "5.", "Rerata"],
+        "Nilai X (cm)": [3.0, 4.0, 4.3, 4.0, 4.5, 4.0],
+        "Nilai Y (cm)": [1.7, 2.0, 2.7, 2.5, 2.0, 2.2]
+    }
+
+    df2 = pd.DataFrame(data2)
+    st.table(df2)
+
+    st.markdown("""
+    **Keterangan Tabel 2:**
+    
+    - Data percobaan berbeda dengan variabel X dan Y, tanpa Δ ketidakpastian.
+    - Nilai rata-rata sudah tersedia di baris "Rerata".
+    """)
+
+    st.success("Silakan gunakan tabel ini untuk latihan menghitung ketidakpastian, simpangan baku, atau analisis lainnya.")
