@@ -106,21 +106,26 @@ elif menu == "Dasar Teori":
     
 <p>Proses pembelajaran fisika tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika. Penelitian ini bertujuan untuk menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika, mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan, mengetahui besaran yang paling mudah dan paling sulit ditaksir, serta mengetahui acuan yang digunakan siswa dalam menaksir ukuran. <strong>(HARTANTI & HARTANTI, 2024)</strong></p>
 
-<li><b>>Galat (kesalahan) pengukuran</b><br
+<li><b>Galat (kesalahan) pengukuran</b><br
 perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</li><br>
     
-<li><b>>Galat Sistematis</b><br> 
+<li><b>Galat Sistematis</b><br> 
 Galat yang cenderung tetap dan dapat diprediksi, disebabkan oleh kesalahan pada alat ukur atau metode pengukuran. Contohnya, kesalahan kalibrasi atau titik nol pada alat ukur.</li><br>
     
-<p><strong>Galat Acak:</strong> Galat yang tidak dapat diprediksi dan bervariasi secara acak, disebabkan oleh faktor-faktor yang tidak terkontrol seperti fluktuasi lingkungan atau kesalahan pengamat.</p>
+<li><b>Galat Acak</b><br>
+Galat yang tidak dapat diprediksi dan bervariasi secara acak, disebabkan oleh faktor-faktor yang tidak terkontrol seperti fluktuasi lingkungan atau kesalahan pengamat.</li><br>   
+
+<li><b>Galat Umum (Kekeliruan)</b><br>
+Galat yang disebabkan oleh kesalahan manusia, seperti kesalahan membaca skala atau kesalahan dalam mencatat hasil.</li><br>
     
-<p><strong>Galat Umum (Kekeliruan):</strong> Galat yang disebabkan oleh kesalahan manusia, seperti kesalahan membaca skala atau kesalahan dalam mencatat hasil.</p>
+<li><b>Galat Absolut</b><br>
+Selisih antara nilai terukur dengan nilai sebenarnya.</li><br>
     
-<p><strong>Galat Absolut:</strong> Selisih antara nilai terukur dengan nilai sebenarnya.</p>
+<li><b>Galat Relatif</b><br>
+Galat absolut dibagi dengan nilai sebenarnya, sering dinyatakan dalam persen.</li><br>
     
-<p><strong>Galat Relatif:</strong> Galat absolut dibagi dengan nilai sebenarnya, sering dinyatakan dalam persen.</p>
-    
-<p><strong>Distribusi Galat:</strong> Pengukuran berulang dapat menghasilkan distribusi galat yang dapat dianalisis secara statistik untuk mendapatkan informasi tentang keakuratan dan presisi pengukuran.</p>
+<li><b>Distribusi Galat</b><br>
+Pengukuran berulang dapat menghasilkan distribusi galat yang dapat dianalisis secara statistik untuk mendapatkan informasi tentang keakuratan dan presisi pengukuran.</li><br>
     """, unsafe_allow_html=True)
 
 
