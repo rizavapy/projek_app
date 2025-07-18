@@ -349,21 +349,36 @@ elif menu == "Faktor Kesalahan":
     """, unsafe_allow_html=True)
 
 # ===   Contoh Soal dan Pembahasan   === #
-from PIL import Image, ImageTk
 elif menu == "Contoh Soal dan Pembahasan":
-    # Membuat window utama
-    root = tk.Tk()
-    root.title("Tabel Percobaan")
+# Data tabel dari soal
+data = [
+    ["1.", 11.3, 0.1, 5.3, 0.1],
+    ["2.", 11.7, 0.3, 5.5, 0.1],
+    ["3.", 11.3, 0.1, 5.3, 0.1],
+    ["4.", 11.5, 0.1, 5.3, 0.1],
+    ["5.", 11.3, 0.1, 5.7, 0.3],
+    ["Rerata", 11.42, 0.1, 5.4, 0.1]
+]
 
-    # Membuka gambar tabel
-    gambar = Image.open("0a8f6ef0-aed5-47d8-a495-355082ea8ebc.png")  # Pastikan file di folder yang sama
-    gambar = gambar.resize((400, 300))  # Sesuaikan ukuran jika perlu
-    img_tabel = ImageTk.PhotoImage(gambar)
+# Membuat window utama
+root = tk.Tk()
+root.title("Tabel Percobaan Soal 1")
 
-    # Menyimpan referensi gambar agar tidak terhapus dari memori
-    label_gambar = tk.Label(root, image=img_tabel)
-    label_gambar.image = img_tabel  # INI WAJIB supaya gambar tidak hilang saat ditampilkan
-    label_gambar.pack()
+# Membuat Treeview (tabel)
+columns = ("Ulangan", "Nilai X (cm)", "Δ X (cm)", "Nilai Y (cm)", "Δ Y (cm)")
+tree = ttk.Treeview(root, columns=columns, show="headings")
 
-    # Jalankan aplikasi
-    root.mainloop()
+# Membuat header tabel
+for col in columns:
+    tree.heading(col, text=col)
+    tree.column(col, width=100, anchor="center")
+
+# Memasukkan data ke tabel
+for row in data:
+    tree.insert("", tk.END, values=row)
+
+tree.pack(padx=10, pady=10)
+
+# Jalankan aplikasi
+root.mainloop()
+
