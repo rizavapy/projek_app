@@ -11,7 +11,7 @@ menu = st.sidebar.radio("📂 Navigasi", [
     "Kalkulator Ketidakpastian",
     "Cara Perhitungan Manual",
     "Faktor Kesalahan",
-    "Contoh Soal dan Pembahasan"
+    "Contoh Soal"
 ])
 
 # === BERANDA ===
@@ -106,9 +106,11 @@ elif menu == "Dasar Teori":
     
 <p>Proses pembelajaran fisika tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika. Penelitian ini bertujuan untuk menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika, mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan, mengetahui besaran yang paling mudah dan paling sulit ditaksir, serta mengetahui acuan yang digunakan siswa dalam menaksir ukuran. <strong>(HARTANTI & HARTANTI, 2024)</strong></p>
 
-<p><strong>Galat (atau kesalahan) pengukuran </stong> adalah perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</p>
+<li><b>>Galat (kesalahan) pengukuran</b><br
+perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</li><br>
     
-<p><strong>Galat Sistematis:</strong> Galat yang cenderung tetap dan dapat diprediksi, disebabkan oleh kesalahan pada alat ukur atau metode pengukuran. Contohnya, kesalahan kalibrasi atau titik nol pada alat ukur.</p>
+<li><b>>Galat Sistematis</b><br> 
+Galat yang cenderung tetap dan dapat diprediksi, disebabkan oleh kesalahan pada alat ukur atau metode pengukuran. Contohnya, kesalahan kalibrasi atau titik nol pada alat ukur.</li><br>
     
 <p><strong>Galat Acak:</strong> Galat yang tidak dapat diprediksi dan bervariasi secara acak, disebabkan oleh faktor-faktor yang tidak terkontrol seperti fluktuasi lingkungan atau kesalahan pengamat.</p>
     
@@ -346,7 +348,7 @@ elif menu == "Faktor Kesalahan":
     """, unsafe_allow_html=True)
 
 # ===   Contoh Soal dan Pembahasan   === #
-elif menu == "Contoh Soal dan Pembahasan":
+elif menu == "Contoh Soal":
     st.header("🧠 Contoh Soal dan Pembahasan")
 
     # ======= Tabel Pertama =======
