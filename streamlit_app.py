@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
-from tkinter import *
-from tkinter import ttk
+import pandas as pd
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
@@ -352,34 +351,26 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
-
-    # Membuat window baru
-    root = Tk()
-    root.title("Contoh Soal dan Pembahasan")
+    st.header("🧠 Contoh Soal dan Pembahasan")
+    st.subheader("📋 Tabel Data Pengukuran")
 
     # Data tabel dari soal
-    data = [
-        ["1.", 11.3, 0.1, 5.3, 0.1],
-        ["2.", 11.7, 0.3, 5.5, 0.1],
-        ["3.", 11.3, 0.1, 5.3, 0.1],
-        ["4.", 11.5, 0.1, 5.3, 0.1],
-        ["5.", 11.3, 0.1, 5.7, 0.3],
-        ["Rerata", 11.42, 0.1, 5.4, 0.1]
-    ]
+    data = {
+        "Ulangan": ["1.", "2.", "3.", "4.", "5.", "Rerata"],
+        "Nilai X (cm)": [11.3, 11.7, 11.3, 11.5, 11.3, 11.42],
+        "Δ X (cm)": [0.1, 0.3, 0.1, 0.1, 0.1, 0.1],
+        "Nilai Y (cm)": [5.3, 5.5, 5.3, 5.3, 5.7, 5.4],
+        "Δ Y (cm)": [0.1, 0.1, 0.1, 0.1, 0.3, 0.1]
+    }
 
-    # Membuat Treeview (tabel)
-    columns = ("Ulangan", "Nilai X (cm)", "Δ X (cm)", "Nilai Y (cm)", "Δ Y (cm)")
-    tree = ttk.Treeview(root, columns=columns, show="headings")
+    df = pd.DataFrame(data)
 
-    # Membuat header tabel
-    for col in columns:
-        tree.heading(col, text=col)
-        tree.column(col, width=100, anchor="center")
+    # Tampilkan tabel di streamlit
+    st.table(df)
 
-    # Memasukkan data ke tabel
-    for row in data:
-        tree.insert("", END, values=row)
-
-    tree.pack(padx=10, pady=10)
-
-    root.mainloop()
+    st.markdown("""
+    **Keterangan:**
+    
+    - Tabel di atas adalah hasil pengukuran berulang terhadap dua variabel (X dan Y).
+    - Nilai rerata sudah dihitung pada baris terakhir.
+    """)
