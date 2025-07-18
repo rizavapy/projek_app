@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background: url('https://i.ibb.co/Fsd9mJv/bg-laboratorium.jpg');
+        background: url('https://excelparatodos.com/wp-content/uploads/2023/07/estado-de-costos-de-produccion-y-ventas-img.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
