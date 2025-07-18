@@ -310,8 +310,8 @@ elif menu == "Faktor Kesalahan":
     # Daftar faktor penyebab galat
     st.markdown("""
       <ul style='font-size: 16px;'>
-      with st.expander("Kesalahan Kalibrasi Alat"):
-      st.latex("Alat ukur tidak dikalibrasi dengan standar yang benar.
+      ("Kesalahan Kalibrasi Alat"):
+      "Alat ukur tidak dikalibrasi dengan standar yang benar.
       Contoh: neraca yang tidak disetel ke nol sebelum digunakan.")
 
       <li><b>Kesalahan Kalibrasi Alat</b><br>
