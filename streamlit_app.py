@@ -351,7 +351,7 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal dan Pembahasan":
-import tkinter as tk
+
 from PIL import Image, ImageTk
 
 # Membuat window utama
