@@ -22,7 +22,7 @@ st.markdown("""
 
 st.set_page_config(page_title="UncertaintyCalc", layout="wide")
 
-# Sidebar Navigation
+    # Sidebar Navigation
 menu = st.sidebar.radio("📂 Navigasi", [
     "Beranda",
     "Dasar Teori",
