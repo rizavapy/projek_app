@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ4gFZdfakhJ_gyBtpkIbJ56IVb2siYFNWlw&s');
+        background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnBnQ3f5eStWuYhfxmkBx5zwT3FtR7kNjgow&s');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
