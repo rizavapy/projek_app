@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6-UL8S8Zj3Skdi2xfA73IP2QZU0N4TSzDdg&s');
+        background-image: url('https://c0.wallpaperflare.com/preview/637/371/704/chemical-reaction-science-chemistry.jpg');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
