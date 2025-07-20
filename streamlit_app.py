@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background: url('https://static4.depositphotos.com/1001944/359/i/450/depositphotos_3592100-stock-photo-chemical-laboratory-equipment-over-black.jpg');
+        background: url('https://img.freepik.com/free-vector/retro-science-background_23-2148557500.jpg?semt=ais_hybrid&w=740');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
