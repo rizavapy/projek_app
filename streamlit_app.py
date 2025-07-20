@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background: url('https://img.freepik.com/premium-photo/flat-background-featuring-symbols-science-like-beakers-test-tubes-microscopes-creating_1252624-24566.jpg?semt=ais_hybrid&w=740');
+        background: url('https://img.freepik.com/premium-photo/handdrawn-illustration-chemistry-science-equipment_1225308-8347.jpg?semt=ais_hybrid&w=740');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
