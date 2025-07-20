@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background-image: url('https://media.istockphoto.com/id/1324230844/id/foto/wadah-plastik-dengan-cairan-ungu.webp?a=1&s=612x612&w=0&k=20&c=O8XuOG8HJV1RwWrPtqgTp4xv86imNTLncOTpQC3xhkA=');
+        background-image: url('https://images.unsplash.com/photo-1631556763178-b96af5e9993e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDgzfHx8ZW58MHx8fHx8');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
