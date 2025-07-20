@@ -7,7 +7,7 @@ st.markdown("""
     <style>
     /* Background halaman utama */
     .stApp {
-        background-image: url('https://images.unsplash.com/photo-1642548522898-b4739f5b5310?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1OXx8fGVufDB8fHx8fA%3D%3D');
+        background-image: url('https://images.unsplash.com/photo-1651132138763-a53ccf34a879?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fHw%3D');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
