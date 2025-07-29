@@ -156,7 +156,7 @@ elif menu == "Kalkulator Ketidakpastian":
     # Header & Deskripsi Menarik
     st.markdown("""
     <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #ff8f00;'>Kalkulator <span style='color:#000000;'>Ketidakpastian 📊 </span>!</h1>
+        <h1 style='color: #ff8f00;'>Kalkulator <span style='color:#737373;'>Ketidakpastian 📊 </span>!</h1>
     </div>
     """, unsafe_allow_html=True)
     
