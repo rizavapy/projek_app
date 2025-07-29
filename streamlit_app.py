@@ -15,7 +15,7 @@ st.markdown("""
 
     /* Warna background sidebar */
     section[data-testid="stSidebar"] {
-        background-color: #1f77b4 !important;
+        background-color: FF684A !important;
     }
 
     /* Warna teks sidebar agar kontras */
