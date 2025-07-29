@@ -5,14 +5,6 @@ import pandas as pd
 # ====== CUSTOM BACKGROUND & SIDEBAR ======
 st.markdown("""
     <style>
-    /* Background halaman utama */
-    .stApp {
-        background-image: url('https://images.unsplash.com/photo-1602928333621-949abc1ec6f5?q=80&w=1385&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-    }
-
     /* Warna background sidebar */
     section[data-testid="stSidebar"] {
         background-color: FF684A !important;
