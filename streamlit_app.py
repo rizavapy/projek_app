@@ -374,7 +374,7 @@ elif menu == "Faktor Kesalahan":
 
 # ===   Contoh Soal dan Pembahasan   === #
 elif menu == "Contoh Soal":
-    st.header("🧠 Contoh Soal dan Pembahasan")
+    st.header("🧠 Contoh Soal")
 
     # ======= Tabel Pertama =======
     st.subheader("📋 Tabel Data Percobaan 1")
