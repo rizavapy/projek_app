@@ -1,419 +1,639 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
+import qrcode
+import barcode
+from barcode.writer import ImageWriter
+from PIL import Image, ImageDraw, ImageFont
+import io
+import base64
+import urllib.parse
 
-# ====== CUSTOM BACKGROUND & SIDEBAR ======
+st.set_page_config(
+    page_title="Cecilia Snack — QR & Barcode Generator",
+    page_icon="🍟",
+    layout="wide"
+)
+
+# ─── CSS ───────────────────────────────────────────────────────────────────────
 st.markdown("""
-    <style>
-    /* Warna background sidebar */
-    section[data-testid="stSidebar"] {
-        background-color: #737373 !important;
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap');
 
-    /* Warna teks sidebar agar kontras */
-    section[data-testid="stSidebar"] * {
-        color: white !important;
-    }
+:root {
+  --cream: #FFF8EE; --brown: #3E2000; --orange: #E8650A;
+  --gold: #C89B2A; --green: #1A5C2A;
+}
+html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
 
-    /* Konten utama transparan */
-    .st-emotion-cache-1kyxreq, .st-emotion-cache-10trblm {
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 20px;
-        border-radius: 10px;
-    }
-    </style>
+/* Hide Streamlit default elements */
+#MainMenu, footer, header { visibility: hidden; }
+.block-container { padding-top: 0 !important; }
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, #3E2000 0%, #6B3500 55%, #E8650A 100%);
+  color: white;
+  padding: 52px 40px 44px;
+  text-align: center;
+  border-radius: 0 0 24px 24px;
+  margin-bottom: 32px;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 3px;
+  padding: 5px 16px; border-radius: 2px;
+  margin-bottom: 18px; text-transform: uppercase;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px; font-weight: 900; line-height: 1.1;
+  margin-bottom: 12px;
+}
+.hero h1 span { color: #FFD580; }
+.hero p { font-size: 15px; opacity: 0.85; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+/* ── Section Label ── */
+.section-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; color: #E8650A;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.divider {
+  height: 3px;
+  background: linear-gradient(90deg, #E8650A, transparent);
+  width: 50px; margin-bottom: 12px; border-radius: 2px;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 900; color: #3E2000; margin-bottom: 6px;
+}
+.section-sub { font-size: 13px; color: #7A5C3A; line-height: 1.7; margin-bottom: 24px; }
+
+/* ── Product Cards ── */
+.product-card {
+  background: white; border-radius: 14px; padding: 16px;
+  border: 2px solid #F0E6D6; cursor: pointer;
+  transition: all 0.2s; margin-bottom: 10px;
+}
+.product-card:hover { border-color: #E8650A; background: #FFF3E0; }
+.product-card.selected { border-color: #E8650A; background: #FFF3E0; }
+
+/* ── Info Box ── */
+.info-box {
+  background: #E8F5E9; border: 1.5px solid #A5D6A7;
+  border-radius: 12px; padding: 14px 18px; margin-bottom: 16px;
+}
+.info-box p { font-size: 13px; color: #1A5C2A; line-height: 1.8; margin: 0; }
+
+/* ── Result Card ── */
+.result-card {
+  background: white; border-radius: 16px; padding: 24px;
+  box-shadow: 0 8px 32px rgba(62,32,0,0.12);
+}
+
+/* ── Badges ── */
+.badge-halal {
+  display: inline-block; background: #1A5C2A; color: white;
+  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 3px; margin-right: 4px;
+}
+.badge-pirt {
+  display: inline-block; background: #3E2000; color: white;
+  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 3px;
+}
+.badge-orange {
+  display: inline-block; background: #E8650A; color: white;
+  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 3px; margin-right: 4px;
+}
+
+/* ── Product Page Preview ── */
+.preview-header {
+  background: linear-gradient(135deg,#3E2000,#E8650A);
+  color: white; padding: 18px 20px; border-radius: 12px 12px 0 0;
+}
+.preview-body { background: #FFF8EE; padding: 18px; border-radius: 0 0 12px 12px; }
+
+/* ── Footer ── */
+.footer {
+  background: #3E2000; color: rgba(255,255,255,0.7);
+  padding: 28px; text-align: center; border-radius: 16px; margin-top: 40px;
+}
+.footer span { color: #FFD580; font-family: 'Playfair Display', serif; font-size: 18px; display: block; margin-bottom: 4px; }
+.footer p { font-size: 12px; line-height: 1.8; }
+
+/* stButton */
+div.stButton > button {
+  border-radius: 10px !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 700 !important;
+}
+</style>
 """, unsafe_allow_html=True)
 
-    # Sidebar Navigation
-menu = st.sidebar.radio("📂 Navigasi", [
-    "Beranda",
-    "Dasar Teori",
-    "Kalkulator Ketidakpastian",
-    "Cara Perhitungan Manual",
-    "Faktor Kesalahan",
-    "Contoh Soal"
-])
 
-# === BERANDA ===
-if menu == "Beranda":
-    # Header & Deskripsi Menarik
+# ─── DATA PRODUK ──────────────────────────────────────────────────────────────
+PRODUCTS = [
+    {
+        "id": "CS001", "name": "Keripik Singkong", "weight": "250g",
+        "price": 12000, "price_ori": 15000, "emoji": "🥔",
+        "halal": True, "pirt": "P-IRT No. 2153578010488-22",
+        "expired": "12 bulan",
+        "ingredients": "Singkong, Minyak Nabati, Garam, Bumbu",
+        "desc": "Keripik singkong renyah dengan bumbu gurih khas Jawa.",
+        "barcode": "8993012200140", "wa": "6281234567890",
+        "bg_color": (255, 243, 224),
+    },
+    {
+        "id": "CS002", "name": "Keripik Pisang", "weight": "200g",
+        "price": 10000, "price_ori": 13000, "emoji": "🍌",
+        "halal": True, "pirt": "P-IRT No. 2153578010488-23",
+        "expired": "10 bulan",
+        "ingredients": "Pisang, Minyak Nabati, Gula, Garam",
+        "desc": "Keripik pisang manis legit, dibuat dari pisang pilihan.",
+        "barcode": "8993012200157", "wa": "6281234567890",
+        "bg_color": (255, 253, 231),
+    },
+    {
+        "id": "CS003", "name": "Kue Bawang", "weight": "150g",
+        "price": 8000, "price_ori": 10000, "emoji": "🧅",
+        "halal": True, "pirt": "P-IRT No. 2153578010488-24",
+        "expired": "8 bulan",
+        "ingredients": "Tepung Terigu, Bawang Putih, Telur, Minyak, Garam",
+        "desc": "Kue bawang gurih dan renyah, cocok untuk cemilan keluarga.",
+        "barcode": "8993012200164", "wa": "6281234567890",
+        "bg_color": (243, 229, 245),
+    },
+    {
+        "id": "CS004", "name": "Rempeyek Kacang", "weight": "180g",
+        "price": 11000, "price_ori": 14000, "emoji": "🥜",
+        "halal": True, "pirt": "P-IRT No. 2153578010488-25",
+        "expired": "9 bulan",
+        "ingredients": "Tepung Beras, Kacang Tanah, Santan, Bumbu Rempah",
+        "desc": "Rempeyek kacang tanah renyah dengan aroma rempah yang khas.",
+        "barcode": "8993012200171", "wa": "6281234567890",
+        "bg_color": (232, 245, 233),
+    },
+]
+
+
+# ─── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
+def generate_qr(url: str, box_size: int = 8) -> Image.Image:
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=box_size,
+        border=3,
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="#3E2000", back_color="#FFFDF8")
+    return img.convert("RGB")
+
+
+def generate_barcode(code: str) -> Image.Image:
+    try:
+        EAN = barcode.get_barcode_class("ean13")
+        code13 = code[:12].ljust(12, "0")
+        bc = EAN(code13, writer=ImageWriter())
+        buf = io.BytesIO()
+        bc.write(buf, options={
+            "module_width": 0.5,
+            "module_height": 12.0,
+            "font_size": 7,
+            "text_distance": 3.0,
+            "background": "white",
+            "foreground": "#3E2000",
+            "write_text": True,
+            "quiet_zone": 4,
+        })
+        buf.seek(0)
+        return Image.open(buf).convert("RGB")
+    except Exception:
+        # Fallback: blank white image with text
+        img = Image.new("RGB", (300, 80), "white")
+        draw = ImageDraw.Draw(img)
+        draw.text((10, 30), f"BARCODE: {code}", fill="#3E2000")
+        return img
+
+
+def img_to_b64(img: Image.Image, fmt: str = "PNG") -> str:
+    buf = io.BytesIO()
+    img.save(buf, format=fmt)
+    return base64.b64encode(buf.getvalue()).decode()
+
+
+def img_to_bytes(img: Image.Image, fmt: str = "PNG") -> bytes:
+    buf = io.BytesIO()
+    img.save(buf, format=fmt)
+    return buf.getvalue()
+
+
+def make_label_image(prod: dict, qr_img: Image.Image) -> Image.Image:
+    """Buat label kemasan dengan QR code embedded."""
+    W, H = 600, 200
+    label = Image.new("RGB", (W, H), prod["bg_color"])
+    draw = ImageDraw.Draw(label)
+
+    # Orange accent bar kiri
+    draw.rectangle([0, 0, 6, H], fill="#E8650A")
+
+    # QR di kanan
+    qr_small = qr_img.resize((140, 140))
+    label.paste(qr_small, (W - 155, 30))
+
+    # Text area
+    try:
+        font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf", 22)
+        font_med = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+        font_sm  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 11)
+        font_xs  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
+    except Exception:
+        font_big = font_med = font_sm = font_xs = ImageFont.load_default()
+
+    draw.text((20, 18), prod["name"], fill="#3E2000", font=font_big)
+    draw.text((20, 50), "CECILIA SNACK", fill="#E8650A", font=font_xs)
+    draw.text((20, 66), prod["weight"], fill="#7A5C3A", font=font_sm)
+
+    price_str = f"Rp {prod['price']:,}".replace(",", ".")
+    draw.text((20, 86), price_str, fill="#3E2000", font=font_big)
+
+    draw.text((20, 122), f"Bahan: {prod['ingredients'][:45]}...", fill="#7A5C3A", font=font_sm)
+    draw.text((20, 140), f"Masa simpan: {prod['expired']}", fill="#7A5C3A", font=font_sm)
+    draw.text((20, 158), prod["pirt"][:40], fill="#7A5C3A", font=font_xs)
+
+    # Badge HALAL
+    if prod.get("halal"):
+        draw.rectangle([20, 175, 72, 192], fill="#1A5C2A")
+        draw.text((24, 178), "HALAL", fill="white", font=font_xs)
+
+    draw.rectangle([78, 175, 116, 192], fill="#3E2000")
+    draw.text((82, 178), "PIRT", fill="white", font=font_xs)
+
+    # QR label
+    draw.text((W - 150, 172), "Scan untuk info", fill="#7A5C3A", font=font_xs)
+
+    return label
+
+
+def build_product_url(prod: dict) -> str:
+    pid = prod["id"].lower()
+    return f"https://ceciliasnack.id/produk/{pid}"
+
+
+def build_wa_url(prod: dict) -> str:
+    msg = f"Halo Cecilia Snack! Saya ingin memesan *{prod['name']}* ({prod['weight']}) — Rp {prod['price']:,}".replace(",", ".")
+    return f"https://wa.me/{prod['wa']}?text={urllib.parse.quote(msg)}"
+
+
+# ─── HERO ─────────────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="hero">
+  <div class="hero-badge">🍟 INDI 4.0 — Digitalisasi UMKM</div>
+  <h1>Cecilia Snack<br><span>QR & Barcode Generator</span></h1>
+  <p>Buat QR Code yang bisa di-scan langsung oleh konsumen, lengkap dengan Barcode dan label kemasan digital.</p>
+</div>
+""", unsafe_allow_html=True)
+
+
+# ─── INIT SESSION STATE ───────────────────────────────────────────────────────
+if "tab" not in st.session_state:
+    st.session_state.tab = "generator"
+if "selected_product" not in st.session_state:
+    st.session_state.selected_product = None
+if "generated" not in st.session_state:
+    st.session_state.generated = False
+
+
+# ─── TAB NAVIGATION ───────────────────────────────────────────────────────────
+col_t1, col_t2 = st.columns(2)
+with col_t1:
+    if st.button("🎨  Buat QR & Barcode", use_container_width=True,
+                 type="primary" if st.session_state.tab == "generator" else "secondary"):
+        st.session_state.tab = "generator"
+        st.session_state.generated = False
+with col_t2:
+    if st.button("📱  Simulasi Scan Konsumen", use_container_width=True,
+                 type="primary" if st.session_state.tab == "scanner" else "secondary"):
+        st.session_state.tab = "scanner"
+
+st.markdown("<hr style='border:1px solid #F0E6D6;margin:16px 0 28px'>", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GENERATOR
+# ══════════════════════════════════════════════════════════════════════════════
+if st.session_state.tab == "generator":
+
     st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #1f77b4;'>Selamat Datang di <span style='color:#32cd32;'>PhyCalc</span>!</h1>
-        <h5 style='font-weight: normal;'>Situs untuk belajar dan menghitung <i>nilai ketidakpastian</i> dalam pengukuran ilmiah dan teknis 📏🧪</h5>
-    </div>
+    <div class="section-tag">Langkah 1</div>
+    <div class="divider"></div>
+    <div class="section-title">Pilih atau Isi Data Produk</div>
+    <div class="section-sub">Pilih salah satu produk Cecilia Snack, atau isi data produk custom di bawah.</div>
     """, unsafe_allow_html=True)
 
-    # Slide Gambar
-    slides = [
-        {
-            "path": "https://asset-a.grid.id/crop/0x0:0x0/700x465/photo/2023/08/01/ukuranjpg-20230801094936.jpg",
-            "caption": "🔍 Nilai Ketidakpastian - Ketelitian adalah segalanya."
-        },
-        {
-            "path": "https://www.kucari.com/wp-content/uploads/2018/09/Alat-Lab.jpg",
-            "caption": "🧪 Galat Alat - Alat ukur yang tepat menghasilkan data yang bisa dipercaya."
-        },
-        {
-            "path": "https://i.pinimg.com/736x/dd/59/db/dd59dbb6ae1e3415ac2c20d2406b332c.jpg",
-            "caption": "🔁 Pengulangan - Semakin banyak data, semakin baik ketepatannya."
+    left_col, right_col = st.columns([1, 1], gap="large")
+
+    with left_col:
+        st.markdown("**Produk Cecilia Snack:**")
+        for i, p in enumerate(PRODUCTS):
+            selected = st.session_state.selected_product == i
+            border = "2px solid #E8650A" if selected else "2px solid #F0E6D6"
+            bg = "#FFF3E0" if selected else "white"
+
+            clicked = st.button(
+                f"{p['emoji']}  **{p['name']}** — {p['weight']} · Rp {p['price']:,}".replace(",", "."),
+                key=f"prod_{i}",
+                use_container_width=True,
+                type="primary" if selected else "secondary",
+            )
+            if clicked:
+                st.session_state.selected_product = i
+                st.session_state.generated = False
+                st.rerun()
+
+    with right_col:
+        st.markdown("**Atau isi produk custom:**")
+        custom_name  = st.text_input("Nama Produk", placeholder="cth: Keripik Tempe Pedas")
+        c1, c2 = st.columns(2)
+        custom_price = c1.text_input("Harga (Rp)", placeholder="15000")
+        custom_weight = c2.text_input("Berat / Ukuran", placeholder="200g")
+        custom_desc  = st.text_area("Deskripsi Singkat", placeholder="Keripik tempe renyah...", height=70)
+        custom_bc    = st.text_input("Nomor Barcode (12–13 digit)", placeholder="8993012200188")
+        custom_wa    = st.text_input("No. WhatsApp (62xxx)", value="6281234567890")
+        custom_halal = st.checkbox("✅ Sudah bersertifikat HALAL", value=False)
+        custom_pirt  = st.text_input("Nomor PIRT (opsional)", placeholder="P-IRT No. ...")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Tentukan produk aktif
+    using_custom = bool(custom_name)
+    if using_custom:
+        active_prod = {
+            "id": "CUSTOM",
+            "name": custom_name,
+            "weight": custom_weight or "-",
+            "price": int(custom_price) if custom_price.isdigit() else 0,
+            "price_ori": int(custom_price) if custom_price.isdigit() else 0,
+            "emoji": "🍿",
+            "halal": custom_halal,
+            "pirt": custom_pirt or "-",
+            "expired": "-",
+            "ingredients": "-",
+            "desc": custom_desc or "-",
+            "barcode": custom_bc or "8993012200100",
+            "wa": custom_wa or "6281234567890",
+            "bg_color": (255, 243, 224),
         }
-    ]
+    elif st.session_state.selected_product is not None:
+        active_prod = PRODUCTS[st.session_state.selected_product]
+    else:
+        active_prod = None
 
-    if "slide_index" not in st.session_state:
-        st.session_state.slide_index = 0
+    # Tombol Generate
+    can_generate = active_prod is not None
+    if st.button("🎯  Generate QR Code & Barcode", use_container_width=True,
+                 type="primary", disabled=not can_generate):
+        st.session_state.generated = True
 
-    col1, col2, col3 = st.columns([1, 6, 1])
+    # ── HASIL ──
+    if st.session_state.generated and active_prod:
+        product_url = build_product_url(active_prod)
+        wa_url      = build_wa_url(active_prod)
 
-    with col1:
-        st.button("⬅️ Sebelumnya", 
-                  on_click=lambda: st.session_state.update(slide_index=st.session_state.slide_index - 1),
-                  disabled=st.session_state.slide_index == 0)
-
-    with col3:
-        st.button("➡️ Selanjutnya", 
-                  on_click=lambda: st.session_state.update(slide_index=st.session_state.slide_index + 1),
-                  disabled=st.session_state.slide_index == len(slides) - 1)
-
-    current = slides[st.session_state.slide_index]
-    st.image(current["path"], caption=current["caption"], use_container_width=True)
-
-    st.markdown(f"<p style='text-align:center; color:gray;'>Slide {st.session_state.slide_index + 1} dari {len(slides)}</p>", unsafe_allow_html=True)
-
-    # Deskripsi Isi Halaman
-    st.markdown("""
-    <hr>
-    <div style='font-size:16px; text-align:justify'>
-        <p>Halo teman-teman semua! 👋</p>
-        <p>Di sini kami akan membantu kalian memahami dan menghitung nilai ketidakpastian secara mudah dan menyenangkan.</p>
-        <p>Kalian bisa menjelajahi berbagai fitur melalui menu di sebelah kiri:</p>
-        <ul>
-            <li>📌 Beranda</li>
-            <li>📚 Dasar Teori</li>
-            <li>📊 Kalkulator Ketidakpastian</li>
-            <li>📝 Cara Perhitungan Manual</li>
-            <li>⚠️ Faktor Kesalahan</li>
-            <li>🧠 Contoh Soal dan Pembahasan</li>
-        </ul>
-        <p>Yuk mulai belajar sekarang! 💪</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    
-    # Daftar Kelompok
-    st.markdown("### 👨‍🔬 Pembuat Aplikasi - Kelompok 3")
-    st.markdown("""
-    **Anggota:**
-    1. Aditya Dwika Iannanda         - 2460308
-    2. Dhe Adila Zahra Tubarila      - 2460354
-    3. Laila Najwa                   - 2460405
-    4. Naura Amalia Shaliha          - 2460461
-    5. Rizava Apriza                 - 2460503
-    """)
-
-    # Footer
-    st.markdown("<hr>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center;'>© 2025 POLITEKNIK AKA BOGOR - All rights reserved.</p>", unsafe_allow_html=True)
-
-# ===== DASAR TEORI =====
-elif menu == "Dasar Teori":
-    # Header & Deskripsi Menarik
-    st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #1f77b4;'>Konsep <span style='color:#add8e6;'>Perhitungan </span>!</h1>
-        <h5 style='font-weight: normal;'>Sebelum menggunakan <i> Phycalc </i> kamu perlu memahami konsep mengenai perhitungan, terutama tentang galat </h5>
-    </div> 
-    
-<p>Proses pembelajaran fisika tidak hanya menekankan penguasaan konsep, tetapi juga keterampilan proses sains yang harus dimiliki siswa, salah satunya adalah kemampuan menaksir ukuran besaran fisika. Kemampuan ini memiliki peranan penting dalam kehidupan, terutama pada besaran-besaran yang kerap digunakan, seperti panjang, massa, dan waktu. Kemampuan ini sangat dibutuhkan dalam berbagai bidang. Namun, belum banyak peneliti yang mengkaji kemampuan ini. Oleh karena itu, diperlukan analisis kemampuan siswa dalam menaksir ukuran besaran fisika. Penelitian ini bertujuan untuk menganalisis kemampuan siswa dalam menaksir ukuran besaran fisika, mengetahui perbedaan kemampuan menaksir ukuran antara siswa laki-laki dan perempuan, mengetahui besaran yang paling mudah dan paling sulit ditaksir, serta mengetahui acuan yang digunakan siswa dalam menaksir ukuran. <strong>(HARTANTI & HARTANTI, 2024)</strong></p>
-
-<li><b>Galat (kesalahan) pengukuran</b><br>
-perbedaan antara nilai yang diukur dengan nilai sebenarnya dari suatu besaran.</li><br>
-    
-<li><b>Galat Sistematis</b><br> 
-Galat yang cenderung tetap dan dapat diprediksi, disebabkan oleh kesalahan pada alat ukur atau metode pengukuran. Contohnya, kesalahan kalibrasi atau titik nol pada alat ukur.</li><br>
-    
-<li><b>Galat Acak</b><br>
-Galat yang tidak dapat diprediksi dan bervariasi secara acak, disebabkan oleh faktor-faktor yang tidak terkontrol seperti fluktuasi lingkungan atau kesalahan pengamat.</li><br>   
-
-<li><b>Galat Umum (Kekeliruan)</b><br>
-Galat yang disebabkan oleh kesalahan manusia, seperti kesalahan membaca skala atau kesalahan dalam mencatat hasil.</li><br>
-    
-<li><b>Galat Absolut</b><br>
-Selisih antara nilai terukur dengan nilai sebenarnya.</li><br>
-    
-<li><b>Galat Relatif</b><br>
-Galat absolut dibagi dengan nilai sebenarnya, sering dinyatakan dalam persen.</li><br>
-    
-<li><b>Distribusi Galat</b><br>
-Pengukuran berulang dapat menghasilkan distribusi galat yang dapat dianalisis secara statistik untuk mendapatkan informasi tentang keakuratan dan presisi pengukuran.</li><br>
-    """, unsafe_allow_html=True)
-
-
-
-# ===== KALKULATOR KETIDAKPASTIAN =====
-elif menu == "Kalkulator Ketidakpastian":
-    
-    # Header & Deskripsi Menarik
-    st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #ff8f00;'>Kalkulator <span style='color:#737373;'>Ketidakpastian 📊 </span>!</h1>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    Masukkan data pengukuranmu, dan kalkulator ini akan secara otomatis menghitung:
-    
-    - Ketidakpastian Tipe A (berdasarkan statistik pengukuran berulang)
-    - Ketidakpastian Tipe B (berdasarkan resolusi alat)
-    - Ketidakpastian Gabungan
-    - Hasil akhir dalam format: **x̄ ± u<sub>c</sub>**
-    - Persentase ketidakpastian terhadap nilai rata-rata
-    """, unsafe_allow_html=True)
-
-    # Input data
-    data_input = st.text_area("📥 Masukkan data pengukuran (pisahkan dengan koma)", "10.1, 10.3, 10.2, 10.4, 10.2")
-    resolusi = st.number_input("📏 Masukkan nilai resolusi alat ukur", value=0.01, step=0.001)
-
-    if st.button("Hitung Ketidakpastian"):
-        try:
-            # Olah data
-            data = np.array([float(x.strip()) for x in data_input.split(",") if x.strip() != ""])
-            n = len(data)
-
-            if n < 2:
-                st.error("Minimal masukkan 2 data pengukuran untuk perhitungan Tipe A.")
-            else:
-                rata2 = np.mean(data)
-                std_dev = np.std(data, ddof=1)
-                ua = std_dev / np.sqrt(n)  # Ketidakpastian Tipe A
-                ub = resolusi / np.sqrt(3)  # Ketidakpastian Tipe B
-                uc = np.sqrt(ua**2 + ub**2)  # Ketidakpastian Gabungan
-                persen = (uc / rata2) * 100  # Persentase ketidakpastian
-
-                # Hasil
-                st.markdown("---")
-                st.subheader("📈 Hasil Perhitungan:")
-                st.success(f"Rata-rata (x̄): {rata2:.4f}")
-                st.success(f"Simpangan baku (s): {std_dev:.4f}")
-                st.info(f"Ketidakpastian Tipe A (uₐ): {ua:.4f}")
-                st.info(f"Ketidakpastian Tipe B (uᵦ): {ub:.4f}")
-                st.warning(f"Ketidakpastian Gabungan (u꜀): {uc:.4f}")
-                st.markdown(f"### ✅ Hasil Akhir: **{rata2:.4f} ± {uc:.4f}**")
-                st.markdown(f"📌 Persentase ketidakpastian terhadap rata-rata: **{persen:.2f}%**")
-
-                # Interpretasi
-                if persen < 1:
-                    st.success("🎯 Akurasi tinggi (ketidakpastian < 1%)")
-                elif persen < 5:
-                    st.info("✔️ Akurasi sedang (ketidakpastian antara 1%-5%)")
-                else:
-                    st.warning("⚠️ Akurasi rendah (ketidakpastian > 5%). Perlu dicek ulang alat/data.")
-
-        except:
-            st.error("❌ Format input tidak valid. Pastikan hanya angka dan dipisahkan koma.")
-
-# ===== CARA PERHITUNGAN MANUAL =====
-elif menu == "Cara Perhitungan Manual":
-    
-    # Header & Deskripsi Menarik
-    st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #a40000 ;'>Perhitungan cara <span style='color:#00b7eb;'>Manual 📝</span>!</h1>
-        <h5 style='font-weight: normal;'>Berhitung dengan <i>manual </i>atau dengan menggunakan <i>kalkulator scientific</i></h5>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    #Isi cara secara manual
-    st.markdown("""
-    <h3 style='font-weight: normal;'>Menggunakan <i>Rumus </i> Secara Mandiri 📝</h3>
-    </div>
-     """, unsafe_allow_html=True)
-    
-    with st.expander("1. Hitung Rata-Rata Pengukuran"):
-        st.latex(r"\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i")
-
-    with st.expander("2. Hitung Simpangan Baku"):
-        st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}}")
-
-    with st.expander("3. Hitung Ketidakpastian Tipe A (uₐ)"):
-        st.latex(r"u_a = \frac{s}{\sqrt{n}}")
-
-    with st.expander("4. Hitung Ketidakpastian Tipe B (uᵦ)"):
-        st.latex(r"u_b = \frac{\text{resolusi}}{\sqrt{3}}")
-
-    with st.expander("5. Hitung Ketidakpastian Gabungan (u꜀)"):
-        st.latex(r"u_c = \sqrt{u_a^2 + u_b^2}")
-
-    with st.expander("6. Tulis Hasil Pengukuran"):
-        st.latex(r"x = \bar{x} \pm u_c")
-        st.latex(r"\text{Persentase} = \frac{u_c}{\bar{x}} \times 100\%")
-
-        st.success("🎉 Semua langkah sudah dijelaskan. Silakan buka satu per satu untuk belajar mandiri ya!")
-
-  #Isi cara secara kalkulator scientific
-    st.markdown("""
-    <h3 style='font-weight: normal;'>Melihat cara kerja <i>kalkulator scientific </i> 📝</h3>
-    </div>
+        st.markdown("---")
+        st.markdown("""
+        <div class="section-tag">Hasil Generate</div>
+        <div class="divider"></div>
+        <div class="section-title">QR Code & Barcode Siap!</div>
         """, unsafe_allow_html=True)
-    
-# --- STEP 1: Input Data dan Hitung Rata-Rata ---
-    with st.expander("1️⃣ Hitung Rata-Rata dan Simpangan Baku"):
-        data_input = st.text_area("📥 Masukkan data pengukuran (dipisah koma)", "10.1, 10.3, 10.2, 10.4, 10.2")
-        if st.button("🔢 Hitung Rata-Rata & Simpangan Baku"):
-            try:
-                data = np.array([float(i.strip()) for i in data_input.split(",") if i.strip() != ""])
-                n = len(data)
-                if n < 2:
-                    st.error("❌ Minimal 2 data diperlukan.")
-                else:
-                    rata2 = np.mean(data)
-                    std_dev = np.std(data, ddof=1)
-                    st.latex(r"\bar{x} = \frac{1}{n} \sum x_i = %.4f" % rata2)
-                    st.latex(r"s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n-1}} = %.4f" % std_dev)
-                    st.success(f"✔️ Rata-rata: {rata2:.4f} | Simpangan baku: {std_dev:.4f}")
-            except:
-                st.error("❌ Format data tidak valid.")
 
-    # --- STEP 2: Ketidakpastian Tipe A ---
-    with st.expander("2️⃣ Hitung Ketidakpastian Tipe A (uₐ)"):
-        std_input = st.number_input("📥 Masukkan simpangan baku (s)", value=0.1, step=0.001)
-        n_input = st.number_input("🧮 Masukkan jumlah data (n)", value=5, step=1)
-        if st.button("📊 Hitung uₐ"):
-            try:
-                ua = std_input / np.sqrt(n_input)
-                st.latex(r"u_a = \frac{s}{\sqrt{n}} = \frac{%.4f}{\sqrt{%d}} = %.4f" % (std_input, n_input, ua))
-                st.success(f"Ketidakpastian Tipe A (uₐ): {ua:.4f}")
-            except:
-                st.error("❌ Masukkan nilai valid.")
+        with st.spinner("Generating..."):
+            qr_img  = generate_qr(product_url, box_size=10)
+            bc_img  = generate_barcode(active_prod["barcode"])
+            lbl_img = make_label_image(active_prod, generate_qr(product_url, box_size=4))
 
-    # --- STEP 3: Ketidakpastian Tipe B ---
-    with st.expander("3️⃣ Hitung Ketidakpastian Tipe B (uᵦ)"):
-        resolusi = st.number_input("📏 Masukkan resolusi alat ukur", value=0.01, step=0.001)
-        if st.button("📐 Hitung uᵦ"):
-            ub = resolusi / np.sqrt(3)
-            st.latex(r"u_b = \frac{%.4f}{\sqrt{3}} = %.4f" % (resolusi, ub))
-            st.success(f"Ketidakpastian Tipe B (uᵦ): {ub:.4f}")
+        res_col1, res_col2, res_col3 = st.columns(3, gap="medium")
 
-    # --- STEP 4: Ketidakpastian Gabungan ---
-    with st.expander("4️⃣ Hitung Ketidakpastian Gabungan (u꜀)"):
-        ua_input = st.number_input("🟦 Masukkan uₐ", value=0.01, step=0.001)
-        ub_input = st.number_input("🟩 Masukkan uᵦ", value=0.005, step=0.001)
-        if st.button("🧮 Hitung u꜀"):
-            uc = np.sqrt(ua_input**2 + ub_input**2)
-            st.latex(r"u_c = \sqrt{u_a^2 + u_b^2} = %.4f" % uc)
-            st.success(f"Ketidakpastian Gabungan (u꜀): {uc:.4f}")
+        # QR Code
+        with res_col1:
+            st.markdown("""
+            <div style='text-align:center;background:white;border-radius:14px;padding:20px;
+            box-shadow:0 4px 20px rgba(62,32,0,0.10);'>
+            <div style='font-family:Space Mono,monospace;font-size:10px;letter-spacing:2px;
+            color:#E8650A;font-weight:700;margin-bottom:10px;'>📱 QR CODE</div>
+            """, unsafe_allow_html=True)
+            st.image(qr_img, use_container_width=True, caption="Bisa di-scan langsung!")
+            qr_bytes = img_to_bytes(qr_img, "PNG")
+            st.download_button(
+                "⬇️ Download QR Code", data=qr_bytes,
+                file_name=f"qr_{active_prod['id']}.png", mime="image/png",
+                use_container_width=True,
+            )
+            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background:#E8F5E9;border-radius:10px;padding:10px;margin-top:10px;
+            font-size:11px;color:#1A5C2A;text-align:center;font-weight:600;'>
+            ✅ URL: <code style='font-size:10px;'>{product_url}</code>
+            </div>
+            """, unsafe_allow_html=True)
 
-    # --- STEP 5: Tampilkan Hasil Akhir ---
-    with st.expander("5️⃣ Hasil Akhir Pengukuran"):
-        rata_input = st.number_input("📌 Masukkan nilai rata-rata pengukuran (x̄)", value=10.2, step=0.001)
-        uc_input = st.number_input("📎 Masukkan u꜀", value=0.012, step=0.001)
-        if st.button("✅ Tampilkan Hasil Akhir"):
-            persen = (uc_input / rata_input) * 100
-            st.markdown(f"### 📏 Hasil: **{rata_input:.4f} ± {uc_input:.4f}**")
-            st.markdown(f"📊 Persentase ketidakpastian: **{persen:.2f}%**")
-            if persen < 1:
-                st.success("🎯 Akurasi tinggi (ketidakpastian < 1%)")
-            elif persen < 5:
-                st.info("✔️ Akurasi sedang (1%-5%)")
-            else:
-                st.warning("⚠️ Akurasi rendah (>5%)")
-# ===  FAKTOR KESALAHAN PENGUKURAN   === #
-elif menu == "Faktor Kesalahan":  
-    
-    # Header & Deskripsi Menarik
+        # Barcode
+        with res_col2:
+            st.markdown("""
+            <div style='text-align:center;background:white;border-radius:14px;padding:20px;
+            box-shadow:0 4px 20px rgba(62,32,0,0.10);'>
+            <div style='font-family:Space Mono,monospace;font-size:10px;letter-spacing:2px;
+            color:#E8650A;font-weight:700;margin-bottom:10px;'>📊 BARCODE</div>
+            """, unsafe_allow_html=True)
+            st.image(bc_img, use_container_width=True, caption=f"EAN-13: {active_prod['barcode']}")
+            bc_bytes = img_to_bytes(bc_img, "PNG")
+            st.download_button(
+                "⬇️ Download Barcode", data=bc_bytes,
+                file_name=f"barcode_{active_prod['id']}.png", mime="image/png",
+                use_container_width=True,
+            )
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        # Label Kemasan
+        with res_col3:
+            st.markdown("""
+            <div style='text-align:center;background:white;border-radius:14px;padding:20px;
+            box-shadow:0 4px 20px rgba(62,32,0,0.10);'>
+            <div style='font-family:Space Mono,monospace;font-size:10px;letter-spacing:2px;
+            color:#E8650A;font-weight:700;margin-bottom:10px;'>🏷️ LABEL KEMASAN</div>
+            """, unsafe_allow_html=True)
+            st.image(lbl_img, use_container_width=True, caption="Preview label siap cetak")
+            lbl_bytes = img_to_bytes(lbl_img, "PNG")
+            st.download_button(
+                "⬇️ Download Label", data=lbl_bytes,
+                file_name=f"label_{active_prod['id']}.png", mime="image/png",
+                use_container_width=True,
+            )
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        # Info Produk Lengkap
+        st.markdown("<br>", unsafe_allow_html=True)
+        with st.expander("📋 Lihat Info Produk Lengkap (Preview Halaman Konsumen)", expanded=True):
+            discount = round((1 - active_prod["price"] / active_prod["price_ori"]) * 100) if active_prod["price_ori"] else 0
+            i1, i2 = st.columns([1, 2])
+            with i1:
+                st.markdown(f"<div style='font-size:80px;text-align:center'>{active_prod['emoji']}</div>", unsafe_allow_html=True)
+                st.image(qr_img, width=140, caption="Scan ini!")
+            with i2:
+                badges = ""
+                if active_prod.get("halal"):
+                    badges += '<span class="badge-halal">✓ HALAL</span>'
+                badges += '<span class="badge-pirt">PIRT</span>'
+                st.markdown(f"""
+                <div style='padding:4px 0'>{badges}</div>
+                <div style='font-family:Georgia,serif;font-size:24px;font-weight:900;color:#3E2000;margin:8px 0 2px'>
+                  {active_prod['name']}
+                </div>
+                <div style='font-size:11px;color:#E8650A;font-weight:700;letter-spacing:2px;margin-bottom:10px'>
+                  CECILIA SNACK • {active_prod['weight']}
+                </div>
+                <div style='font-size:13px;color:#7A5C3A;margin-bottom:12px'>{active_prod['desc']}</div>
+                <div style='background:white;border-radius:10px;padding:12px 16px;
+                box-shadow:0 4px 16px rgba(62,32,0,0.10);display:inline-block;'>
+                     <span style='font-size:26px;font-weight:900;color:#3E2000'>
+                    Rp {active_prod['price']:,}
+                  </span>
+                  {'<span style="font-size:20px;font-weight:700;color:#E8650A;margin-left:12px">-' + str(discount) + '%</span>' if discount > 0 else ""}
+                </div>
+                """.replace(",", "."), unsafe_allow_html=True)
+
+                st.markdown("<br>", unsafe_allow_html=True)
+                info_rows = [
+                    ("🌿 Bahan", active_prod["ingredients"]),
+                    ("📅 Masa Simpan", active_prod["expired"]),
+                    ("📋 PIRT", active_prod["pirt"]),
+                    ("🔗 URL Produk", product_url),
+                ]
+                for label, val in info_rows:
+                    st.markdown(f"""
+                    <div style='display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #F0E6D6;font-size:13px'>
+                      <span style='min-width:120px;color:#7A5C3A'>{label}</span>
+                      <span style='color:#3E2000;font-weight:500'>{val}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                st.markdown(f"""
+                <a href="{wa_url}" target="_blank" style='
+                  display:inline-block;margin-top:14px;
+                  background:#25D366;color:white;text-decoration:none;
+                  padding:12px 24px;border-radius:10px;font-weight:800;font-size:14px;
+                '>💬 Pesan via WhatsApp</a>
+                """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="info-box">
+        <p>
+        📌 <strong>Cara pakai:</strong><br>
+        1. Download QR Code & Barcode di atas<br>
+        2. Print dan tempel ke kemasan produk<br>
+        3. Konsumen scan QR → langsung melihat halaman produk digital<br>
+        4. Konsumen bisa pesan via WhatsApp dengan 1 klik!
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SCANNER SIMULATOR
+# ══════════════════════════════════════════════════════════════════════════════
+elif st.session_state.tab == "scanner":
+
     st.markdown("""
-    <div style='text-align: center; padding: 20px 0;'>
-        <h1 style='color: #4682b4;'>Faktor <span style='color:#ff8c00;'>Kesalahan</span>!</h1>
-        <h5 style='font-weight: normal;'>Beberapa <i>Faktor dan Kemungkinan </i>Jika Akurasi Rendah!</h5>
+    <div class="section-tag">Simulasi Scan</div>
+    <div class="divider"></div>
+    <div class="section-title">Tampilan Saat Konsumen Scan QR</div>
+    <div class="section-sub">
+      Pilih produk untuk melihat halaman yang muncul ketika konsumen scan QR Code di kemasan.
     </div>
     """, unsafe_allow_html=True)
-    
+
+    for i, p in enumerate(PRODUCTS):
+        with st.expander(f"{p['emoji']}  {p['name']} — {p['weight']} · Rp {p['price']:,}".replace(",", "."), expanded=(i == 0)):
+            product_url = build_product_url(p)
+            wa_url      = build_wa_url(p)
+
+            col_qr, col_bc, col_info = st.columns([1, 1, 2], gap="medium")
+
+            with col_qr:
+                st.markdown("""
+                <div style='text-align:center;font-family:Space Mono,monospace;
+                font-size:9px;letter-spacing:2px;color:#E8650A;font-weight:700;margin-bottom:6px'>
+                QR CODE — SCAN INI!</div>
+                """, unsafe_allow_html=True)
+                with st.spinner("Membuat QR..."):
+                    qr_img = generate_qr(product_url, box_size=7)
+                st.image(qr_img, use_container_width=True)
+                st.caption(f"🔗 {product_url}")
+
+            with col_bc:
+                st.markdown("""
+                <div style='text-align:center;font-family:Space Mono,monospace;
+                font-size:9px;letter-spacing:2px;color:#E8650A;font-weight:700;margin-bottom:6px'>
+                BARCODE PRODUK</div>
+                """, unsafe_allow_html=True)
+                with st.spinner("Membuat Barcode..."):
+                    bc_img = generate_barcode(p["barcode"])
+                st.image(bc_img, use_container_width=True)
+                st.caption(f"EAN-13: {p['barcode']}")
+
+            with col_info:
+                discount = round((1 - p["price"] / p["price_ori"]) * 100)
+                badges = ""
+                if p.get("halal"):
+                    badges += '<span class="badge-halal">✓ HALAL</span> '
+                badges += '<span class="badge-pirt">PIRT</span>'
+
+                st.markdown(f"""
+                <div style='background:#FFF8EE;border-radius:12px;padding:16px;'>
+                  <div>{badges}</div>
+                  <div style='font-family:Georgia,serif;font-size:20px;font-weight:900;
+                  color:#3E2000;margin:8px 0 2px'>{p['name']}</div>
+                  <div style='font-size:11px;color:#E8650A;font-weight:700;
+                  letter-spacing:2px;margin-bottom:6px'>CECILIA SNACK • {p['weight']}</div>
+                  <div style='font-size:13px;color:#7A5C3A;margin-bottom:10px'>{p['desc']}</div>
+
+                  <div style='display:flex;align-items:center;gap:12px;margin-bottom:10px'>
+                    <span style='font-size:22px;font-weight:900;color:#3E2000'>
+                      Rp {p['price']:,}
+                    </span>
+                    <span style='font-size:16px;font-weight:700;color:#E8650A'>-{discount}%</span>
+                    <span style='font-size:12px;color:#999;text-decoration:line-through'>
+                      Rp {p['price_ori']:,}
+                    </span>
+                  </div>
+                  {''.join([f"<div style='font-size:12px;color:#7A5C3A;padding:4px 0;border-bottom:1px solid #F0E6D6'><b>{l}</b>: {v}</div>" for l, v in [('🌿 Bahan', p['ingredients']), ('📅 Masa Simpan', p['expired']), ('📋 PIRT', p['pirt'])]])}
+                </div>
+                """.replace(",", "."), unsafe_allow_html=True)
+
+                st.markdown(f"""
+                <a href="{wa_url}" target="_blank" style='
+                  display:inline-block;margin-top:10px;
+                  background:#25D366;color:white;text-decoration:none;
+                  padding:10px 20px;border-radius:9px;font-weight:800;font-size:13px;
+                '>💬 Pesan via WhatsApp</a>
+                """, unsafe_allow_html=True)
+
     st.markdown("""
-    <p style='text-align: justify; font-size: 16px;'>
-    Dalam kegiatan pengukuran, khususnya dalam eksperimen fisika atau pengamatan ilmiah, hasil pengukuran seringkali tidak sepenuhnya akurat. Perbedaan antara hasil pengukuran dan nilai sebenarnya disebut dengan <b>galat</b> atau <b>kesalahan pengukuran</b>. Galat ini tidak selalu disebabkan oleh ketidaktelitian pengamat, namun juga bisa muncul akibat berbagai faktor yang berkaitan dengan alat ukur, metode yang digunakan, maupun kondisi lingkungan saat pengukuran dilakukan. Memahami penyebab galat sangat penting agar kita dapat meningkatkan ketelitian, mengurangi kesalahan, dan memperoleh hasil yang lebih akurat dalam setiap proses pengukuran.
+    <div class="info-box" style="margin-top:24px;">
+    <p>
+    💡 <strong>Tips:</strong> QR Code di atas bisa langsung di-scan menggunakan kamera HP!
+    Coba arahkan kamera ke QR Code salah satu produk untuk melihat halaman produk digital Cecilia Snack.
     </p>
-    """, unsafe_allow_html=True)
-    
-    # Daftar faktor penyebab galat
-    st.markdown("""
-      <li><b>Kesalahan Kalibrasi Alat</b><br>
-      Alat ukur tidak dikalibrasi dengan standar yang benar. <br>
-      Contoh: neraca yang tidak disetel ke nol sebelum digunakan.</li><br>
-    
-      <li><b>Kesalahan Titik Nol (Zero Error)</b><br>
-      Alat ukur menunjukkan angka selain nol saat belum digunakan. <br>
-      Menyebabkan semua hasil pengukuran menjadi bias.</li><br>
-    
-      <li><b>Kualitas dan Kondisi Alat Ukur</b><br>
-      Alat aus, rusak, atau sudah tidak presisi lagi. <br>
-      Termasuk adanya goresan pada skala atau jarum yang tidak akurat.</li><br>
-    
-      <li><b>Kesalahan Pembacaan Skala (Paralaks)</b><br>
-      Sudut pandang tidak tegak lurus terhadap skala alat. <br>
-      Mengakibatkan hasil pembacaan tampak lebih atau kurang dari nilai sebenarnya.</li><br>
-    
-      <li><b>Lingkungan Sekitar</b><br>
-      Suhu, kelembaban, dan tekanan dapat mempengaruhi hasil pengukuran. <br>
-      Contoh: pita pengukur logam bisa memuai saat suhu tinggi.</li><br>
-    
-      <li><b>Pengaruh Gaya Luar</b><br>
-      Getaran, tekanan jari, atau gangguan fisik lainnya saat alat digunakan.</li><br>
-    
-      <li><b>Kesalahan Pengamat (Human Error)</b><br>
-      Kesalahan mencatat, salah baca, terburu-buru, atau kurang teliti. <br>
-      Termasuk kebiasaan menggampangkan pengukuran tanpa kontrol ulang.</li><br>
-    
-      <li><b>Metode Pengukuran yang Tidak Sesuai</b><br>
-      Teknik atau prosedur pengukuran tidak dilakukan dengan benar. <br>
-      Contoh: pengukuran panjang benda bengkok dengan penggaris lurus.</li><br>
-    
-      <li><b>Pemakaian Alat yang Tidak Sesuai Jenis Pengukuran</b><br>
-      Menggunakan alat yang tidak cocok untuk objek atau skala pengukuran tertentu.</li>
-    </ul>
+    </div>
     """, unsafe_allow_html=True)
 
-# ===   Contoh Soal dan Pembahasan   === #
-elif menu == "Contoh Soal":
-    st.header("🧠 Contoh Soal")
 
-    # ======= Tabel Pertama =======
-    st.subheader("📋 Tabel Data Percobaan 1")
-
-    data1 = {
-        "Ulangan": ["1.", "2.", "3.", "4.", "5.", "Rerata"],
-        "Nilai X (cm)": [11.3, 11.7, 11.3, 11.5, 11.3, 11.42],
-        "Nilai Y (cm)": [5.3, 5.5, 5.3, 5.3, 5.7, 5.4],
-    }
-
-    df1 = pd.DataFrame(data1)
-    st.table(df1)
-
-    st.markdown("""
-    **Keterangan Tabel 1:**
-    
-    - Data percobaan berulang terhadap dua variabel (X dan Y) dengan Δ ketidakpastian.
-    - Nilai rata-rata sudah dihitung pada baris "Rerata".
-    """)
-
-    st.markdown("---")
-
-    # ======= Tabel Kedua =======
-    st.subheader("📋 Tabel Data Percobaan 2")
-
-    data2 = {
-        "Ulangan": ["1.", "2.", "3.", "4.", "5.", "Rerata"],
-        "Nilai X (cm)": [3.0, 4.0, 4.3, 4.0, 4.5, 4.0],
-        "Nilai Y (cm)": [1.7, 2.0, 2.7, 2.5, 2.0, 2.2]
-    }
-
-    df2 = pd.DataFrame(data2)
-    st.table(df2)
-
-    st.markdown("""
-    **Keterangan Tabel 2:**
-    
-    - Data percobaan berbeda dengan variabel X dan Y, tanpa Δ ketidakpastian.
-    - Nilai rata-rata sudah tersedia di baris "Rerata".
-    """)
-
-    st.success("Silakan gunakan tabel ini untuk latihan menghitung ketidakpastian, simpangan baku, atau analisis lainnya.")
+# ─── FOOTER ───────────────────────────────────────────────────────────────────
+st.markdown("""
+<div class="footer">
+  <span>Cecilia Snack × INDI 4.0</span>
+  <p>Digitalisasi UMKM • QR Code & Barcode Generator<br>
+  Proyek Teknologi Informasi — Peningkatan Indeks INDI 4.0</p>
+</div>
+""", unsafe_allow_html=True)
