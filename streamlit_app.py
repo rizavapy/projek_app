@@ -167,7 +167,7 @@ function Barcode({ code, width = 200, height = 60 }) {
 }
 
 function ProductPage({ product, onBack }) {
-  const waMsg = encodeURIComponent(`Halo Cecilia Snack! Saya ingin memesan *${product.name}* (${product.weight}) â€” Rp ${product.price.toLocaleString("id-ID")}`);
+  const waMsg = encodeURIComponent(`Halo Cecilia Snack! Saya ingin memesan *${product.name}* (${product.weight}) ” Rp ${product.price.toLocaleString("id-ID")}`);
   const waUrl = `https://wa.me/${product.wa}?text=${waMsg}`;
   const productUrl = `https://ceciliasnack.id/produk/${product.id.toLowerCase()}`;
 
