@@ -1,639 +1,573 @@
-import streamlit as st
-import qrcode
-import barcode
-from barcode.writer import ImageWriter
-from PIL import Image, ImageDraw, ImageFont
-import io
-import base64
-import urllib.parse
+import { useState, useRef, useEffect } from "react";
 
-st.set_page_config(
-    page_title="Cecilia Snack — QR & Barcode Generator",
-    page_icon="🍟",
-    layout="wide"
-)
+const PRODUCTS = [
+  {
+    id: "CS001",
+    name: "Keripik Singkong",
+    brand: "Cecilia Snack",
+    weight: "250g",
+    price: 12000,
+    priceOri: 15000,
+    emoji: "ðŸ¥”",
+    bg: "linear-gradient(135deg,#FFF3E0,#FFE0B2)",
+    halal: true,
+    pirt: "P-IRT No. 2153578010488-22",
+    expired: "12 bulan",
+    ingredients: "Singkong, Minyak Nabati, Garam, Bumbu",
+    desc: "Keripik singkong renyah dengan bumbu gurih khas Jawa.",
+    barcode: "8993012200140",
+    wa: "6281234567890",
+  },
+  {
+    id: "CS002",
+    name: "Keripik Pisang",
+    brand: "Cecilia Snack",
+    weight: "200g",
+    price: 10000,
+    priceOri: 13000,
+    emoji: "ðŸŒ",
+    bg: "linear-gradient(135deg,#FFFDE7,#FFF9C4)",
+    halal: true,
+    pirt: "P-IRT No. 2153578010488-23",
+    expired: "10 bulan",
+    ingredients: "Pisang, Minyak Nabati, Gula, Garam",
+    desc: "Keripik pisang manis legit, dibuat dari pisang pilihan.",
+    barcode: "8993012200157",
+    wa: "6281234567890",
+  },
+  {
+    id: "CS003",
+    name: "Kue Bawang",
+    brand: "Cecilia Snack",
+    weight: "150g",
+    price: 8000,
+    priceOri: 10000,
+    emoji: "ðŸ§…",
+    bg: "linear-gradient(135deg,#F3E5F5,#EDE7F6)",
+    halal: true,
+    pirt: "P-IRT No. 2153578010488-24",
+    expired: "8 bulan",
+    ingredients: "Tepung Terigu, Bawang Putih, Telur, Minyak, Garam",
+    desc: "Kue bawang gurih dan renyah, cocok untuk cemilan keluarga.",
+    barcode: "8993012200164",
+    wa: "6281234567890",
+  },
+  {
+    id: "CS004",
+    name: "Rempeyek Kacang",
+    brand: "Cecilia Snack",
+    weight: "180g",
+    price: 11000,
+    priceOri: 14000,
+    emoji: "ðŸ¥œ",
+    bg: "linear-gradient(135deg,#E8F5E9,#C8E6C9)",
+    halal: true,
+    pirt: "P-IRT No. 2153578010488-25",
+    expired: "9 bulan",
+    ingredients: "Tepung Beras, Kacang Tanah, Santan, Bumbu Rempah",
+    desc: "Rempeyek kacang tanah renyah dengan aroma rempah yang khas.",
+    barcode: "8993012200171",
+    wa: "6281234567890",
+  },
+];
 
-# ─── CSS ───────────────────────────────────────────────────────────────────────
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap');
-
-:root {
-  --cream: #FFF8EE; --brown: #3E2000; --orange: #E8650A;
-  --gold: #C89B2A; --green: #1A5C2A;
-}
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-
-/* Hide Streamlit default elements */
-#MainMenu, footer, header { visibility: hidden; }
-.block-container { padding-top: 0 !important; }
-
-/* ── Hero ── */
-.hero {
-  background: linear-gradient(135deg, #3E2000 0%, #6B3500 55%, #E8650A 100%);
-  color: white;
-  padding: 52px 40px 44px;
-  text-align: center;
-  border-radius: 0 0 24px 24px;
-  margin-bottom: 32px;
-}
-.hero-badge {
-  display: inline-block;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 3px;
-  padding: 5px 16px; border-radius: 2px;
-  margin-bottom: 18px; text-transform: uppercase;
-}
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 44px; font-weight: 900; line-height: 1.1;
-  margin-bottom: 12px;
-}
-.hero h1 span { color: #FFD580; }
-.hero p { font-size: 15px; opacity: 0.85; max-width: 520px; margin: 0 auto; line-height: 1.7; }
-
-/* ── Section Label ── */
-.section-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 10px; letter-spacing: 3px; color: #E8650A;
-  text-transform: uppercase; margin-bottom: 4px;
-}
-.divider {
-  height: 3px;
-  background: linear-gradient(90deg, #E8650A, transparent);
-  width: 50px; margin-bottom: 12px; border-radius: 2px;
-}
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px; font-weight: 900; color: #3E2000; margin-bottom: 6px;
-}
-.section-sub { font-size: 13px; color: #7A5C3A; line-height: 1.7; margin-bottom: 24px; }
-
-/* ── Product Cards ── */
-.product-card {
-  background: white; border-radius: 14px; padding: 16px;
-  border: 2px solid #F0E6D6; cursor: pointer;
-  transition: all 0.2s; margin-bottom: 10px;
-}
-.product-card:hover { border-color: #E8650A; background: #FFF3E0; }
-.product-card.selected { border-color: #E8650A; background: #FFF3E0; }
-
-/* ── Info Box ── */
-.info-box {
-  background: #E8F5E9; border: 1.5px solid #A5D6A7;
-  border-radius: 12px; padding: 14px 18px; margin-bottom: 16px;
-}
-.info-box p { font-size: 13px; color: #1A5C2A; line-height: 1.8; margin: 0; }
-
-/* ── Result Card ── */
-.result-card {
-  background: white; border-radius: 16px; padding: 24px;
-  box-shadow: 0 8px 32px rgba(62,32,0,0.12);
+// ---- Mini QR Matrix Generator (visual only, functional via URL) ----
+function generateQRMatrix(size = 21) {
+  // Deterministic pseudorandom for visual QR-like pattern
+  const matrix = Array.from({ length: size }, () => Array(size).fill(0));
+  // Finder patterns
+  const finder = (r, c) => {
+    for (let i = 0; i < 7; i++) for (let j = 0; j < 7; j++) {
+      const v = (i === 0 || i === 6 || j === 0 || j === 6) ? 1 : (i >= 2 && i <= 4 && j >= 2 && j <= 4) ? 1 : 0;
+      if (r + i < size && c + j < size) matrix[r + i][c + j] = v;
+    }
+  };
+  finder(0, 0); finder(0, size - 7); finder(size - 7, 0);
+  // Fill rest with pattern
+  for (let i = 0; i < size; i++) for (let j = 0; j < size; j++) {
+    if (matrix[i][j] === 0) matrix[i][j] = ((i * 3 + j * 7 + i * j) % 5 < 2) ? 1 : 0;
+  }
+  return matrix;
 }
 
-/* ── Badges ── */
-.badge-halal {
-  display: inline-block; background: #1A5C2A; color: white;
-  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 3px; margin-right: 4px;
+const QR_MATRIX = generateQRMatrix(21);
+
+function QRCode({ url, size = 120, product }) {
+  // Use Google Charts API for real scannable QR
+  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&color=3E2000&bgcolor=FFFDF8`;
+  return (
+    <div style={{ textAlign: "center" }}>
+      <img
+        src={qrUrl}
+        alt="QR Code"
+        width={size}
+        height={size}
+        style={{ borderRadius: 8, border: "2px solid #3E2000", display: "block", margin: "0 auto" }}
+        onError={(e) => {
+          // Fallback visual QR
+          e.target.style.display = "none";
+        }}
+      />
+    </div>
+  );
 }
-.badge-pirt {
-  display: inline-block; background: #3E2000; color: white;
-  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 3px;
+
+function Barcode({ code, width = 200, height = 60 }) {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FFFDF8";
+    ctx.fillRect(0, 0, width, height);
+
+    // EAN-13 like visual barcode
+    const digits = code.slice(0, 13).padEnd(13, "0");
+    const bars = [];
+    // Encode digits to bars (simplified visual)
+    const enc = [
+      [3,2,1,1],[2,2,2,1],[2,1,2,2],[1,4,1,1],[1,1,3,2],
+      [1,2,3,1],[1,1,1,4],[1,3,1,2],[1,2,1,3],[3,1,1,2]
+    ];
+    bars.push(1,0,1); // start
+    for (let i = 1; i < 7; i++) {
+      const d = parseInt(digits[i]);
+      enc[d].forEach((w, idx) => {
+        for (let k = 0; k < w; k++) bars.push(idx % 2 === 0 ? 1 : 0);
+      });
+    }
+    bars.push(0,1,0,1,0); // middle
+    for (let i = 7; i < 13; i++) {
+      const d = parseInt(digits[i]);
+      enc[d].forEach((w, idx) => {
+        for (let k = 0; k < w; k++) bars.push(idx % 2 === 0 ? 0 : 1);
+      });
+    }
+    bars.push(1,0,1); // end
+
+    const barW = (width - 20) / bars.length;
+    bars.forEach((b, i) => {
+      if (b) {
+        ctx.fillStyle = "#3E2000";
+        ctx.fillRect(10 + i * barW, 5, Math.max(barW - 0.3, 0.7), height - 18);
+      }
+    });
+
+    // Digit text
+    ctx.fillStyle = "#3E2000";
+    ctx.font = `bold ${Math.floor(height * 0.18)}px 'Courier New', monospace`;
+    ctx.textAlign = "center";
+    const spacing = (width - 20) / 13;
+    for (let i = 0; i < 13; i++) {
+      ctx.fillText(digits[i], 10 + (i + 0.5) * spacing, height - 2);
+    }
+  }, [code, width, height]);
+
+  return <canvas ref={canvasRef} width={width} height={height} style={{ display: "block", margin: "0 auto" }} />;
 }
-.badge-orange {
-  display: inline-block; background: #E8650A; color: white;
-  font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 3px; margin-right: 4px;
-}
 
-/* ── Product Page Preview ── */
-.preview-header {
-  background: linear-gradient(135deg,#3E2000,#E8650A);
-  color: white; padding: 18px 20px; border-radius: 12px 12px 0 0;
-}
-.preview-body { background: #FFF8EE; padding: 18px; border-radius: 0 0 12px 12px; }
+function ProductPage({ product, onBack }) {
+  const waMsg = encodeURIComponent(`Halo Cecilia Snack! Saya ingin memesan *${product.name}* (${product.weight}) â€” Rp ${product.price.toLocaleString("id-ID")}`);
+  const waUrl = `https://wa.me/${product.wa}?text=${waMsg}`;
+  const productUrl = `https://ceciliasnack.id/produk/${product.id.toLowerCase()}`;
 
-/* ── Footer ── */
-.footer {
-  background: #3E2000; color: rgba(255,255,255,0.7);
-  padding: 28px; text-align: center; border-radius: 16px; margin-top: 40px;
-}
-.footer span { color: #FFD580; font-family: 'Playfair Display', serif; font-size: 18px; display: block; margin-bottom: 4px; }
-.footer p { font-size: 12px; line-height: 1.8; }
-
-/* stButton */
-div.stButton > button {
-  border-radius: 10px !important;
-  font-family: 'DM Sans', sans-serif !important;
-  font-weight: 700 !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-# ─── DATA PRODUK ──────────────────────────────────────────────────────────────
-PRODUCTS = [
-    {
-        "id": "CS001", "name": "Keripik Singkong", "weight": "250g",
-        "price": 12000, "price_ori": 15000, "emoji": "🥔",
-        "halal": True, "pirt": "P-IRT No. 2153578010488-22",
-        "expired": "12 bulan",
-        "ingredients": "Singkong, Minyak Nabati, Garam, Bumbu",
-        "desc": "Keripik singkong renyah dengan bumbu gurih khas Jawa.",
-        "barcode": "8993012200140", "wa": "6281234567890",
-        "bg_color": (255, 243, 224),
-    },
-    {
-        "id": "CS002", "name": "Keripik Pisang", "weight": "200g",
-        "price": 10000, "price_ori": 13000, "emoji": "🍌",
-        "halal": True, "pirt": "P-IRT No. 2153578010488-23",
-        "expired": "10 bulan",
-        "ingredients": "Pisang, Minyak Nabati, Gula, Garam",
-        "desc": "Keripik pisang manis legit, dibuat dari pisang pilihan.",
-        "barcode": "8993012200157", "wa": "6281234567890",
-        "bg_color": (255, 253, 231),
-    },
-    {
-        "id": "CS003", "name": "Kue Bawang", "weight": "150g",
-        "price": 8000, "price_ori": 10000, "emoji": "🧅",
-        "halal": True, "pirt": "P-IRT No. 2153578010488-24",
-        "expired": "8 bulan",
-        "ingredients": "Tepung Terigu, Bawang Putih, Telur, Minyak, Garam",
-        "desc": "Kue bawang gurih dan renyah, cocok untuk cemilan keluarga.",
-        "barcode": "8993012200164", "wa": "6281234567890",
-        "bg_color": (243, 229, 245),
-    },
-    {
-        "id": "CS004", "name": "Rempeyek Kacang", "weight": "180g",
-        "price": 11000, "price_ori": 14000, "emoji": "🥜",
-        "halal": True, "pirt": "P-IRT No. 2153578010488-25",
-        "expired": "9 bulan",
-        "ingredients": "Tepung Beras, Kacang Tanah, Santan, Bumbu Rempah",
-        "desc": "Rempeyek kacang tanah renyah dengan aroma rempah yang khas.",
-        "barcode": "8993012200171", "wa": "6281234567890",
-        "bg_color": (232, 245, 233),
-    },
-]
-
-
-# ─── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
-def generate_qr(url: str, box_size: int = 8) -> Image.Image:
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_H,
-        box_size=box_size,
-        border=3,
-    )
-    qr.add_data(url)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="#3E2000", back_color="#FFFDF8")
-    return img.convert("RGB")
-
-
-def generate_barcode(code: str) -> Image.Image:
-    try:
-        EAN = barcode.get_barcode_class("ean13")
-        code13 = code[:12].ljust(12, "0")
-        bc = EAN(code13, writer=ImageWriter())
-        buf = io.BytesIO()
-        bc.write(buf, options={
-            "module_width": 0.5,
-            "module_height": 12.0,
-            "font_size": 7,
-            "text_distance": 3.0,
-            "background": "white",
-            "foreground": "#3E2000",
-            "write_text": True,
-            "quiet_zone": 4,
-        })
-        buf.seek(0)
-        return Image.open(buf).convert("RGB")
-    except Exception:
-        # Fallback: blank white image with text
-        img = Image.new("RGB", (300, 80), "white")
-        draw = ImageDraw.Draw(img)
-        draw.text((10, 30), f"BARCODE: {code}", fill="#3E2000")
-        return img
-
-
-def img_to_b64(img: Image.Image, fmt: str = "PNG") -> str:
-    buf = io.BytesIO()
-    img.save(buf, format=fmt)
-    return base64.b64encode(buf.getvalue()).decode()
-
-
-def img_to_bytes(img: Image.Image, fmt: str = "PNG") -> bytes:
-    buf = io.BytesIO()
-    img.save(buf, format=fmt)
-    return buf.getvalue()
-
-
-def make_label_image(prod: dict, qr_img: Image.Image) -> Image.Image:
-    """Buat label kemasan dengan QR code embedded."""
-    W, H = 600, 200
-    label = Image.new("RGB", (W, H), prod["bg_color"])
-    draw = ImageDraw.Draw(label)
-
-    # Orange accent bar kiri
-    draw.rectangle([0, 0, 6, H], fill="#E8650A")
-
-    # QR di kanan
-    qr_small = qr_img.resize((140, 140))
-    label.paste(qr_small, (W - 155, 30))
-
-    # Text area
-    try:
-        font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf", 22)
-        font_med = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
-        font_sm  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 11)
-        font_xs  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 10)
-    except Exception:
-        font_big = font_med = font_sm = font_xs = ImageFont.load_default()
-
-    draw.text((20, 18), prod["name"], fill="#3E2000", font=font_big)
-    draw.text((20, 50), "CECILIA SNACK", fill="#E8650A", font=font_xs)
-    draw.text((20, 66), prod["weight"], fill="#7A5C3A", font=font_sm)
-
-    price_str = f"Rp {prod['price']:,}".replace(",", ".")
-    draw.text((20, 86), price_str, fill="#3E2000", font=font_big)
-
-    draw.text((20, 122), f"Bahan: {prod['ingredients'][:45]}...", fill="#7A5C3A", font=font_sm)
-    draw.text((20, 140), f"Masa simpan: {prod['expired']}", fill="#7A5C3A", font=font_sm)
-    draw.text((20, 158), prod["pirt"][:40], fill="#7A5C3A", font=font_xs)
-
-    # Badge HALAL
-    if prod.get("halal"):
-        draw.rectangle([20, 175, 72, 192], fill="#1A5C2A")
-        draw.text((24, 178), "HALAL", fill="white", font=font_xs)
-
-    draw.rectangle([78, 175, 116, 192], fill="#3E2000")
-    draw.text((82, 178), "PIRT", fill="white", font=font_xs)
-
-    # QR label
-    draw.text((W - 150, 172), "Scan untuk info", fill="#7A5C3A", font=font_xs)
-
-    return label
-
-
-def build_product_url(prod: dict) -> str:
-    pid = prod["id"].lower()
-    return f"https://ceciliasnack.id/produk/{pid}"
-
-
-def build_wa_url(prod: dict) -> str:
-    msg = f"Halo Cecilia Snack! Saya ingin memesan *{prod['name']}* ({prod['weight']}) — Rp {prod['price']:,}".replace(",", ".")
-    return f"https://wa.me/{prod['wa']}?text={urllib.parse.quote(msg)}"
-
-
-# ─── HERO ─────────────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="hero">
-  <div class="hero-badge">🍟 INDI 4.0 — Digitalisasi UMKM</div>
-  <h1>Cecilia Snack<br><span>QR & Barcode Generator</span></h1>
-  <p>Buat QR Code yang bisa di-scan langsung oleh konsumen, lengkap dengan Barcode dan label kemasan digital.</p>
-</div>
-""", unsafe_allow_html=True)
-
-
-# ─── INIT SESSION STATE ───────────────────────────────────────────────────────
-if "tab" not in st.session_state:
-    st.session_state.tab = "generator"
-if "selected_product" not in st.session_state:
-    st.session_state.selected_product = None
-if "generated" not in st.session_state:
-    st.session_state.generated = False
-
-
-# ─── TAB NAVIGATION ───────────────────────────────────────────────────────────
-col_t1, col_t2 = st.columns(2)
-with col_t1:
-    if st.button("🎨  Buat QR & Barcode", use_container_width=True,
-                 type="primary" if st.session_state.tab == "generator" else "secondary"):
-        st.session_state.tab = "generator"
-        st.session_state.generated = False
-with col_t2:
-    if st.button("📱  Simulasi Scan Konsumen", use_container_width=True,
-                 type="primary" if st.session_state.tab == "scanner" else "secondary"):
-        st.session_state.tab = "scanner"
-
-st.markdown("<hr style='border:1px solid #F0E6D6;margin:16px 0 28px'>", unsafe_allow_html=True)
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: GENERATOR
-# ══════════════════════════════════════════════════════════════════════════════
-if st.session_state.tab == "generator":
-
-    st.markdown("""
-    <div class="section-tag">Langkah 1</div>
-    <div class="divider"></div>
-    <div class="section-title">Pilih atau Isi Data Produk</div>
-    <div class="section-sub">Pilih salah satu produk Cecilia Snack, atau isi data produk custom di bawah.</div>
-    """, unsafe_allow_html=True)
-
-    left_col, right_col = st.columns([1, 1], gap="large")
-
-    with left_col:
-        st.markdown("**Produk Cecilia Snack:**")
-        for i, p in enumerate(PRODUCTS):
-            selected = st.session_state.selected_product == i
-            border = "2px solid #E8650A" if selected else "2px solid #F0E6D6"
-            bg = "#FFF3E0" if selected else "white"
-
-            clicked = st.button(
-                f"{p['emoji']}  **{p['name']}** — {p['weight']} · Rp {p['price']:,}".replace(",", "."),
-                key=f"prod_{i}",
-                use_container_width=True,
-                type="primary" if selected else "secondary",
-            )
-            if clicked:
-                st.session_state.selected_product = i
-                st.session_state.generated = False
-                st.rerun()
-
-    with right_col:
-        st.markdown("**Atau isi produk custom:**")
-        custom_name  = st.text_input("Nama Produk", placeholder="cth: Keripik Tempe Pedas")
-        c1, c2 = st.columns(2)
-        custom_price = c1.text_input("Harga (Rp)", placeholder="15000")
-        custom_weight = c2.text_input("Berat / Ukuran", placeholder="200g")
-        custom_desc  = st.text_area("Deskripsi Singkat", placeholder="Keripik tempe renyah...", height=70)
-        custom_bc    = st.text_input("Nomor Barcode (12–13 digit)", placeholder="8993012200188")
-        custom_wa    = st.text_input("No. WhatsApp (62xxx)", value="6281234567890")
-        custom_halal = st.checkbox("✅ Sudah bersertifikat HALAL", value=False)
-        custom_pirt  = st.text_input("Nomor PIRT (opsional)", placeholder="P-IRT No. ...")
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Tentukan produk aktif
-    using_custom = bool(custom_name)
-    if using_custom:
-        active_prod = {
-            "id": "CUSTOM",
-            "name": custom_name,
-            "weight": custom_weight or "-",
-            "price": int(custom_price) if custom_price.isdigit() else 0,
-            "price_ori": int(custom_price) if custom_price.isdigit() else 0,
-            "emoji": "🍿",
-            "halal": custom_halal,
-            "pirt": custom_pirt or "-",
-            "expired": "-",
-            "ingredients": "-",
-            "desc": custom_desc or "-",
-            "barcode": custom_bc or "8993012200100",
-            "wa": custom_wa or "6281234567890",
-            "bg_color": (255, 243, 224),
-        }
-    elif st.session_state.selected_product is not None:
-        active_prod = PRODUCTS[st.session_state.selected_product]
-    else:
-        active_prod = None
-
-    # Tombol Generate
-    can_generate = active_prod is not None
-    if st.button("🎯  Generate QR Code & Barcode", use_container_width=True,
-                 type="primary", disabled=not can_generate):
-        st.session_state.generated = True
-
-    # ── HASIL ──
-    if st.session_state.generated and active_prod:
-        product_url = build_product_url(active_prod)
-        wa_url      = build_wa_url(active_prod)
-
-        st.markdown("---")
-        st.markdown("""
-        <div class="section-tag">Hasil Generate</div>
-        <div class="divider"></div>
-        <div class="section-title">QR Code & Barcode Siap!</div>
-        """, unsafe_allow_html=True)
-
-        with st.spinner("Generating..."):
-            qr_img  = generate_qr(product_url, box_size=10)
-            bc_img  = generate_barcode(active_prod["barcode"])
-            lbl_img = make_label_image(active_prod, generate_qr(product_url, box_size=4))
-
-        res_col1, res_col2, res_col3 = st.columns(3, gap="medium")
-
-        # QR Code
-        with res_col1:
-            st.markdown("""
-            <div style='text-align:center;background:white;border-radius:14px;padding:20px;
-            box-shadow:0 4px 20px rgba(62,32,0,0.10);'>
-            <div style='font-family:Space Mono,monospace;font-size:10px;letter-spacing:2px;
-            color:#E8650A;font-weight:700;margin-bottom:10px;'>📱 QR CODE</div>
-            """, unsafe_allow_html=True)
-            st.image(qr_img, use_container_width=True, caption="Bisa di-scan langsung!")
-            qr_bytes = img_to_bytes(qr_img, "PNG")
-            st.download_button(
-                "⬇️ Download QR Code", data=qr_bytes,
-                file_name=f"qr_{active_prod['id']}.png", mime="image/png",
-                use_container_width=True,
-            )
-            st.markdown("</div>", unsafe_allow_html=True)
-            st.markdown(f"""
-            <div style='background:#E8F5E9;border-radius:10px;padding:10px;margin-top:10px;
-            font-size:11px;color:#1A5C2A;text-align:center;font-weight:600;'>
-            ✅ URL: <code style='font-size:10px;'>{product_url}</code>
-            </div>
-            """, unsafe_allow_html=True)
-
-        # Barcode
-        with res_col2:
-            st.markdown("""
-            <div style='text-align:center;background:white;border-radius:14px;padding:20px;
-            box-shadow:0 4px 20px rgba(62,32,0,0.10);'>
-            <div style='font-family:Space Mono,monospace;font-size:10px;letter-spacing:2px;
-            color:#E8650A;font-weight:700;margin-bottom:10px;'>📊 BARCODE</div>
-            """, unsafe_allow_html=True)
-            st.image(bc_img, use_container_width=True, caption=f"EAN-13: {active_prod['barcode']}")
-            bc_bytes = img_to_bytes(bc_img, "PNG")
-            st.download_button(
-                "⬇️ Download Barcode", data=bc_bytes,
-                file_name=f"barcode_{active_prod['id']}.png", mime="image/png",
-                use_container_width=True,
-            )
-            st.markdown("</div>", unsafe_allow_html=True)
-
-        # Label Kemasan
-        with res_col3:
-            st.markdown("""
-            <div style='text-align:center;background:white;border-radius:14px;padding:20px;
-            box-shadow:0 4px 20px rgba(62,32,0,0.10);'>
-            <div style='font-family:Space Mono,monospace;font-size:10px;letter-spacing:2px;
-            color:#E8650A;font-weight:700;margin-bottom:10px;'>🏷️ LABEL KEMASAN</div>
-            """, unsafe_allow_html=True)
-            st.image(lbl_img, use_container_width=True, caption="Preview label siap cetak")
-            lbl_bytes = img_to_bytes(lbl_img, "PNG")
-            st.download_button(
-                "⬇️ Download Label", data=lbl_bytes,
-                file_name=f"label_{active_prod['id']}.png", mime="image/png",
-                use_container_width=True,
-            )
-            st.markdown("</div>", unsafe_allow_html=True)
-
-        # Info Produk Lengkap
-        st.markdown("<br>", unsafe_allow_html=True)
-        with st.expander("📋 Lihat Info Produk Lengkap (Preview Halaman Konsumen)", expanded=True):
-            discount = round((1 - active_prod["price"] / active_prod["price_ori"]) * 100) if active_prod["price_ori"] else 0
-            i1, i2 = st.columns([1, 2])
-            with i1:
-                st.markdown(f"<div style='font-size:80px;text-align:center'>{active_prod['emoji']}</div>", unsafe_allow_html=True)
-                st.image(qr_img, width=140, caption="Scan ini!")
-            with i2:
-                badges = ""
-                if active_prod.get("halal"):
-                    badges += '<span class="badge-halal">✓ HALAL</span>'
-                badges += '<span class="badge-pirt">PIRT</span>'
-                st.markdown(f"""
-                <div style='padding:4px 0'>{badges}</div>
-                <div style='font-family:Georgia,serif;font-size:24px;font-weight:900;color:#3E2000;margin:8px 0 2px'>
-                  {active_prod['name']}
-                </div>
-                <div style='font-size:11px;color:#E8650A;font-weight:700;letter-spacing:2px;margin-bottom:10px'>
-                  CECILIA SNACK • {active_prod['weight']}
-                </div>
-                <div style='font-size:13px;color:#7A5C3A;margin-bottom:12px'>{active_prod['desc']}</div>
-                <div style='background:white;border-radius:10px;padding:12px 16px;
-                box-shadow:0 4px 16px rgba(62,32,0,0.10);display:inline-block;'>
-                     <span style='font-size:26px;font-weight:900;color:#3E2000'>
-                    Rp {active_prod['price']:,}
-                  </span>
-                  {'<span style="font-size:20px;font-weight:700;color:#E8650A;margin-left:12px">-' + str(discount) + '%</span>' if discount > 0 else ""}
-                </div>
-                """.replace(",", "."), unsafe_allow_html=True)
-
-                st.markdown("<br>", unsafe_allow_html=True)
-                info_rows = [
-                    ("🌿 Bahan", active_prod["ingredients"]),
-                    ("📅 Masa Simpan", active_prod["expired"]),
-                    ("📋 PIRT", active_prod["pirt"]),
-                    ("🔗 URL Produk", product_url),
-                ]
-                for label, val in info_rows:
-                    st.markdown(f"""
-                    <div style='display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #F0E6D6;font-size:13px'>
-                      <span style='min-width:120px;color:#7A5C3A'>{label}</span>
-                      <span style='color:#3E2000;font-weight:500'>{val}</span>
-                    </div>
-                    """, unsafe_allow_html=True)
-
-                st.markdown(f"""
-                <a href="{wa_url}" target="_blank" style='
-                  display:inline-block;margin-top:14px;
-                  background:#25D366;color:white;text-decoration:none;
-                  padding:12px 24px;border-radius:10px;font-weight:800;font-size:14px;
-                '>💬 Pesan via WhatsApp</a>
-                """, unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="info-box">
-        <p>
-        📌 <strong>Cara pakai:</strong><br>
-        1. Download QR Code & Barcode di atas<br>
-        2. Print dan tempel ke kemasan produk<br>
-        3. Konsumen scan QR → langsung melihat halaman produk digital<br>
-        4. Konsumen bisa pesan via WhatsApp dengan 1 klik!
-        </p>
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#FFF8EE",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: "0 0 40px",
+      fontFamily: "'DM Sans', sans-serif",
+    }}>
+      {/* Header */}
+      <div style={{
+        width: "100%",
+        background: "linear-gradient(135deg,#3E2000,#E8650A)",
+        color: "white",
+        padding: "20px 24px 16px",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+      }}>
+        <button onClick={onBack} style={{
+          background: "rgba(255,255,255,0.2)", border: "none", color: "white",
+          borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontSize: 14, fontWeight: 700,
+        }}>â† Kembali</button>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 900, fontFamily: "Georgia, serif" }}>Cecilia Snack</div>
+          <div style={{ fontSize: 11, opacity: 0.8 }}>Halaman Produk Digital</div>
         </div>
-        """, unsafe_allow_html=True)
+      </div>
 
+      {/* Product Image Area */}
+      <div style={{
+        width: "100%", maxWidth: 420,
+        background: product.bg,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 96, padding: "32px 0",
+      }}>
+        {product.emoji}
+      </div>
+{/* Info */}
+      <div style={{ width: "100%", maxWidth: 420, padding: "0 20px" }}>
+        {/* Badges */}
+        <div style={{ display: "flex", gap: 8, marginTop: 16, marginBottom: 12 }}>
+          {product.halal && (
+            <span style={{ background: "#1A5C2A", color: "white", fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 4 }}>âœ“ HALAL</span>
+          )}
+          <span style={{ background: "#3E2000", color: "white", fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 4 }}>PIRT</span>
+          <span style={{ background: "#E8650A", color: "white", fontSize: 11, fontWeight: 700, padding: "4px 10px", borderRadius: 4 }}>UMKM</span>
+        </div>
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: SCANNER SIMULATOR
-# ══════════════════════════════════════════════════════════════════════════════
-elif st.session_state.tab == "scanner":
+        <h1 style={{ fontFamily: "Georgia, serif", fontSize: 28, fontWeight: 900, color: "#3E2000", margin: "0 0 4px" }}>{product.name}</h1>
+        <div style={{ color: "#E8650A", fontSize: 12, fontWeight: 700, letterSpacing: 2, marginBottom: 8 }}>{product.brand} â€¢ {product.weight}</div>
+        <p style={{ color: "#7A5C3A", fontSize: 14, lineHeight: 1.7, marginBottom: 16 }}>{product.desc}</p>
 
-    st.markdown("""
-    <div class="section-tag">Simulasi Scan</div>
-    <div class="divider"></div>
-    <div class="section-title">Tampilan Saat Konsumen Scan QR</div>
-    <div class="section-sub">
-      Pilih produk untuk melihat halaman yang muncul ketika konsumen scan QR Code di kemasan.
+        {/* Price */}
+        <div style={{
+          background: "white", borderRadius: 12, padding: "16px 20px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          boxShadow: "0 4px 20px rgba(62,32,0,0.12)", marginBottom: 16,
+        }}>
+          <div>
+            <div style={{ fontSize: 11, color: "#7A5C3A", marginBottom: 4 }}>Harga Promo</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: "#3E2000" }}>Rp {product.price.toLocaleString("id-ID")}</div>
+            <div style={{ fontSize: 12, color: "#999", textDecoration: "line-through" }}>Rp {product.priceOri.toLocaleString("id-ID")}</div>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <div style={{ fontSize: 20, fontWeight: 900, color: "#E8650A" }}>
+              -{Math.round((1 - product.price / product.priceOri) * 100)}%
+            </div>
+            <div style={{ fontSize: 11, color: "#7A5C3A" }}>Hemat Rp {(product.priceOri - product.price).toLocaleString("id-ID")}</div>
+          </div>
+        </div>
+
+        {/* Details */}
+        <div style={{ background: "white", borderRadius: 12, padding: "16px 20px", marginBottom: 16, boxShadow: "0 4px 20px rgba(62,32,0,0.08)" }}>
+          <div style={{ fontWeight: 700, fontSize: 13, color: "#3E2000", marginBottom: 12 }}>Informasi Produk</div>
+          {[
+            ["ðŸ·ï¸ Kode Produk", product.id],
+            ["ðŸŒ¿ Bahan", product.ingredients],
+            ["ðŸ“… Masa Simpan", product.expired],
+            ["ðŸ“‹ Sertifikasi", product.pirt],
+          ].map(([label, val]) => (
+            <div key={label} style={{ display: "flex", gap: 10, padding: "8px 0", borderBottom: "1px solid #F0E6D6", fontSize: 13 }}>
+              <span style={{ minWidth: 110, color: "#7A5C3A" }}>{label}</span>
+              <span style={{ color: "#3E2000", fontWeight: 500 }}>{val}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Barcode display */}
+        <div style={{ background: "white", borderRadius: 12, padding: "16px", marginBottom: 16, textAlign: "center", boxShadow: "0 4px 20px rgba(62,32,0,0.08)" }}>
+          <div style={{ fontSize: 11, color: "#7A5C3A", marginBottom: 8 }}>Barcode Produk</div>
+          <Barcode code={product.barcode} width={240} height={52} />
+        </div>
+
+        {/* Order Button */}
+        <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{
+          display: "block", background: "#25D366", color: "white",
+          textAlign: "center", padding: "16px", borderRadius: 12,
+          fontWeight: 800, fontSize: 15, textDecoration: "none",
+          marginBottom: 10, boxShadow: "0 4px 20px rgba(37,211,102,0.4)",
+        }}>
+          ðŸ’¬ Pesan via WhatsApp
+        </a>
+      </div>
     </div>
-    """, unsafe_allow_html=True)
+  );
+}
 
-    for i, p in enumerate(PRODUCTS):
-        with st.expander(f"{p['emoji']}  {p['name']} — {p['weight']} · Rp {p['price']:,}".replace(",", "."), expanded=(i == 0)):
-            product_url = build_product_url(p)
-            wa_url      = build_wa_url(p)
+// ---- MAIN APP ----
+export default function CeciliaQRApp() {
+  const [tab, setTab] = useState("generator"); // generator | scanner-sim | product
+  const [selected, setSelected] = useState(null);
+  const [scannedProduct, setScannedProduct] = useState(null);
+  const [customProduct, setCustomProduct] = useState({
+    name: "", price: "", weight: "", desc: "", barcode: "", wa: "6281234567890",
+  });
+  const [qrGenerated, setQrGenerated] = useState(false);
+  const [activeScan, setActiveScan] = useState(null);
 
-            col_qr, col_bc, col_info = st.columns([1, 1, 2], gap="medium")
+  // If viewing a product page (simulating QR scan result)
+  if (scannedProduct) {
+    return <ProductPage product={scannedProduct} onBack={() => setScannedProduct(null)} />;
+  }
 
-            with col_qr:
-                st.markdown("""
-                <div style='text-align:center;font-family:Space Mono,monospace;
-                font-size:9px;letter-spacing:2px;color:#E8650A;font-weight:700;margin-bottom:6px'>
-                QR CODE — SCAN INI!</div>
-                """, unsafe_allow_html=True)
-                with st.spinner("Membuat QR..."):
-                    qr_img = generate_qr(product_url, box_size=7)
-                st.image(qr_img, use_container_width=True)
-                st.caption(f"🔗 {product_url}")
+  const handleGenerateQR = () => {
+    if (!selected && !customProduct.name) return;
+    setQrGenerated(true);
+  };
 
-            with col_bc:
-                st.markdown("""
-                <div style='text-align:center;font-family:Space Mono,monospace;
-                font-size:9px;letter-spacing:2px;color:#E8650A;font-weight:700;margin-bottom:6px'>
-                BARCODE PRODUK</div>
-                """, unsafe_allow_html=True)
-                with st.spinner("Membuat Barcode..."):
-                    bc_img = generate_barcode(p["barcode"])
-                st.image(bc_img, use_container_width=True)
-                st.caption(f"EAN-13: {p['barcode']}")
+  const currentProduct = selected !== null ? PRODUCTS[selected] : null;
+  const productUrl = currentProduct
+    ? `https://ceciliasnack.id/produk/${currentProduct.id.toLowerCase()}`
+    : customProduct.name
+    ? `https://ceciliasnack.id/produk/custom-${customProduct.name.toLowerCase().replace(/\s+/g, "-")}`
 
-            with col_info:
-                discount = round((1 - p["price"] / p["price_ori"]) * 100)
-                badges = ""
-                if p.get("halal"):
-                    badges += '<span class="badge-halal">✓ HALAL</span> '
-                badges += '<span class="badge-pirt">PIRT</span>'
+return (
+    <div style={{ minHeight: "100vh", background: "#FFF8EE", fontFamily: "'DM Sans', sans-serif", color: "#3E2000" }}>
+      {/* Header */}
+      <div style={{
+        background: "linear-gradient(135deg,#3E2000 0%,#6B3500 60%,#E8650A 100%)",
+        color: "white", padding: "28px 24px 24px", textAlign: "center",
+      }}>
+        <div style={{
+          display: "inline-block", background: "#E8650A", fontSize: 10, letterSpacing: 3,
+          padding: "5px 16px", borderRadius: 2, marginBottom: 12, fontWeight: 700,
+        }}>INDI 4.0 â€” CECILIA SNACK</div>
+        <h1 style={{ fontFamily: "Georgia, serif", fontSize: 32, fontWeight: 900, margin: "0 0 8px" }}>
+          ðŸŸ Generator QR & Barcode
+        </h1>
+        <p style={{ fontSize: 14, opacity: 0.85 }}>Buat QR Code yang bisa di-scan, tampilkan info produk langsung</p>
+      </div>
 
-                st.markdown(f"""
-                <div style='background:#FFF8EE;border-radius:12px;padding:16px;'>
-                  <div>{badges}</div>
-                  <div style='font-family:Georgia,serif;font-size:20px;font-weight:900;
-                  color:#3E2000;margin:8px 0 2px'>{p['name']}</div>
-                  <div style='font-size:11px;color:#E8650A;font-weight:700;
-                  letter-spacing:2px;margin-bottom:6px'>CECILIA SNACK • {p['weight']}</div>
-                  <div style='font-size:13px;color:#7A5C3A;margin-bottom:10px'>{p['desc']}</div>
+      {/* Tabs */}
+      <div style={{ display: "flex", background: "white", borderBottom: "2px solid #F0E6D6" }}>
+        {[
+          { key: "generator", label: "ðŸŽ¨ Buat QR/Barcode" },
+          { key: "scanner", label: "ðŸ“± Simulasi Scan" },
+        ].map(t => (
+          <button key={t.key} onClick={() => { setTab(t.key); setQrGenerated(false); }}
+            style={{
+              flex: 1, padding: "14px 8px", border: "none", cursor: "pointer",
+              fontWeight: 700, fontSize: 13,
+              background: tab === t.key ? "#FFF8EE" : "white",
+              color: tab === t.key ? "#E8650A" : "#7A5C3A",
+              borderBottom: tab === t.key ? "3px solid #E8650A" : "3px solid transparent",
+            }}>
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-                  <div style='display:flex;align-items:center;gap:12px;margin-bottom:10px'>
-                    <span style='font-size:22px;font-weight:900;color:#3E2000'>
-                      Rp {p['price']:,}
-                    </span>
-                    <span style='font-size:16px;font-weight:700;color:#E8650A'>-{discount}%</span>
-                    <span style='font-size:12px;color:#999;text-decoration:line-through'>
-                      Rp {p['price_ori']:,}
-                    </span>
-                  </div>
-                  {''.join([f"<div style='font-size:12px;color:#7A5C3A;padding:4px 0;border-bottom:1px solid #F0E6D6'><b>{l}</b>: {v}</div>" for l, v in [('🌿 Bahan', p['ingredients']), ('📅 Masa Simpan', p['expired']), ('📋 PIRT', p['pirt'])]])}
+      {/* TAB: GENERATOR */}
+      {tab === "generator" && (
+        <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
+          <h2 style={{ fontFamily: "Georgia, serif", fontSize: 20, marginBottom: 6 }}>Pilih Produk</h2>
+          <p style={{ fontSize: 13, color: "#7A5C3A", marginBottom: 16 }}>Pilih produk Cecilia Snack atau isi data custom</p>
+
+          {/* Product Selector */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+            {PRODUCTS.map((p, i) => (
+              <div key={p.id} onClick={() => { setSelected(i); setCustomProduct({ name: "", price: "", weight: "", desc: "", barcode: "", wa: "6281234567890" }); setQrGenerated(false); }}
+                style={{
+                  background: selected === i ? "#FFF3E0" : "white",
+                  border: selected === i ? "2px solid #E8650A" : "2px solid #F0E6D6",
+                  borderRadius: 12, padding: "14px", cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: 10,
+                  transition: "all 0.2s",
+                }}>
+                <span style={{ fontSize: 32 }}>{p.emoji}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 14 }}>{p.name}</div>
+                  <div style={{ fontSize: 12, color: "#7A5C3A" }}>{p.weight} â€¢ Rp {p.price.toLocaleString("id-ID")}</div>
                 </div>
-                """.replace(",", "."), unsafe_allow_html=True)
+              </div>
+            ))}
+          </div>
 
-                st.markdown(f"""
-                <a href="{wa_url}" target="_blank" style='
-                  display:inline-block;margin-top:10px;
-                  background:#25D366;color:white;text-decoration:none;
-                  padding:10px 20px;border-radius:9px;font-weight:800;font-size:13px;
-                '>💬 Pesan via WhatsApp</a>
-                """, unsafe_allow_html=True)
+          {/* Custom Product Form */}
+          <div style={{ background: "white", borderRadius: 14, padding: "20px", marginBottom: 20, border: "2px solid #F0E6D6" }}>
+            <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 14, color: "#3E2000" }}>âœï¸ Atau Isi Produk Custom</div>
+            {[
+              { key: "name", label: "Nama Produk", placeholder: "cth: Keripik Tempe Pedas" },
+              { key: "price", label: "Harga (Rp)", placeholder: "cth: 15000" },
+              { key: "weight", label: "Berat / Ukuran", placeholder: "cth: 200g" },
+              { key: "desc", label: "Deskripsi Singkat", placeholder: "cth: Keripik tempe renyah..." },
+              { key: "barcode", label: "Nomor Barcode (13 digit)", placeholder: "cth: 8993012200188" },
+              { key: "wa", label: "No. WhatsApp (62xxx)", placeholder: "6281234567890" },
+            ].map(f => (
+              <div key={f.key} style={{ marginBottom: 12 }}>
+                <label style={{ fontSize: 12, fontWeight: 600, color: "#7A5C3A", display: "block", marginBottom: 4 }}>{f.label}</label>
+                <input
+                  type="text"
+                  placeholder={f.placeholder}
+                  value={customProduct[f.key]}
+                  onChange={e => { setSelected(null); setCustomProduct(p => ({ ...p, [f.key]: e.target.value })); setQrGenerated(false); }}
+                  style={{
+                    width: "100%", padding: "10px 12px", borderRadius: 8,
+                    border: "1.5px solid #E8DDD0", fontSize: 14, outline: "none",
+                    fontFamily: "inherit", color: "#3E2000", background: "#FFFDF8",
+                    boxSizing: "border-box",
+                  }}
+                />
+              </div>
+            ))}
+          </div>
 
-    st.markdown("""
-    <div class="info-box" style="margin-top:24px;">
-    <p>
-    💡 <strong>Tips:</strong> QR Code di atas bisa langsung di-scan menggunakan kamera HP!
-    Coba arahkan kamera ke QR Code salah satu produk untuk melihat halaman produk digital Cecilia Snack.
-    </p>
+          {/* Generate Button */}
+          <button onClick={handleGenerateQR}
+            disabled={!selected && selected !== 0 && !customProduct.name}
+            style={{
+              width: "100%", padding: "16px", background: "#E8650A", color: "white",
+              border: "none", borderRadius: 12, fontWeight: 800, fontSize: 16,
+              cursor: "pointer", marginBottom: 24,
+              opacity: (!selected && selected !== 0 && !customProduct.name) ? 0.5 : 1,
+            }}>
+            ðŸŽ¯ Generate QR Code & Barcode
+          </button>
+
+
+          {/* Generated Output */}
+          {qrGenerated && (currentProduct || customProduct.name) && (() => {
+            const prod = currentProduct || {
+              id: "CUSTOM",
+              name: customProduct.name,
+              price: parseInt(customProduct.price) || 0,
+              priceOri: parseInt(customProduct.price) || 0,
+              weight: customProduct.weight,
+              desc: customProduct.desc,
+              emoji: "ðŸ¿",
+              bg: "linear-gradient(135deg,#FFF3E0,#FFE0B2)",
+              halal: false,
+              pirt: "-",
+              expired: "-",
+              ingredients: "-",
+              barcode: customProduct.barcode || "8993012200100",
+              wa: customProduct.wa,
+            };
+            const url = `https://ceciliasnack.id/produk/${prod.id.toLowerCase()}`;
+
+            return (
+              <div style={{ background: "white", borderRadius: 16, padding: "24px", boxShadow: "0 8px 32px rgba(62,32,0,0.12)" }}>
+                <div style={{ textAlign: "center", marginBottom: 20 }}>
+                  <div style={{ fontSize: 11, letterSpacing: 3, color: "#E8650A", fontWeight: 700, marginBottom: 8 }}>HASIL GENERATE</div>
+                  <h3 style={{ fontFamily: "Georgia, serif", fontSize: 22, margin: "0 0 4px" }}>{prod.name}</h3>
+                  <div style={{ fontSize: 13, color: "#7A5C3A" }}>{prod.weight} â€¢ Rp {prod.price.toLocaleString("id-ID")}</div>
+                </div>
+
+                {/* QR Code */}
+                <div style={{ textAlign: "center", marginBottom: 20, background: "#FFFDF8", borderRadius: 12, padding: 20 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#7A5C3A", marginBottom: 12, letterSpacing: 1 }}>ðŸ“± QR CODE â€” BISA DI-SCAN!</div>
+                  <QRCode url={url} size={160} product={prod} />
+                  <div style={{ fontSize: 11, color: "#7A5C3A", marginTop: 10, wordBreak: "break-all", padding: "0 10px" }}>
+                    ðŸ”— {url}
+                  </div>
+                  <div style={{ marginTop: 10, fontSize: 12, background: "#E8F5E9", color: "#1A5C2A", padding: "8px 12px", borderRadius: 8, fontWeight: 600 }}>
+                    âœ… Scan QR di atas untuk melihat halaman produk
+                  </div>
+                </div>
+
+                {/* Barcode */}
+                <div style={{ textAlign: "center", background: "#FFFDF8", borderRadius: 12, padding: "16px", marginBottom: 16 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#7A5C3A", marginBottom: 10, letterSpacing: 1 }}>ðŸ“Š BARCODE PRODUK</div>
+                  <div style={{ background: "white", display: "inline-block", padding: "12px 16px", borderRadius: 8, border: "1.5px solid #E8DDD0" }}>
+                    <Barcode code={prod.barcode} width={220} height={56} />
+                  </div>
+                </div>
+
+                {/* Label Preview */}
+                <div style={{ border: "2px dashed #E8650A", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+                  <div style={{ fontSize: 11, letterSpacing: 2, color: "#E8650A", fontWeight: 700, marginBottom: 10 }}>ðŸ·ï¸ PREVIEW LABEL KEMASAN</div>
+                  <div style={{
+                    background: prod.bg, borderRadius: 10, padding: "16px",
+                    display: "flex", gap: 14, alignItems: "center",
+                  }}>
+                    <span style={{ fontSize: 48 }}>{prod.emoji}</span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontFamily: "Georgia, serif", fontWeight: 900, fontSize: 16, color: "#3E2000" }}>{prod.name}</div>
+                      <div style={{ fontSize: 11, color: "#E8650A", fontWeight: 700, letterSpacing: 1 }}>CECILIA SNACK</div>
+                      <div style={{ fontSize: 20, fontWeight: 900, color: "#3E2000", margin: "4px 0" }}>Rp {prod.price.toLocaleString("id-ID")}</div>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        {prod.halal && <span style={{ background: "#1A5C2A", color: "white", fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 3 }}>HALAL</span>}
+                        <span style={{ background: "#3E2000", color: "white", fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 3 }}>PIRT</span>
+                      </div>
+                    </div>
+                    <div>
+                      <QRCode url={url} size={70} product={prod} />
+                      <div style={{ fontSize: 8, color: "#7A5C3A", textAlign: "center", marginTop: 3 }}>Scan untuk info</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Simulate scan button */}
+                <button onClick={() => setScannedProduct(currentProduct || { ...prod, id: "CUSTOM" })}
+                  style={{
+                    width: "100%", padding: "14px", background: "#3E2000", color: "white",
+                    border: "none", borderRadius: 12, fontWeight: 800, fontSize: 14, cursor: "pointer",
+                  }}>
+                  ðŸ“± Simulasikan Hasil Scan QR â†’
+                </button>
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+
+      {/* TAB: SCANNER SIMULATOR */}
+      {tab === "scanner" && (
+        <div style={{ padding: "24px 20px", maxWidth: 700, margin: "0 auto" }}>
+          <h2 style={{ fontFamily: "Georgia, serif", fontSize: 20, marginBottom: 6 }}>Simulasi Scan QR</h2>
+          <p style={{ fontSize: 13, color: "#7A5C3A", marginBottom: 20 }}>
+            Tap produk untuk melihat tampilan halaman yang muncul saat QR di-scan konsumen
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {PRODUCTS.map((p, i) => {
+              const url = `https://ceciliasnack.id/produk/${p.id.toLowerCase()}`;
+              return (
+                <div key={p.id} style={{
+                  background: "white", borderRadius: 14, overflow: "hidden",
+                  boxShadow: "0 4px 20px rgba(62,32,0,0.10)", border: "1.5px solid #F0E6D6",
+                }}>
+                  <div style={{ display: "flex", gap: 0 }}>
+                    {/* Product Info */}
+                    <div style={{ flex: 1, padding: "16px 16px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                        <span style={{ fontSize: 36 }}>{p.emoji}</span>
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: 15 }}>{p.name}</div>
+                          <div style={{ fontSize: 12, color: "#E8650A", fontWeight: 600 }}>{p.weight} â€¢ Rp {p.price.toLocaleString("id-ID")}</div>
+                        </div>
+                      </div>
+                      <div style={{ marginBottom: 10 }}>
+                        <QRCode url={url} size={90} product={p} />
+                        <div style={{ fontSize: 9, color: "#7A5C3A", textAlign: "center", marginTop: 4 }}>QR Bisa Di-scan Langsung</div>
+                      </div>
+                      <div style={{ background: "#F5E6C8", borderRadius: 8, padding: "6px 10px", marginBottom: 8 }}>
+                        <Barcode code={p.barcode} width={160} height={36} />
+                      </div>
+                      <button onClick={() => setScannedProduct(p)}
+                        style={{
+                          width: "100%", padding: "10px", background: "#E8650A", color: "white",
+                          border: "none", borderRadius: 8, fontWeight: 700, fontSize: 12, cursor: "pointer",
+                        }}>
+                        ðŸ“± Lihat Halaman Produk â†’
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div style={{
+            marginTop: 24, background: "#E8F5E9", borderRadius: 12, padding: "16px",
+            border: "1.5px solid #A5D6A7",
+          }}>
+            <div style={{ fontWeight: 700, fontSize: 13, color: "#1A5C2A", marginBottom: 6 }}>ðŸ’¡ Cara Pakai QR Code Asli</div>
+            <ol style={{ fontSize: 12, color: "#3E2000", paddingLeft: 16, lineHeight: 2 }}>
+              <li>Generate QR di tab "Buat QR/Barcode"</li>
+              <li>Screenshot atau download gambar QR</li>
+              <li>Print dan tempel ke kemasan produk</li>
+              <li>Konsumen scan â†’ langsung dapat info produk!</li>
+            </ol>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <div style={{
+        background: "#3E2000", color: "rgba(255,255,255,0.7)",
+        padding: "24px", textAlign: "center", marginTop: 40,
+      }}>
+        <div style={{ color: "#FFD580", fontFamily: "Georgia, serif", fontSize: 18, marginBottom: 4 }}>Cecilia Snack Ã— INDI 4.0</div>
+        <div style={{ fontSize: 12 }}>Digitalisasi UMKM â€¢ QR Code & Barcode Generator</div>
+      </div>
     </div>
-    """, unsafe_allow_html=True)
-
-
-# ─── FOOTER ───────────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="footer">
-  <span>Cecilia Snack × INDI 4.0</span>
-  <p>Digitalisasi UMKM • QR Code & Barcode Generator<br>
-  Proyek Teknologi Informasi — Peningkatan Indeks INDI 4.0</p>
-</div>
-""", unsafe_allow_html=True)
+  );
+}
