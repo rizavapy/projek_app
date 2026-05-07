@@ -1,2 +1,6 @@
 streamlit
 pandas
+python-barcode
+pillow
+pyzbar
+opencv-python
