@@ -211,7 +211,10 @@ products = [
 # SEARCH
 # ==========================================
 
-search = st.text_input("🔍 Cari Snack")
+search = st.text_input(
+    "🔍 Cari Snack",
+    key="search_produk"
+)
 
 filtered_products = [
     p for p in products
@@ -291,7 +294,10 @@ if menu == "🏪 Home":
     )
 
     # SEARCH
-    search = st.text_input("🔍 Cari Snack")
+    search = st.text_input(
+    "🔍 Cari Snack",
+    key="search_produk"
+)
 
     filtered_products = [
         p for p in products
@@ -369,8 +375,14 @@ elif menu == "🏷️ Generator Barcode":
         "Masukkan data untuk membuat barcode produk."
     )
 
-    nama_barcode = st.text_input("Nama Produk")
-    kode_barcode = st.text_input("Kode Barcode")
+    nama_barcode = st.text_input(
+    "Nama Produk",
+    key="nama_barcode"
+)
+    kode_barcode = st.text_input(
+    "Kode Barcode",
+    key="kode_barcode"
+)
 
     if st.button("Generate Barcode"):
 
@@ -416,14 +428,20 @@ elif menu == "💳 Generator QRIS":
         "Masukkan data produk untuk membuat QRIS."
     )
 
-    nama_produk = st.text_input("Nama Produk")
+    nama_produk = st.text_input(
+    "Nama Produk",
+    key="nama_qris"
+)
     harga_produk = st.number_input(
         "Harga Produk",
         min_value=0,
         step=1000
     )
 
-    kode_produk = st.text_input("Kode Produk")
+    kode_produk = st.text_input(
+    "Kode Produk",
+    key="kode_qris"
+)
 
     if st.button("Generate QRIS"):
 
