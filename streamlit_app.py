@@ -260,7 +260,14 @@ for index, product in enumerate(filtered_products):
 # SIDEBAR
 # ==========================================
 
+import qrcode
+from io import BytesIO
+
 st.sidebar.title("🍿 Snack Cecilia")
+
+# ==========================================
+# GENERATE BARCODE
+# ==========================================
 
 st.sidebar.markdown("## 🏷️ Generate Barcode")
 
@@ -285,13 +292,69 @@ if st.sidebar.button("Generate Barcode"):
 
         st.sidebar.image(filename)
 
+# ==========================================
+# GENERATE QRIS / QR CODE
+# ==========================================
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("## 💳 Generate QRIS / QR Code")
+
+nama_produk = st.sidebar.text_input("Nama Produk")
+harga_produk = st.sidebar.number_input(
+    "Harga Produk",
+    min_value=0,
+    step=1000
+)
+
+kode_produk = st.sidebar.text_input("Kode Produk")
+
+if st.sidebar.button("Generate QRIS"):
+
+    if nama_produk and kode_produk:
+
+        data_qr = f"""
+        Snack Cecilia
+        Produk : {nama_produk}
+        Harga : Rp {harga_produk}
+        Kode : {kode_produk}
+        """
+
+        qr = qrcode.QRCode(
+            version=1,
+            box_size=10,
+            border=5
+        )
+
+        qr.add_data(data_qr)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+
+        st.sidebar.success("QRIS berhasil dibuat!")
+
+        st.sidebar.image(buffer)
+
+        st.sidebar.download_button(
+            label="⬇️ Download QRIS",
+            data=buffer.getvalue(),
+            file_name=f"{nama_produk}_qris.png",
+            mime="image/png"
+        )
+
+# ==========================================
+# INFO SIDEBAR
+# ==========================================
+
 st.sidebar.markdown("---")
 
 st.sidebar.info(
-    "Gunakan barcode untuk mengecek "
-    "informasi produk Snack Cecilia."
+    "Snack Cecilia 🍿\n\n"
+    "Generate Barcode dan QRIS "
+    "untuk produk snack dengan cepat."
 )
-
 # ==========================================
 # CEK PRODUK DARI BARCODE
 # ==========================================
