@@ -28,54 +28,78 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-.main {
-    background-color: #fff8f0;
+
+.stApp {
+    background: linear-gradient(to bottom, #fff7f0, #ffe4cc);
 }
 
 .title {
     text-align:center;
-    color:#d35400;
-    font-size:50px;
+    color:#ff6600;
+    font-size:55px;
     font-weight:bold;
 }
 
 .subtitle {
     text-align:center;
-    color:#7f8c8d;
+    color:#6c757d;
     font-size:20px;
+    margin-bottom:30px;
 }
 
 .card {
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0px 2px 10px rgba(0,0,0,0.1);
-    margin-bottom:20px;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
 }
 
 .price {
-    color:green;
-    font-size:22px;
+    color:#28a745;
+    font-size:24px;
     font-weight:bold;
 }
 
 .discount {
-    color:red;
+    color:#dc3545;
     font-size:18px;
+    font-weight:bold;
+}
+
+.sidebar .sidebar-content {
+    background-color:#fff0e6;
+}
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(to bottom, #ff9966, #ff5e62);
+    color: white;
+}
+
+[data-testid="stSidebar"] * {
+    color: white;
+}
+
+.stButton>button {
+    background-color:#ff6600;
+    color:white;
+    border-radius:10px;
+    border:none;
+    padding:10px 20px;
+    font-weight:bold;
+}
+
+.stButton>button:hover {
+    background-color:#ff8533;
 }
 
 </style>
 """, unsafe_allow_html=True)
-
-# ==========================================
-# HEADER
-# ==========================================
-
-st.markdown("<div class='title'>🍿 Snack Cecilia 🍿</div>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>Toko Online Snack Terlengkap dan Termurah</div>", unsafe_allow_html=True)
-
-st.write("")
-st.write("")
 
 # ==========================================
 # DATA PRODUK
@@ -233,16 +257,18 @@ for index, product in enumerate(filtered_products):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# BARCODE GENERATOR
+# SIDEBAR
 # ==========================================
 
-st.write("")
-st.write("")
-st.subheader("🏷️ Generate Barcode Produk")
+st.sidebar.title("🍿 Snack Cecilia")
 
-barcode_text = st.text_input("Masukkan Kode Barcode")
+st.sidebar.markdown("## 🏷️ Generate Barcode")
 
-if st.button("Generate Barcode"):
+barcode_text = st.sidebar.text_input(
+    "Masukkan Kode Barcode"
+)
+
+if st.sidebar.button("Generate Barcode"):
 
     if barcode_text != "":
 
@@ -255,9 +281,16 @@ if st.button("Generate Barcode"):
 
         filename = generated.save("barcode_produk")
 
-        st.success("Barcode berhasil dibuat!")
+        st.sidebar.success("Barcode berhasil dibuat!")
 
-        st.image(filename)
+        st.sidebar.image(filename)
+
+st.sidebar.markdown("---")
+
+st.sidebar.info(
+    "Gunakan barcode untuk mengecek "
+    "informasi produk Snack Cecilia."
+)
 
 # ==========================================
 # CEK PRODUK DARI BARCODE
