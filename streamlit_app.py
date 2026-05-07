@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 from PIL import Image
 import barcode
 from barcode.writer import ImageWriter
-from pyzbar.pyzbar import decode
 import os
 
 # ==========================================
@@ -261,51 +260,36 @@ if st.button("Generate Barcode"):
         st.image(filename)
 
 # ==========================================
-# BARCODE SCANNER
+# CEK PRODUK DARI BARCODE
 # ==========================================
 
 st.write("")
 st.write("")
-st.subheader("📷 Scan Barcode Produk")
+st.subheader("🔍 Cek Informasi Produk")
 
-uploaded_file = st.file_uploader(
-    "Upload Gambar Barcode",
-    type=["png", "jpg", "jpeg"]
-)
+barcode_input = st.text_input("Masukkan Kode Barcode Produk")
 
-if uploaded_file is not None:
+if barcode_input:
 
-    image = Image.open(uploaded_file)
+    found = False
 
-    decoded = decode(image)
+    for product in products:
 
-    if decoded:
+        if product["Barcode"] == barcode_input:
 
-        barcode_data = decoded[0].data.decode("utf-8")
+            st.success("Produk Ditemukan!")
 
-        st.success(f"Barcode Terdeteksi: {barcode_data}")
+            st.write(f"🍟 Nama : {product['Nama']}")
+            st.write(f"💰 Harga : Rp {product['Harga']:,}")
+            st.write(f"🔥 Diskon : {product['Diskon']}")
+            st.write(f"📅 Produksi : {product['Tanggal Produksi']}")
+            st.write(f"⏳ Expired : {product['Expired']}")
+            st.write(f"🥣 Bahan : {product['Bahan']}")
 
-        found = False
+            found = True
 
-        for product in products:
-
-            if product["Barcode"] == barcode_data:
-
-                st.write("## Informasi Produk")
-                st.write(f"🍟 Nama : {product['Nama']}")
-                st.write(f"💰 Harga : Rp {product['Harga']:,}")
-                st.write(f"🔥 Diskon : {product['Diskon']}")
-                st.write(f"📅 Produksi : {product['Tanggal Produksi']}")
-                st.write(f"⏳ Expired : {product['Expired']}")
-                st.write(f"🥣 Bahan : {product['Bahan']}")
-
-                found = True
-
-        if not found:
-            st.error("Produk tidak ditemukan")
-
-    else:
-        st.error("Barcode tidak terbaca")
+    if not found:
+        st.error("Produk tidak ditemukan")
 
 # ==========================================
 # FOOTER
