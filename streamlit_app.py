@@ -257,63 +257,179 @@ for index, product in enumerate(filtered_products):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# SIDEBAR
+# SIDEBAR MENU
 # ==========================================
 
 import qrcode
 from io import BytesIO
 
-st.sidebar.title("🍿 Snack Cecilia")
-
-# ==========================================
-# GENERATE BARCODE
-# ==========================================
-
-st.sidebar.markdown("## 🏷️ Generate Barcode")
-
-barcode_text = st.sidebar.text_input(
-    "Masukkan Kode Barcode"
+menu = st.sidebar.radio(
+    "📌 Pilih Menu",
+    [
+        "🏪 Home",
+        "🏷️ Generator Barcode",
+        "💳 Generator QRIS"
+    ]
 )
 
-if st.sidebar.button("Generate Barcode"):
-
-    if barcode_text != "":
-
-        code128 = barcode.get_barcode_class('code128')
-
-        generated = code128(
-            barcode_text,
-            writer=ImageWriter()
-        )
-
-        filename = generated.save("barcode_produk")
-
-        st.sidebar.success("Barcode berhasil dibuat!")
-
-        st.sidebar.image(filename)
-
 # ==========================================
-# GENERATE QRIS / QR CODE
+# HOME
 # ==========================================
 
-st.sidebar.markdown("---")
-st.sidebar.markdown("## 💳 Generate QRIS / QR Code")
+if menu == "🏪 Home":
 
-nama_produk = st.sidebar.text_input("Nama Produk")
-harga_produk = st.sidebar.number_input(
-    "Harga Produk",
-    min_value=0,
-    step=1000
-)
+    st.markdown(
+        "<div class='title'>🍿 Snack Cecilia 🍿</div>",
+        unsafe_allow_html=True
+    )
 
-kode_produk = st.sidebar.text_input("Kode Produk")
+    st.markdown(
+        "<div class='subtitle'>"
+        "Toko Online Snack Terlengkap dan Termurah"
+        "</div>",
+        unsafe_allow_html=True
+    )
 
-if st.sidebar.button("Generate QRIS"):
+    # SEARCH
+    search = st.text_input("🔍 Cari Snack")
 
-    if nama_produk and kode_produk:
+    filtered_products = [
+        p for p in products
+        if search.lower() in p["Nama"].lower()
+    ]
+
+    st.subheader("🛒 Daftar Produk")
+
+    cols = st.columns(3)
+
+    for index, product in enumerate(filtered_products):
+
+        with cols[index % 3]:
+
+            st.markdown(
+                "<div class='card'>",
+                unsafe_allow_html=True
+            )
+
+            st.image(
+                "https://cdn-icons-png.flaticon.com/512/2553/2553691.png",
+                width=120
+            )
+
+            st.subheader(product["Nama"])
+
+            st.markdown(
+                f"<div class='price'>"
+                f"Rp {product['Harga']:,}"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+            st.markdown(
+                f"<div class='discount'>"
+                f"Diskon {product['Diskon']}"
+                f"</div>",
+                unsafe_allow_html=True
+            )
+
+            st.write(
+                f"📅 Produksi : "
+                f"{product['Tanggal Produksi']}"
+            )
+
+            st.write(
+                f"⏳ Expired : "
+                f"{product['Expired']}"
+            )
+
+            st.write(
+                f"🥣 Bahan : "
+                f"{product['Bahan']}"
+            )
+
+            st.write(
+                f"📦 Barcode : "
+                f"{product['Barcode']}"
+            )
+
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
+
+# ==========================================
+# BARCODE PAGE
+# ==========================================
+
+elif menu == "🏷️ Generator Barcode":
+
+    st.title("🏷️ Generator Barcode")
+
+    st.write(
+        "Masukkan data untuk membuat barcode produk."
+    )
+
+    nama_barcode = st.text_input("Nama Produk")
+    kode_barcode = st.text_input("Kode Barcode")
+
+    if st.button("Generate Barcode"):
+
+        if kode_barcode != "":
+
+            code128 = barcode.get_barcode_class(
+                'code128'
+            )
+
+            generated = code128(
+                kode_barcode,
+                writer=ImageWriter()
+            )
+
+            filename = generated.save(
+                f"{nama_barcode}_barcode"
+            )
+
+            st.success(
+                "Barcode berhasil dibuat!"
+            )
+
+            st.image(filename)
+
+            with open(filename, "rb") as file:
+
+                st.download_button(
+                    label="⬇️ Download Barcode",
+                    data=file,
+                    file_name=f"{nama_barcode}_barcode.png",
+                    mime="image/png"
+                )
+
+# ==========================================
+# QRIS PAGE
+# ==========================================
+
+elif menu == "💳 Generator QRIS":
+
+    st.title("💳 Generator QRIS / QR Code")
+
+    st.write(
+        "Masukkan data produk untuk membuat QRIS."
+    )
+
+    nama_produk = st.text_input("Nama Produk")
+    harga_produk = st.number_input(
+        "Harga Produk",
+        min_value=0,
+        step=1000
+    )
+
+    kode_produk = st.text_input("Kode Produk")
+
+    if st.button("Generate QRIS"):
 
         data_qr = f"""
         Snack Cecilia
+        
         Produk : {nama_produk}
         Harga : Rp {harga_produk}
         Kode : {kode_produk}
@@ -328,73 +444,21 @@ if st.sidebar.button("Generate QRIS"):
         qr.add_data(data_qr)
         qr.make(fit=True)
 
-        img = qr.make_image(fill_color="black", back_color="white")
+        img = qr.make_image(
+            fill_color="black",
+            back_color="white"
+        )
 
         buffer = BytesIO()
         img.save(buffer, format="PNG")
 
-        st.sidebar.success("QRIS berhasil dibuat!")
+        st.success("QRIS berhasil dibuat!")
 
-        st.sidebar.image(buffer)
+        st.image(buffer)
 
-        st.sidebar.download_button(
+        st.download_button(
             label="⬇️ Download QRIS",
             data=buffer.getvalue(),
             file_name=f"{nama_produk}_qris.png",
             mime="image/png"
         )
-
-# ==========================================
-# INFO SIDEBAR
-# ==========================================
-
-st.sidebar.markdown("---")
-
-st.sidebar.info(
-    "Snack Cecilia 🍿\n\n"
-    "Generate Barcode dan QRIS "
-    "untuk produk snack dengan cepat."
-)
-# ==========================================
-# CEK PRODUK DARI BARCODE
-# ==========================================
-
-st.write("")
-st.write("")
-st.subheader("🔍 Cek Informasi Produk")
-
-barcode_input = st.text_input("Masukkan Kode Barcode Produk")
-
-if barcode_input:
-
-    found = False
-
-    for product in products:
-
-        if product["Barcode"] == barcode_input:
-
-            st.success("Produk Ditemukan!")
-
-            st.write(f"🍟 Nama : {product['Nama']}")
-            st.write(f"💰 Harga : Rp {product['Harga']:,}")
-            st.write(f"🔥 Diskon : {product['Diskon']}")
-            st.write(f"📅 Produksi : {product['Tanggal Produksi']}")
-            st.write(f"⏳ Expired : {product['Expired']}")
-            st.write(f"🥣 Bahan : {product['Bahan']}")
-
-            found = True
-
-    if not found:
-        st.error("Produk tidak ditemukan")
-
-# ==========================================
-# FOOTER
-# ==========================================
-
-st.write("")
-st.write("")
-st.markdown("---")
-st.markdown(
-    "<center>© 2026 Snack Cecilia | Toko Snack Online</center>",
-    unsafe_allow_html=True
-)
