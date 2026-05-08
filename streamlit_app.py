@@ -760,7 +760,7 @@ elif page == "💳 QRIS & Pembayaran":
         col_form, col_preview = st.columns([1, 1])
         with col_form:
             st.markdown("#### Pengaturan QRIS Toko")
-            merchant_name = st.text_input("Nama Merchant", value="SnackStore Nusantara")
+            merchant_name = st.text_input("Nama Merchant", value="Cecilia Snack")
             merchant_id = st.text_input("Merchant ID / No. QRIS", value="ID1234567890", help="Dari penyedia QRIS Anda")
             merchant_city = st.text_input("Kota", value="Jakarta")
             amount_fixed = st.checkbox("Jumlah Tetap?")
