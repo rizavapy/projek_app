@@ -937,6 +937,63 @@ elif page == "📊 Laporan & Analitik":
             plt.close()
         else:
             st.info("Belum ada data tren penjualan.")
+
+# ── Tambah Pendapatan Manual ────────────────────────────────────────────
+    st.markdown("### 💰 Tambah Pendapatan Manual")
+    st.caption("Gunakan ini untuk mencatat pendapatan di luar transaksi produk, seperti jasa titip, bonus, atau penjualan offline.")
+    with st.form("add_manual_income"):
+        ci1, ci2, ci3 = st.columns(3)
+        with ci1:
+            inc_date = st.date_input("Tanggal", value=datetime.date.today(), key="inc_date")
+            inc_cat = st.selectbox("Kategori Pendapatan", [
+                "Penjualan Offline", "Jasa Titip", "Bonus / Komisi",
+                "Penjualan Event / Bazar", "Reseller", "Lainnya"
+            ])
+        with ci2:
+            inc_amount = st.number_input("Jumlah Pendapatan (Rp)", value=50000, step=5000, key="inc_amount")
+            inc_desc = st.text_input("Keterangan / Sumber", placeholder="Misal: Bazar Ramadan Blok M")
+        with ci3:
+            inc_buyer = st.text_input("Nama Pembeli / Sumber (opsional)", placeholder="Misal: Bu Siti")
+            inc_payment = st.selectbox("Metode Pembayaran", ["Tunai", "Transfer Bank", "QRIS", "COD", "Lainnya"])
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.form_submit_button("➕ Tambah Pendapatan", use_container_width=True):
+                if inc_amount > 0:
+                    manual_income = {
+                        "id": hashlib.md5(f"{inc_desc}{datetime.datetime.now()}".encode()).hexdigest()[:8],
+                        "date": str(inc_date),
+                        "product": f"[Manual] {inc_cat}",
+                        "product_id": "manual",
+                        "qty": 1,
+                        "unit_price": inc_amount,
+                        "discount": 0,
+                        "total": inc_amount,
+                        "payment": inc_payment,
+                        "buyer": inc_buyer,
+                        "notes": inc_desc
+                    }
+                    data["sales"].append(manual_income)
+                    save_data(data)
+                    st.success(f"✅ Pendapatan {format_rupiah(inc_amount)} berhasil dicatat!")
+                    st.rerun()
+                else:
+                    st.warning("Jumlah pendapatan harus lebih dari 0!")
+
+    # Tampilkan ringkasan pendapatan manual di periode ini
+    manual_incomes = [s for s in sales if s.get("product_id") == "manual"]
+    if manual_incomes:
+        total_manual = sum(s["total"] for s in manual_incomes)
+        st.markdown(f"""
+        <div class="alert-success" style="margin-bottom:16px;">
+            💡 Pendapatan manual di periode ini: <strong>{format_rupiah(total_manual)}</strong>
+            dari <strong>{len(manual_incomes)}</strong> entri
+        </div>
+        """, unsafe_allow_html=True)
+
+        with st.expander("📋 Lihat Detail Pendapatan Manual"):
+            df_manual = pd.DataFrame(manual_incomes)[["date", "product", "total", "payment", "buyer", "notes"]]
+            df_manual.columns = ["Tanggal", "Kategori", "Jumlah", "Pembayaran", "Sumber", "Keterangan"]
+            df_manual["Jumlah"] = df_manual["Jumlah"].apply(format_rupiah)
+            st.dataframe(df_manual, use_container_width=True, hide_index=True)
  
     # Add Expense
     st.markdown("### 💸 Tambah Pengeluaran")
