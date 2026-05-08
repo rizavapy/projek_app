@@ -18,7 +18,7 @@ import numpy as np
  
 # ─── Page Config ───────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="SnackStore – Camilan Nusantara",
+    page_title="Cecilia Snack!",
     page_icon="🍟",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -306,8 +306,8 @@ html, body, [class*="css"] {
 """, unsafe_allow_html=True)
  
 # ─── Data Storage ───────────────────────────────────────────────────────────────
-DATA_FILE = "snackstore_data.json"
-SELLER_PASSWORD = "seller123"  # Change this
+DATA_FILE = "CeciliaSnack_data.json"
+SELLER_PASSWORD = "Cecilia123"  # Change this
  
 def load_data():
     default = {
@@ -446,8 +446,8 @@ if page == "🏠 Beranda Produk":
     # Hero
     st.markdown("""
     <div class="hero-banner">
-        <div class="hero-title">Camilan Nusantara<br>Terbaik & Terpercaya 🌟</div>
-        <div class="hero-sub">Produk camilan tradisional berkualitas tinggi, dibuat dengan cinta dari bahan pilihan.</div>
+        <div class="hero-title">Camilan <br>Terbaik & Terpercaya 🌟</div>
+        <div class="hero-sub">Produk camilan berkualitas tinggi, dibuat dengan cinta dari bahan pilihan.</div>
         <span class="hero-badge">🚚 Pengiriman ke seluruh Indonesia</span>
         &nbsp;
         <span class="hero-badge">✅ Tanpa Pengawet Berbahaya</span>
@@ -654,7 +654,7 @@ elif page == "🔐 Panel Penjual":
  
 # ════════════════════════════════════════════════════════════════════════════════
 # PAGE 3 – GENERATOR BARCODE
-# ════════════════════════════════════════════════════════════════════════════════
+# ════════════════════════════════════════════════════════════════════════════════ 
 elif page == "📦 Generator Barcode":
     if not seller_auth():
         st.stop()
