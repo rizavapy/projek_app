@@ -406,8 +406,8 @@ data = load_data()
 with st.sidebar:
     st.markdown("""
     <div style='padding: 20px 0 10px; text-align: center;'>
-        <div style='font-family: Playfair Display, serif; font-size: 1.5rem; font-weight: 900; color: #F5ECD7;'>🍟 SnackStore</div>
-        <div style='font-size: 0.8rem; color: #C4A882; margin-top: 4px;'>Camilan Nusantara</div>
+        <div style='font-family: Playfair Display, serif; font-size: 1.5rem; font-weight: 900; color: #F5ECD7;'>🍟 Cecilia Snack</div>
+        <div style='font-size: 0.8rem; color: #C4A882; margin-top: 4px;'>Cemilan Teman Cerita</div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown("---")
@@ -446,7 +446,7 @@ if page == "🏠 Beranda Produk":
     # Hero
     st.markdown("""
     <div class="hero-banner">
-        <div class="hero-title">Camilan <br>Terbaik & Terpercaya 🌟</div>
+        <div class="hero-title">Cecilia Snack <br>Teman Cemilan Kamu! 🌟</div>
         <div class="hero-sub">Produk camilan berkualitas tinggi, dibuat dengan cinta dari bahan pilihan.</div>
         <span class="hero-badge">🚚 Pengiriman ke seluruh Indonesia</span>
         &nbsp;
