@@ -431,7 +431,7 @@ def seller_auth():
         st.markdown('<div class="seller-panel"><h3>🔐 Login Penjual</h3><p style="opacity:0.8;font-size:0.9rem;">Halaman ini hanya untuk penjual.</p></div>', unsafe_allow_html=True)
         pwd = st.text_input("Password Penjual", type="password", placeholder="Masukkan password...")
         if st.button("🔓 Login", use_container_width=True):
-            if pwd == SELLER_PASSWORD:
+            if pwd == Cecilia123:
                 st.session_state.seller_logged_in = True
                 st.rerun()
             else:
